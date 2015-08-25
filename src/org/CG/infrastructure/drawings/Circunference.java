@@ -8,16 +8,15 @@ import javax.media.opengl.GL;
  */
 public class Circunference implements Drawing {
 
-    public void draw(GL gl, float[] parameters) {
-        float DEG2RAD = parameters[0];
-        float radius = parameters[1];
+    public void draw(GL gl, int[] parameters) {
+        int radius = parameters[0];
 
         gl.glBegin(GL.GL_LINE_LOOP);
 
         for (int i = 0; i < 360; i++) {
-            float degInRad = i * DEG2RAD;
+            double radians = Math.toRadians(i);
 
-            gl.glVertex2f((float) Math.cos(degInRad) * radius, (float) Math.sin(degInRad) * radius);
+            gl.glVertex2f((float) Math.cos(radians) * radius, (float) Math.sin(radians) * radius);
         }
 
         gl.glEnd();

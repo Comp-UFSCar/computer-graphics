@@ -23,19 +23,25 @@ import org.CG.infrastructure.drawings.LineInPixelMatrix;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    LinkedList<Pair<Drawing, float[]>> drawings;
+    LinkedList<Pair<Drawing, int[]>> drawings;
 
     public CGAssignment1() {
         this(null);
     }
 
-    public CGAssignment1(LinkedList<Pair<Drawing, float[]>> drawings) {
+    public CGAssignment1(LinkedList<Pair<Drawing, int[]>> drawings) {
         if (drawings == null) {
-            drawings = new LinkedList<Pair<Drawing, float[]>>();
+            drawings = new LinkedList<Pair<Drawing, int[]>>();
 
-            drawings.add(new Pair<Drawing, float[]>(new LineInPixelMatrix(), new float[]{0, 0, 100, 100}));
-            drawings.add(new Pair<Drawing, float[]>(new LineInPixelMatrix(), new float[]{150, 150, 250, 200}));
-            drawings.add(new Pair<Drawing, float[]>(new LineInPixelMatrix(), new float[]{300, 0, 350, 150}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 100}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 50}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 50, 100}));
+
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 200}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 0}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{300, 100, 300, 0}));
+
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{400, 200, 600, 100}));
         }
 
         this.drawings = drawings;
@@ -111,7 +117,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.glLoadIdentity();
 
         for (Pair p : this.drawings) {
-            ((Drawing) p.getLeft()).draw(gl, (float[]) p.getRight());
+            ((Drawing) p.getLeft()).draw(gl, (int[]) p.getRight());
         }
 
         // Flush all drawing operations to the graphics card
