@@ -33,18 +33,26 @@ public class CGAssignment1 implements GLEventListener {
         if (drawings == null) {
             drawings = new LinkedList<Pair<Drawing, int[]>>();
 
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 100}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 50}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 50, 100}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 100, randomColor(), randomColor(), randomColor()}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 50, randomColor(), randomColor(), randomColor()}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 50, 100, randomColor(), randomColor(), randomColor()}));
 
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 200}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 0}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{300, 100, 300, 0}));
-
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{400, 200, 600, 100}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 200, randomColor(), randomColor(), randomColor()}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 220, 100, randomColor(), randomColor(), randomColor()}));
+            
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{250, 100, 350, 95, randomColor(), randomColor(), randomColor()}));
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{250, 100, 350, 20, randomColor(), randomColor(), randomColor()}));
+            
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{400, 200, 350, 0, randomColor(), randomColor(), randomColor()}));
+            
+            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{450, 300, 350, 400, randomColor(), randomColor(), randomColor()}));
         }
 
         this.drawings = drawings;
+    }
+    
+    protected static int randomColor() {
+        return (int)(Math.random() * 256);
     }
 
     public static void main(String[] args) {
