@@ -6,6 +6,12 @@ import javax.media.opengl.GL;
  *
  * @author ldavid
  */
-public interface Drawing {
-    void draw(GL gl, int[] parameters);
+public abstract class Drawing {
+    int[] parameters;
+
+    public Drawing(int[] parameters) {
+        this.parameters = parameters;
+    }
+    
+    abstract public void draw(GL gl);
 }

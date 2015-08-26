@@ -2,6 +2,8 @@ package org.CG;
 
 import com.sun.opengl.util.Animator;
 import java.awt.Frame;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
@@ -11,7 +13,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import org.CG.infrastructure.drawings.Drawing;
-import org.CG.infrastructure.Pair;
 import org.CG.infrastructure.drawings.LineInPixelMatrix;
 
 /**
@@ -23,45 +24,22 @@ import org.CG.infrastructure.drawings.LineInPixelMatrix;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    LinkedList<Pair<Drawing, int[]>> drawings;
+    static LinkedList<Drawing> drawings = new LinkedList<>();
+    static int count = 0;
+    static int[] start;
+    static int[] end;
 
-    public CGAssignment1() {
-        this(null);
-    }
-
-    public CGAssignment1(LinkedList<Pair<Drawing, int[]>> drawings) {
-        if (drawings == null) {
-            drawings = new LinkedList<Pair<Drawing, int[]>>();
-
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 100, randomColor(), randomColor(), randomColor()}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 100, 50, randomColor(), randomColor(), randomColor()}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{0, 0, 50, 100, randomColor(), randomColor(), randomColor()}));
-
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 120, 200, randomColor(), randomColor(), randomColor()}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{120, 100, 220, 100, randomColor(), randomColor(), randomColor()}));
-            
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{250, 100, 350, 95, randomColor(), randomColor(), randomColor()}));
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{250, 100, 350, 20, randomColor(), randomColor(), randomColor()}));
-            
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{400, 200, 350, 0, randomColor(), randomColor(), randomColor()}));
-            
-            drawings.add(new Pair<Drawing, int[]>(new LineInPixelMatrix(), new int[]{450, 300, 350, 400, randomColor(), randomColor(), randomColor()}));
-        }
-
-        this.drawings = drawings;
-    }
-    
     protected static int randomColor() {
-        return (int)(Math.random() * 256);
+        return (int) (Math.random() * 256);
     }
 
     public static void main(String[] args) {
-        Frame frame = new Frame("Simple JOGL Application");
+        final Frame frame = new Frame("Line drawing from pixel matrix");
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(new CGAssignment1());
         frame.add(canvas);
-        frame.setSize(640, 480);
+        frame.setSize(1366, 768);
         final Animator animator = new Animator(canvas);
         frame.addWindowListener(new WindowAdapter() {
 
@@ -79,12 +57,34 @@ public class CGAssignment1 implements GLEventListener {
                 }).start();
             }
         });
+
+        canvas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (count == 0) {
+                    // Get first coordinate. Hold on for second one.
+                    start = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+                } else {
+                    // Just got the second coordenate.
+                    end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+
+                    System.out.println("(" + start[0] + "," + start[1] + ")->(" + end[0] + "," + end[1] + ")");
+
+                    // Draw the line in the pixel matrix using random colors.
+                    drawings.add(new LineInPixelMatrix(new int[]{start[0], start[1], end[0], end[1], randomColor(), randomColor(), randomColor()}));
+                }
+
+                count = (count + 1) % 2;
+            }
+        });
+
         // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
     }
 
+    @Override
     public void init(GLAutoDrawable drawable) {
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
@@ -100,12 +100,12 @@ public class CGAssignment1 implements GLEventListener {
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
     }
 
+    @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
 
         if (height <= 0) { // avoid a divide by zero error!
-
             height = 1;
         }
         final float h = (float) width / (float) height;
@@ -117,6 +117,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.glLoadIdentity();
     }
 
+    @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
@@ -124,14 +125,15 @@ public class CGAssignment1 implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        for (Pair p : this.drawings) {
-            ((Drawing) p.getLeft()).draw(gl, (int[]) p.getRight());
-        }
+        drawings.stream().forEach((d) -> {
+            d.draw(gl);
+        });
 
         // Flush all drawing operations to the graphics card
         gl.glFlush();
     }
 
+    @Override
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
 }

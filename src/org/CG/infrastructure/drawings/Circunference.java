@@ -6,9 +6,13 @@ import javax.media.opengl.GL;
  *
  * @author ldavid
  */
-public class Circunference implements Drawing {
+public class Circunference extends Drawing {
 
-    public void draw(GL gl, int[] parameters) {
+    public Circunference(int[] parameters) {
+        super(parameters);
+    }
+
+    public void draw(GL gl) {
         int radius = parameters[0];
 
         gl.glBegin(GL.GL_LINE_LOOP);
