@@ -28,6 +28,7 @@ public class LineInPixelMatrix extends Drawing {
             end = t;
         }
 
+        // Calculate E and NE constants for the Midpoint Line algorithm.
         int x = (int) start[0];
         int y = (int) start[1];
         dx = (int) (end[0] - start[0]);
