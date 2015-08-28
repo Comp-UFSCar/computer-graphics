@@ -4,6 +4,7 @@ import com.sun.opengl.util.Animator;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
@@ -25,16 +26,10 @@ import org.CG.infrastructure.drawings.LineInPixelMatrix;
 public class CGAssignment1 implements GLEventListener {
 
     static LinkedList<Drawing> drawings = new LinkedList<>();
-    static int count = 0;
-    static int[] start;
-    static int[] end;
-
-    protected static int randomColor() {
-        return (int) (Math.random() * 256);
-    }
+    static int[] start, end;
 
     public static void main(String[] args) {
-        final Frame frame = new Frame("Line drawing from pixel matrix");
+        final Frame frame = new Frame("Line drawing over pixel matrix");
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(new CGAssignment1());
@@ -45,36 +40,46 @@ public class CGAssignment1 implements GLEventListener {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                // Run this on another thread than the AWT event queue to
-                // make sure the call to Animator.stop() completes before
-                // exiting
-                new Thread(new Runnable() {
-
-                    public void run() {
-                        animator.stop();
-                        System.exit(0);
-                    }
+                new Thread(() -> {
+                    animator.stop();
+                    System.exit(0);
                 }).start();
             }
         });
 
         canvas.addMouseListener(new MouseAdapter() {
+
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (count == 0) {
-                    // Get first coordinate. Hold on for second one.
-                    start = new int[]{e.getX(), canvas.getHeight() - e.getY()};
-                } else {
-                    // Just got the second coordenate.
-                    end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+            public void mousePressed(MouseEvent e) {
+                start = new int[]{e.getX(), canvas.getHeight() - e.getY()};
 
-                    System.out.println("(" + start[0] + "," + start[1] + ")->(" + end[0] + "," + end[1] + ")");
+                // The mouse was pressed, instantiates a LineInPixelMatrix with the starting point and random colors.
+                // Finally, adds it to the list of drawings that will be given to GL.
+                drawings.add(new LineInPixelMatrix(
+                    new int[]{start[0], start[1], start[0], start[1],
+                    (int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256)}));
+            }
 
-                    // Draw the line in the pixel matrix using random colors.
-                    drawings.add(new LineInPixelMatrix(new int[]{start[0], start[1], end[0], end[1], randomColor(), randomColor(), randomColor()}));
-                }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
 
-                count = (count + 1) % 2;
+                Drawing d = drawings.getLast();
+                d.getParameters()[2] = end[0];
+                d.getParameters()[3] = end[1];
+                d.refresh();
+            }
+        });
+
+        canvas.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+
+                Drawing d = drawings.getLast();
+                d.getParameters()[2] = end[0];
+                d.getParameters()[3] = end[1];
+                d.refresh();
             }
         });
 
@@ -96,7 +101,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.setSwapInterval(1);
 
         // Setup the drawing area and shading mode
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
     }
 

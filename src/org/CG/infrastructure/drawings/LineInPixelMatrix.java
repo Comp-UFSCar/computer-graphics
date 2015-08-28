@@ -4,22 +4,34 @@ import javax.media.opengl.GL;
 
 public class LineInPixelMatrix extends Drawing {
 
+    int[] start, end;
+    private int incE, incNE;
+    private int dx, dy;
+    private int octant;
+
     public LineInPixelMatrix(int[] parameters) {
         super(parameters);
     }
 
+    /**
+     * Refresh LineInPixel fields based on the passed parameters.
+     * 
+     * This refresh override re-calculates the midpoint line algorithm,
+     * usually being called by @Drawing.setParameters().
+     */
     @Override
-    public void draw(GL gl) {
-        int[] start = {parameters[0], parameters[1]};
-        int[] end = {parameters[2], parameters[3]};
+    public void refresh() {
+        start = new int[]{parameters[0], parameters[1]};
+        end = new int[]{parameters[2], parameters[3]};
 
-        int dx = end[0] - start[0];
-        int dy = end[1] - start[1];
+        dx = end[0] - start[0];
+        dy = end[1] - start[1];
 
-        int octant = findOctect(dx, dy);
+        findOctect(dx, dy);
 
-        start = translate(start, octant);
-        end = translate(end, octant);
+        // Find the line representation on the first octant.
+        start = LineInPixelMatrix.this.translateToFirstOctant(start);
+        end = LineInPixelMatrix.this.translateToFirstOctant(end);
 
         // Start[x] must be smaller than end[x]. If it isn't, swap points.
         if (start[0] > end[0]) {
@@ -29,21 +41,24 @@ public class LineInPixelMatrix extends Drawing {
         }
 
         // Calculate E and NE constants for the Midpoint Line algorithm.
-        int x = (int) start[0];
-        int y = (int) start[1];
-        dx = (int) (end[0] - start[0]);
-        dy = (int) (end[1] - start[1]);
+        dx = end[0] - start[0];
+        dy = end[1] - start[1];
 
-        int incE = 2 * (dy - dx);
-        int incNE = 2 * dy;
-
-        int d = 2 * dy - dx;
-
-        // Set line color. Default is white.
+        incE = 2 * (dy - dx);
+        incNE = 2 * dy;
+    }
+    
+    @Override
+    public void draw(GL gl) {
+        // Set line color.
         gl.glColor3ub((byte) parameters[4], (byte) parameters[5], (byte) parameters[6]);
         gl.glBegin(GL.GL_POINTS);
 
-        int[] point = restore(x, y, octant);
+        int x = start[0];
+        int y = start[1];
+        int d = 2 * dy - dx;
+
+        int[] point = restoreToOriginalOctant(x, y);
         gl.glVertex2i(point[0], point[1]);
 
         while (x < end[0]) {
@@ -55,7 +70,7 @@ public class LineInPixelMatrix extends Drawing {
             }
             x++;
 
-            point = restore(x, y, octant);
+            point = restoreToOriginalOctant(x, y);
             gl.glVertex2i(point[0], point[1]);
         }
 
@@ -64,20 +79,19 @@ public class LineInPixelMatrix extends Drawing {
 
     /**
      * Find in which octant the line is, based on its slope.
-     * 
+     *
      * @param dx The difference between ending-point-x and starting-point-x.
      * @param dy The difference between ending-point-y and starting-point-y.
-     * @return x, x e [0,8], where x represents the octant (anticlockwise order).
      */
-    protected int findOctect(int dx, int dy) {
+    protected final void findOctect(int dx, int dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 
-        return (int) (4 * d / Math.PI);
+        octant = (int) (4 * d / Math.PI);
     }
 
-    protected int[] translate(int[] point, int octant) {
-        return translate(point[0], point[1], octant);
+    protected final int[] translateToFirstOctant(int[] point) {
+        return translateToFirstOctant(point[0], point[1]);
     }
 
     /**
@@ -85,10 +99,9 @@ public class LineInPixelMatrix extends Drawing {
      *
      * @param x The 1st coordinate of the point.
      * @param y The 2nd coordinate of the point.
-     * @param octant The octant from which that point originally belongs.
      * @return a pair (x1, y1) that represents the translation of (x,y) to the 1st octant.
      */
-    protected int[] translate(int x, int y, int octant) {
+    protected final int[] translateToFirstOctant(int x, int y) {
         if (octant == 0) {
             return new int[]{x, y};
         }
@@ -117,19 +130,18 @@ public class LineInPixelMatrix extends Drawing {
         throw new RuntimeException("Unknown octant " + octant);
     }
 
-    protected int[] restore(int[] point, int octant) {
-        return restore(point[0], point[1], octant);
+    protected int[] restoreToOriginalOctant(int[] point) {
+        return restoreToOriginalOctant(point[0], point[1]);
     }
 
     /**
      * Restore a point from the 1st octant to its original octant.
-     * 
+     *
      * @param x The 1st coordinate of the point in the 1st octant.
      * @param y The 2nd coordinate of the point in the 1st octant.
-     * @param octant The octant to which the point should be restored.
      * @return a pair (x1, y1) that represents the restored point (x, y) to its original octant.
      */
-    protected int[] restore(int x, int y, int octant) {
+    protected int[] restoreToOriginalOctant(int x, int y) {
         if (octant == 0) {
             return new int[]{x, y};
         }
