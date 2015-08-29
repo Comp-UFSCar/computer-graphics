@@ -30,8 +30,8 @@ public class LineInPixelMatrix extends Drawing {
         findOctect(dx, dy);
 
         // Find the line representation on the first octant.
-        start = LineInPixelMatrix.this.translateToFirstOctant(start);
-        end = LineInPixelMatrix.this.translateToFirstOctant(end);
+        start = translateToFirstOctant(start);
+        end = translateToFirstOctant(end);
 
         // Start[x] must be smaller than end[x]. If it isn't, swap points.
         if (start[0] > end[0]) {
@@ -83,14 +83,14 @@ public class LineInPixelMatrix extends Drawing {
      * @param dx The difference between ending-point-x and starting-point-x.
      * @param dy The difference between ending-point-y and starting-point-y.
      */
-    protected final void findOctect(int dx, int dy) {
+    protected void findOctect(int dx, int dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 
         octant = (int) (4 * d / Math.PI);
     }
 
-    protected final int[] translateToFirstOctant(int[] point) {
+    protected int[] translateToFirstOctant(int[] point) {
         return translateToFirstOctant(point[0], point[1]);
     }
 
