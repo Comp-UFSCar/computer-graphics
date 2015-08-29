@@ -101,7 +101,7 @@ public class LineInPixelMatrix extends Drawing {
      * @param y The 2nd coordinate of the point.
      * @return a pair (x1, y1) that represents the translation of (x,y) to the 1st octant.
      */
-    protected final int[] translateToFirstOctant(int x, int y) {
+    protected int[] translateToFirstOctant(int x, int y) {
         if (octant == 0) {
             return new int[]{x, y};
         }
