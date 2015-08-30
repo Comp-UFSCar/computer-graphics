@@ -3,6 +3,9 @@ package org.CG.infrastructure.drawings;
 import javax.media.opengl.GL;
 
 /**
+ * Circle drawing with Bresenham's Algorithm.
+ * 
+ * Reference paper: http://web.engr.oregonstate.edu/~sllu/bcircle.pdf
  *
  * @author ldavid
  */
@@ -24,13 +27,32 @@ public class Circle extends Drawing {
         gl.glColor3ub(color[0], color[1], color[2]);
         gl.glBegin(GL.GL_LINE_LOOP);
 
-        for (int i = 0; i < 360; i++) {
-            float degInRad = 0.0174532925f * i;
-            
-            gl.glVertex2f(start[0] + (float) Math.cos(degInRad) * radius, start[1] + (float) Math.sin(degInRad) * radius);
+        int x = radius;
+        int y = 0;
+        int xChange = 1 - 2 * radius;
+        int yChange = 1;
+        int radiusError = 0;
+
+        while (x >= y) {
+            gl.glVertex2i(start[0] + x, start[1] + y);
+            gl.glVertex2i(start[0] - x, start[1] + y);
+            gl.glVertex2i(start[0] - x, start[1] - y);
+            gl.glVertex2i(start[0] + x, start[1] - y);
+            gl.glVertex2i(start[0] + y, start[1] + x);
+            gl.glVertex2i(start[0] - y, start[1] + x);
+            gl.glVertex2i(start[0] - y, start[1] - x);
+            gl.glVertex2i(start[0] + y, start[1] - x);
+
+            y++;
+            radiusError += yChange;
+            yChange += 2;
+            if (2 * radiusError + xChange > 0) {
+                x--;
+                radiusError += xChange;
+                xChange += 2;
+            }
         }
 
         gl.glEnd();
     }
-
 }
