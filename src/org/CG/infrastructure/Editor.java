@@ -1,10 +1,15 @@
 package org.CG.infrastructure;
 
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.infrastructure.drawings.Drawing;
-import org.CG.infrastructure.drawings.LineInPixelMatrix;
+import org.CG.infrastructure.drawings.Line;
+import org.CG.infrastructure.drawings.Pencil;
 
 /**
  *
@@ -12,10 +17,18 @@ import org.CG.infrastructure.drawings.LineInPixelMatrix;
  */
 public class Editor {
 
+    LinkedList<Class<? extends Drawing>> drawMode;
+
     LinkedList<Drawing> drawings;
     LinkedList<Drawing> redos;
 
+    Class<? extends Drawing> currentDrawMode = Line.class;
+
     public Editor() {
+        drawMode = new LinkedList<>();
+        drawMode.add(Line.class);
+        drawMode.add(Pencil.class);
+
         drawings = new LinkedList<>();
         redos = new LinkedList<>();
     }
@@ -33,33 +46,39 @@ public class Editor {
     }
 
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        int[] start = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+        try {
+            int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+            byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
 
-        // The mouse was pressed, instantiates a LineInPixelMatrix with the starting point and random colors.
-        // Finally, adds it to the list of drawings that will be given to GL.
-        drawings.add(new LineInPixelMatrix(
-            new int[]{start[0], start[1], start[0], start[1],
-                (int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256)}));
+            Constructor<? extends Drawing> c = currentDrawMode.getDeclaredConstructor(new Class[] {int[].class, byte[].class});
+            Drawing d = (Drawing) c.newInstance(point, color);
+            drawings.add(d);
+
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException |
+            NoSuchMethodException | SecurityException ex) {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        updateLineEndPoint(e, canvas);
+        drawings
+            .getLast()
+            .updateLastCoordinateInputted(new int[]{e.getX(), canvas.getHeight() - e.getY()});
     }
 
     public void onMouseReleasedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        updateLineEndPoint(e, canvas);
-    }
 
-    protected void updateLineEndPoint(MouseEvent e, GLCanvas canvas) {
-        int[] end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
-
-        Drawing d = drawings.getLast();
-        d.getParameters()[2] = end[0];
-        d.getParameters()[3] = end[1];
-        d.refresh();
     }
 
     public LinkedList<Drawing> getDrawings() {
         return drawings;
+    }
+
+    public LinkedList<Class<? extends Drawing>> getDrawModes() {
+        return drawMode;
+    }
+
+    public void setDrawMode(Class<? extends Drawing> currentDrawMode) {
+        this.currentDrawMode = currentDrawMode;
     }
 }

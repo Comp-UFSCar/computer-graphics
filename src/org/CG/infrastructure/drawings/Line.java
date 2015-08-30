@@ -2,28 +2,27 @@ package org.CG.infrastructure.drawings;
 
 import javax.media.opengl.GL;
 
-public class LineInPixelMatrix extends Drawing {
+public class Line extends Drawing {
 
-    int[] start, end;
+    int[] end;
     private int incE, incNE;
     private int dx, dy;
     private int octant;
 
-    public LineInPixelMatrix(int[] parameters) {
-        super(parameters);
+    public Line(int[] start, byte[] color) {
+        super(start, color);
+        updateLastCoordinateInputted(start);
     }
 
     /**
-     * Refresh LineInPixel fields based on the passed parameters.
-     * 
-     * This refresh override re-calculates the midpoint line algorithm,
-     * usually being called by @Drawing.setParameters().
+     * Refresh LineInPixel fields based on the last coordinated inputted by the user.
+     *
+     * This refresh override re-calculates the midpoint line algorithm.
+     *
+     * @param last the last coordinate.
      */
     @Override
-    public void refresh() {
-        start = new int[]{parameters[0], parameters[1]};
-        end = new int[]{parameters[2], parameters[3]};
-
+    public void updateLastCoordinateInputted(int[] last) {
         dx = end[0] - start[0];
         dy = end[1] - start[1];
 
@@ -47,11 +46,11 @@ public class LineInPixelMatrix extends Drawing {
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
     }
-    
+
     @Override
     public void draw(GL gl) {
         // Set line color.
-        gl.glColor3ub((byte) parameters[4], (byte) parameters[5], (byte) parameters[6]);
+        gl.glColor3ub(color[0], color[1], color[2]);
         gl.glBegin(GL.GL_POINTS);
 
         int x = start[0];

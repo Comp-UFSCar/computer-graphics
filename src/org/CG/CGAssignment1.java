@@ -21,6 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.infrastructure.Editor;
+import org.CG.infrastructure.drawings.Drawing;
 
 /**
  * CGAssignment1.java <BR>
@@ -93,24 +94,48 @@ public class CGAssignment1 implements GLEventListener {
             }
         });
 
-        JButton btnUndo = new JButton("<");
-        btnUndo.addActionListener((ActionEvent e) -> {
+        // Interface elements definitions.
+        JButton b;
+        JMenuBar mb = new JMenuBar();
+        JMenu m = new JMenu("Draw mode");
+
+        for (Class<? extends Drawing> d : editor.getDrawModes()) {
+            String name = d.getSimpleName();
+            b = createSimpleButton(name);
+            
+            b.addActionListener((ActionEvent e) -> {
+                editor.setDrawMode(d);
+            });
+            m.add(b);
+        }
+
+        mb.add(m);
+
+        b = createSimpleButton("Undo");
+        b.addActionListener((ActionEvent e) -> {
             editor.undo();
         });
-        JButton btnRedo = new JButton(">");
-        btnRedo.addActionListener((ActionEvent e) -> {
+        mb.add("Undo", b);
+
+        b = createSimpleButton("Redo");
+        b.addActionListener((ActionEvent e) -> {
             editor.redo();
         });
-
-        JMenuBar mb = new JMenuBar();
-        mb.add("Undo", btnUndo);
-        mb.add("Redo", btnRedo);
+        mb.add("Redo", b);
 
         // Center frame
         frame.setJMenuBar(mb);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
+    }
+
+    private static JButton createSimpleButton(String text) {
+        JButton b = new JButton(text);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
+        b.setContentAreaFilled(false);
+        return b;
     }
 
     @Override

@@ -7,22 +7,15 @@ import javax.media.opengl.GL;
  * @author ldavid
  */
 public abstract class Drawing {
-    int[] parameters;
+    int[] start;
+    byte[] color;
 
-    public Drawing(int[] parameters) {
-        setParameters(parameters);
+    public Drawing(int[] start, byte[] color) {
+        this.color = color;
+        this.start = start;
     }
     
-    public final void setParameters(int[] parameters) {
-        this.parameters = parameters;
-        refresh();
-    }
-    
-    public int[] getParameters() {
-        return parameters;
-    }
-    
-    abstract public void refresh();
+    abstract public void updateLastCoordinateInputted(int[] point);
     
     abstract public void draw(GL gl);
 }
