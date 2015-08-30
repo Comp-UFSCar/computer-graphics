@@ -32,7 +32,7 @@ public class Editor {
     }
 
     public void undo() {
-        if (drawings.size() > 0) {
+        if (drawings.size() > 0 && redos.size() < 100) {
             redos.add(drawings.removeLast());
         }
     }
@@ -44,11 +44,13 @@ public class Editor {
     }
 
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
+        redos.clear();
+        
         int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
         byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
 
         Drawing d = null;
-        
+
         if (currentDrawingMode.equals(Line.class)) {
             d = new Line(point, color);
         } else if (currentDrawingMode.equals(Pencil.class)) {
