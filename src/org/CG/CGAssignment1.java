@@ -1,19 +1,26 @@
 package org.CG;
 
 import com.sun.opengl.util.Animator;
-import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import org.CG.infrastructure.drawings.Drawing;
-import org.CG.infrastructure.drawings.LineInPixelMatrix;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import org.CG.infrastructure.Editor;
 
 /**
  * CGAssignment1.java <BR>
@@ -24,11 +31,19 @@ import org.CG.infrastructure.drawings.LineInPixelMatrix;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    static LinkedList<Drawing> drawings = new LinkedList<>();
     static int[] start, end;
+    private static Editor editor;
 
     public static void main(String[] args) {
-        final Frame frame = new Frame("Line drawing over pixel matrix");
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
+        }
+
+        editor = new Editor();
+
+        final JFrame frame = new JFrame("Line drawing over pixel matrix");
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(new CGAssignment1());
@@ -50,39 +65,49 @@ public class CGAssignment1 implements GLEventListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                start = new int[]{e.getX(), canvas.getHeight() - e.getY()};
-
-                // The mouse was pressed, instantiates a LineInPixelMatrix with the starting point and random colors.
-                // Finally, adds it to the list of drawings that will be given to GL.
-                drawings.add(new LineInPixelMatrix(
-                    new int[]{start[0], start[1], start[0], start[1],
-                    (int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256)}));
+                editor.onMousePressedOnCanvas(e, canvas);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+                editor.onMouseReleasedOnCanvas(e, canvas);
+            }
+        });
 
-                Drawing d = drawings.getLast();
-                d.getParameters()[2] = end[0];
-                d.getParameters()[3] = end[1];
-                d.refresh();
+        canvas.addMouseWheelListener(new MouseAdapter() {
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.getWheelRotation() > 0) {
+                    editor.undo();
+                } else {
+                    editor.redo();
+                }
             }
         });
 
         canvas.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                end = new int[]{e.getX(), canvas.getHeight() - e.getY()};
-
-                Drawing d = drawings.getLast();
-                d.getParameters()[2] = end[0];
-                d.getParameters()[3] = end[1];
-                d.refresh();
+                editor.onMouseDraggedOnCanvas(e, canvas);
             }
         });
 
+        JButton btnUndo = new JButton("<");
+        btnUndo.addActionListener((ActionEvent e) -> {
+            editor.undo();
+        });
+        JButton btnRedo = new JButton(">");
+        btnRedo.addActionListener((ActionEvent e) -> {
+            editor.redo();
+        });
+
+        JMenuBar mb = new JMenuBar();
+        mb.add("Undo", btnUndo);
+        mb.add("Redo", btnRedo);
+
         // Center frame
+        frame.setJMenuBar(mb);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
@@ -129,7 +154,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        drawings.stream().forEach((d) -> {
+        editor.getDrawings().forEach((d) -> {
             d.draw(gl);
         });
 
