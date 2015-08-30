@@ -99,12 +99,12 @@ public class CGAssignment1 implements GLEventListener {
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Draw mode");
 
-        for (Class<? extends Drawing> d : editor.getDrawModes()) {
+        for (Class<? extends Drawing> d : editor.getAvailableDrawings()) {
             String name = d.getSimpleName();
             b = createSimpleButton(name);
             
             b.addActionListener((ActionEvent e) -> {
-                editor.setDrawMode(d);
+                editor.setCurrentDrawingMode(d);
             });
             m.add(b);
         }
