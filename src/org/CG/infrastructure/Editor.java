@@ -46,18 +46,18 @@ public class Editor {
     }
 
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        try {
-            int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
-            byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
+        int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+        byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
 
-            Constructor<? extends Drawing> c = currentDrawMode.getDeclaredConstructor(new Class[] {int[].class, byte[].class});
-            Drawing d = (Drawing) c.newInstance(point, color);
-            drawings.add(d);
-
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException |
-            NoSuchMethodException | SecurityException ex) {
-            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+        Drawing d = null;
+        
+        if (currentDrawMode.equals(Line.class)) {
+            d = new Line(point, color);
+        } else if (currentDrawMode.equals(Pencil.class)) {
+            d = new Pencil(point, color);
         }
+
+        drawings.add(d);
     }
 
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {

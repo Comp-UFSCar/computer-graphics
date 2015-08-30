@@ -4,13 +4,14 @@ import javax.media.opengl.GL;
 
 public class Line extends Drawing {
 
-    int[] end;
+    int[] end, translated_start;
     private int incE, incNE;
     private int dx, dy;
     private int octant;
 
     public Line(int[] start, byte[] color) {
         super(start, color);
+
         updateLastCoordinateInputted(start);
     }
 
@@ -23,25 +24,27 @@ public class Line extends Drawing {
      */
     @Override
     public void updateLastCoordinateInputted(int[] last) {
+        end = new int[]{last[0], last[1]};
+
         dx = end[0] - start[0];
         dy = end[1] - start[1];
 
         findOctect(dx, dy);
 
         // Find the line representation on the first octant.
-        start = translateToFirstOctant(start);
+        translated_start = translateToFirstOctant(start);
         end = translateToFirstOctant(end);
 
         // Start[x] must be smaller than end[x]. If it isn't, swap points.
-        if (start[0] > end[0]) {
-            int[] t = start;
-            start = end;
+        if (translated_start[0] > end[0]) {
+            int[] t = translated_start;
+            translated_start = end;
             end = t;
         }
 
         // Calculate E and NE constants for the Midpoint Line algorithm.
-        dx = end[0] - start[0];
-        dy = end[1] - start[1];
+        dx = end[0] - translated_start[0];
+        dy = end[1] - translated_start[1];
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
@@ -53,8 +56,8 @@ public class Line extends Drawing {
         gl.glColor3ub(color[0], color[1], color[2]);
         gl.glBegin(GL.GL_POINTS);
 
-        int x = start[0];
-        int y = start[1];
+        int x = translated_start[0];
+        int y = translated_start[1];
         int d = 2 * dy - dx;
 
         int[] point = restoreToOriginalOctant(x, y);
