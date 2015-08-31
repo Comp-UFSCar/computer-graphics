@@ -21,7 +21,7 @@ import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.infrastructure.Editor;
-import org.CG.infrastructure.drawings.Drawing;
+import org.CG.infrastructure.Drawing;
 
 /**
  * CGAssignment1.java <BR>
@@ -104,7 +104,7 @@ public class CGAssignment1 implements GLEventListener {
             b = createSimpleButton(name);
             
             b.addActionListener((ActionEvent e) -> {
-                editor.setCurrentDrawingMode(d);
+                editor.setCurrentDrawing(d);
             });
             m.add(b);
         }

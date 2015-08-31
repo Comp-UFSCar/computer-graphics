@@ -1,5 +1,6 @@
-package org.CG.infrastructure.drawings;
+package org.CG.drawings;
 
+import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
 
 /**
@@ -12,10 +13,6 @@ import javax.media.opengl.GL;
 public class Circle extends Drawing {
 
     int radius;
-
-    public Circle(int[] start, byte[] color) {
-        super(start, color);
-    }
 
     @Override
     public void updateLastCoordinateInputted(int[] point) {

@@ -1,5 +1,6 @@
-package org.CG.infrastructure.drawings;
+package org.CG.drawings;
 
+import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
 
 public class Line extends Drawing {
@@ -9,10 +10,11 @@ public class Line extends Drawing {
     private int dx, dy;
     private int octant;
 
-    public Line(int[] start, byte[] color) {
-        super(start, color);
-
+    @Override
+    public Drawing setStart(int[] start) {
+        super.setStart(start);
         updateLastCoordinateInputted(start);
+        return this;
     }
 
     /**

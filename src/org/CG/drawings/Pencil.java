@@ -1,5 +1,6 @@
-package org.CG.infrastructure.drawings;
+package org.CG.drawings;
 
+import org.CG.infrastructure.Drawing;
 import java.util.LinkedList;
 import javax.media.opengl.GL;
 
@@ -11,8 +12,8 @@ public class Pencil extends Drawing {
 
     LinkedList<int[]> points;
 
-    public Pencil(int[] start, byte[] color) {
-        super(start, color);
+    public Pencil() {
+        super();
 
         points = new LinkedList<>();
     }
