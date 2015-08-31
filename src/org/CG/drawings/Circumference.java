@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
  *
  * @author ldavid
  */
-public class Circunference extends Drawing {
+public class Circumference extends Drawing {
 
     int radius;
 
