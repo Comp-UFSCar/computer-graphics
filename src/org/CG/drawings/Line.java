@@ -17,6 +17,17 @@ public class Line extends Drawing {
         return this;
     }
 
+    @Override
+    public Drawing translate(int[] point) {
+        int[] t = {end[0] -start[0], end[1] - start[1]};
+        
+        start = point;
+        end = new int[] {point[0] +t[0], point[1]+t[0]};
+
+        updateLastCoordinateInputted(end);
+        return this;
+    }
+
     /**
      * Refresh LineInPixel fields based on the last coordinated inputted by the user.
      *

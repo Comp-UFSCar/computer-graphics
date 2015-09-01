@@ -5,7 +5,7 @@ import javax.media.opengl.GL;
 
 /**
  * Circle drawing with Bresenham's Algorithm.
- * 
+ *
  * Reference paper: http://web.engr.oregonstate.edu/~sllu/bcircle.pdf
  *
  * @author ldavid
@@ -14,6 +14,14 @@ public class Circle extends Drawing {
 
     int radius;
 
+    @Override
+    public Drawing translate(int[] point) {
+        super.translate(point);
+        updateLastCoordinateInputted(point);
+        
+        return this;
+    }
+    
     @Override
     public void updateLastCoordinateInputted(int[] point) {
         radius = (int) Math.sqrt(Math.pow(start[0] - point[0], 2) + Math.pow(start[1] - point[1], 2));

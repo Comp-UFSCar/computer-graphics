@@ -1,31 +1,34 @@
 package org.CG.drawings;
 
-import org.CG.infrastructure.Drawing;
 import java.util.LinkedList;
-import java.util.List;
 import javax.media.opengl.GL;
+import org.CG.infrastructure.Drawing;
 
 /**
  *
  * @author ldavid
  */
-public class Pencil extends Drawing {
+public class Polygon extends Drawing {
 
-    List<int[]> points;
+    LinkedList<int[]> points;
 
-    public Pencil() {
+    public Polygon() {
         super();
 
+        finished = false;
         points = new LinkedList<>();
     }
-
+    
+    @Override
+    public Drawing setStart(int[] start) {
+        points.add(start);
+        return super.setStart(start);
+    }
+    
     @Override
     public Drawing translate(int[] point) {
         point[0] -= start[0];
         point[1] -= start[1];
-        
-        start[0] += point[0];
-        start[1] += point[1];
 
         points.stream().forEach((p) -> {
             p[0] += point[0];
@@ -34,23 +37,20 @@ public class Pencil extends Drawing {
 
         return this;
     }
-
+    
     @Override
     public void updateLastCoordinateInputted(int[] point) {
+        points.removeLast();
         points.add(point);
     }
 
     @Override
     public void draw(GL gl) {
         gl.glColor3ub(color[0], color[1], color[2]);
-        gl.glBegin(GL.GL_POINTS);
+        gl.glBegin(GL.GL_POLYGON);
 
         points.stream().forEach((point) -> {
-            for (int i = point[0] - 1; i <= point[0] + 1; i++) {
-                for (int j = point[1] - 1; j <= point[1] + 1; j++) {
-                    gl.glVertex2i(i, j);
-                }
-            }
+            gl.glVertex2i(point[0], point[1]);
         });
 
         gl.glEnd();

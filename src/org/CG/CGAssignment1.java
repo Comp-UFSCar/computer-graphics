@@ -20,7 +20,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.CG.infrastructure.Editor;
+import org.CG.infrastructure.editor.Editor;
 import org.CG.infrastructure.Drawing;
 
 /**
@@ -33,6 +33,7 @@ import org.CG.infrastructure.Drawing;
 public class CGAssignment1 implements GLEventListener {
 
     static int[] start, end;
+    static boolean movingElement;
     private static Editor editor;
 
     public static void main(String[] args) {
@@ -66,7 +67,11 @@ public class CGAssignment1 implements GLEventListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                editor.onMousePressedOnCanvas(e, canvas);
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    editor.onMousePressedOnCanvas(e, canvas);
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    editor.concludeLastDrawing();
+                }
             }
 
             @Override
@@ -102,7 +107,7 @@ public class CGAssignment1 implements GLEventListener {
         for (Class<? extends Drawing> d : editor.getAvailableDrawings()) {
             String name = d.getSimpleName();
             b = createSimpleButton(name);
-            
+
             b.addActionListener((ActionEvent e) -> {
                 editor.setCurrentDrawing(d);
             });

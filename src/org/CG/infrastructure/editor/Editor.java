@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.editor;
 
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
+import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.DrawingsLoader;
 
 /**
  *
@@ -20,12 +22,15 @@ public class Editor {
     LinkedList<Drawing> redos;
 
     Class<? extends Drawing> currentDrawing = Line.class;
+    private Mode mode;
 
     public Editor() {
         availableDrawings = DrawingsLoader.getDrawingsClasses();
 
         drawings = new LinkedList<>();
         redos = new LinkedList<>();
+
+        mode = Mode.DRAWING;
     }
 
     public void undo() {
@@ -40,10 +45,29 @@ public class Editor {
         }
     }
 
+    public void concludeLastDrawing() {
+        if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
+            drawings.getLast().setFinished(true);
+        }
+    }
+
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
         redos.clear();
 
         int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+
+        if (e.isControlDown()) {
+            mode = Mode.MOVING;
+            return;
+        }
+
+        mode = Mode.DRAWING;
+
+        if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
+            drawings.getLast().updateLastCoordinateInputted(point);
+            return;
+        }
+
         byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
 
         try {
@@ -57,9 +81,21 @@ public class Editor {
     }
 
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        drawings
-            .getLast()
-            .updateLastCoordinateInputted(new int[]{e.getX(), canvas.getHeight() - e.getY()});
+        int[] point = {e.getX(), canvas.getHeight() - e.getY()};
+        
+        if (!e.isControlDown() && mode == Mode.MOVING) {
+            mode = Mode.IDLE;
+
+        } else if (mode == Mode.MOVING) {
+            drawings
+                .getLast()
+                .setStart(point);
+
+        } else if (mode == Mode.DRAWING) {
+            drawings
+                .getLast()
+                .updateLastCoordinateInputted(point);
+        }
     }
 
     public void onMouseReleasedOnCanvas(MouseEvent e, GLCanvas canvas) {
