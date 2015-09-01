@@ -11,7 +11,7 @@ import org.CG.infrastructure.Drawing;
 public class Polygon extends Drawing {
 
     int[] lastPoint;
-    LinkedList<Line> edges;
+    LinkedList<Drawing> edges;
 
     public Polygon() {
         super();
@@ -45,14 +45,12 @@ public class Polygon extends Drawing {
     public Drawing setNextCoordinate(int[] point) {
         super.setNextCoordinate(point);
 
-        Line l = new Line();
-        
-        l.setColor(color).setStart(lastPoint).updateLastCoordinate(point);
-        
+        edges.add(new Line()
+            .setColor(color)
+            .setStart(lastPoint)
+            .updateLastCoordinate(point));
+
         lastPoint = new int[]{point[0], point[1]};
-
-        edges.add(l);
-
         return this;
     }
 
