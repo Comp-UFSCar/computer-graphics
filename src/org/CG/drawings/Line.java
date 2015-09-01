@@ -13,8 +13,7 @@ public class Line extends Drawing {
     @Override
     public Drawing setStart(int[] start) {
         super.setStart(start);
-        updateLastCoordinateInputted(start);
-        return this;
+        return updateLastCoordinate(start);
     }
 
     @Override
@@ -24,8 +23,7 @@ public class Line extends Drawing {
         start = point;
         end = new int[] {point[0] +t[0], point[1]+t[0]};
 
-        updateLastCoordinateInputted(end);
-        return this;
+        return updateLastCoordinate(end);
     }
 
     /**
@@ -34,9 +32,10 @@ public class Line extends Drawing {
      * This refresh override re-calculates the midpoint line algorithm.
      *
      * @param last the last coordinate.
+     * @return this
      */
     @Override
-    public void updateLastCoordinateInputted(int[] last) {
+    public Drawing updateLastCoordinate(int[] last) {
         end = new int[]{last[0], last[1]};
 
         dx = end[0] - start[0];
@@ -61,6 +60,8 @@ public class Line extends Drawing {
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
+        
+        return this;
     }
 
     @Override

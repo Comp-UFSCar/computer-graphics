@@ -16,8 +16,16 @@ public abstract class Drawing {
         // All drawings, except by polygons, are initiated with finished as true, as they don't allow second clicks.
         finished = true;
     }
-    
-    abstract public void updateLastCoordinateInputted(int[] point);
+
+    abstract public Drawing updateLastCoordinate(int[] point);
+
+    public Drawing setNextCoordinate(int[] point) {
+        if (finished) {
+            throw new RuntimeException("Cannot set next coordinate if drawing is already finished.");
+        }
+        
+        return this;
+    }
 
     abstract public void draw(GL gl);
     
@@ -34,12 +42,13 @@ public abstract class Drawing {
         this.color = color;
         return this;
     }
-    
+
+    public Drawing setFinished(boolean f) {
+        finished = f;
+        return this;
+    }
+
     public boolean getFinished() {
         return finished;
-    }
-    
-    public void setFinished(boolean f) {
-        finished = f;
     }
 }

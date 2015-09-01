@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.infrastructure.editor.Editor;
@@ -67,16 +68,27 @@ public class CGAssignment1 implements GLEventListener {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     editor.onMousePressedOnCanvas(e, canvas);
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    editor.concludeLastDrawing();
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    editor.finishLastDrawing();
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                editor.onMouseReleasedOnCanvas(e, canvas);
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    editor.onMouseReleasedOnCanvas(e, canvas);
+                }
+            }
+        });
+
+        canvas.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    editor.onMouseDraggedOnCanvas(e, canvas);
+                }
             }
         });
 
@@ -89,13 +101,6 @@ public class CGAssignment1 implements GLEventListener {
                 } else {
                     editor.redo();
                 }
-            }
-        });
-
-        canvas.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                editor.onMouseDraggedOnCanvas(e, canvas);
             }
         });
 

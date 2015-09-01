@@ -36,8 +36,9 @@ public class Pencil extends Drawing {
     }
 
     @Override
-    public void updateLastCoordinateInputted(int[] point) {
+    public Drawing updateLastCoordinate(int[] point) {
         points.add(point);
+        return this;
     }
 
     @Override

@@ -22,8 +22,9 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public void updateLastCoordinateInputted(int[] point) {
+    public Drawing updateLastCoordinate(int[] point) {
         end = point;
+        return this;
     }
 
     @Override

@@ -17,14 +17,15 @@ public class Circle extends Drawing {
     @Override
     public Drawing translate(int[] point) {
         super.translate(point);
-        updateLastCoordinateInputted(point);
+        updateLastCoordinate(point);
         
         return this;
     }
     
     @Override
-    public void updateLastCoordinateInputted(int[] point) {
+    public Drawing updateLastCoordinate(int[] point) {
         radius = (int) Math.sqrt(Math.pow(start[0] - point[0], 2) + Math.pow(start[1] - point[1], 2));
+        return this;
     }
 
     @Override

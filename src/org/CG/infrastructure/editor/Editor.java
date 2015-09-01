@@ -45,9 +45,10 @@ public class Editor {
         }
     }
 
-    public void concludeLastDrawing() {
+    public void finishLastDrawing() {
         if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
-            drawings.getLast().setFinished(true);
+            Drawing l = drawings.getLast();
+            l.setFinished(true);
         }
     }
 
@@ -64,7 +65,7 @@ public class Editor {
         mode = Mode.DRAWING;
 
         if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
-            drawings.getLast().updateLastCoordinateInputted(point);
+            drawings.getLast().setNextCoordinate(point);
             return;
         }
 
@@ -72,8 +73,8 @@ public class Editor {
 
         try {
             drawings.add(currentDrawing.newInstance()
-                .setStart(point)
-                .setColor(color));
+                .setColor(color)
+                .setStart(point));
 
         } catch (InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,7 +83,7 @@ public class Editor {
 
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
         int[] point = {e.getX(), canvas.getHeight() - e.getY()};
-        
+
         if (!e.isControlDown() && mode == Mode.MOVING) {
             mode = Mode.IDLE;
 
@@ -94,12 +95,11 @@ public class Editor {
         } else if (mode == Mode.DRAWING) {
             drawings
                 .getLast()
-                .updateLastCoordinateInputted(point);
+                .updateLastCoordinate(point);
         }
     }
 
     public void onMouseReleasedOnCanvas(MouseEvent e, GLCanvas canvas) {
-
     }
 
     public LinkedList<Drawing> getDrawings() {

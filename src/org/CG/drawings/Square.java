@@ -12,11 +12,13 @@ public class Square extends Drawing {
     int width = 0, height = 0;
 
     @Override
-    public void updateLastCoordinateInputted(int[] point) {
+    public Drawing updateLastCoordinate(int[] point) {
         int s0 = point[0] - start[0], s1 = point[1] - start[1];
 
         width = Math.abs(s0) >= Math.abs(s1) ? s0 : s1;
         height = s1 > 0 ? Math.abs(width) : -Math.abs(width);
+        
+        return this;
     }
 
     @Override
