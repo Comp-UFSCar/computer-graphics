@@ -15,7 +15,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
-public class Circulo extends GLJPanel implements GLEventListener {
+public class Segmento extends GLJPanel implements GLEventListener {
 
     private ClickListener clicks = new ClickListener();
 
@@ -23,7 +23,7 @@ public class Circulo extends GLJPanel implements GLEventListener {
         Frame frame = new Frame("Primeiro Trebalho CG");
         GLCanvas canvas = new GLCanvas();
 
-        Circulo s = new Circulo();
+        Segmento s = new Segmento();
 
         canvas.addGLEventListener(s);
         canvas.addMouseListener(s.clicks);
@@ -99,40 +99,16 @@ public class Circulo extends GLJPanel implements GLEventListener {
         gl.glVertex2i(200, 200);
         gl.glEnd();
 
-        for (int i = 0; i < clicks.size() - 1; i += 2) {
+        for (int i = 0; i < clicks.size() - 1; i += 1) {
             int a[] = clicks.getClick(i);
             int b[] = clicks.getClick(i + 1);
-            int radius = (int) Math.sqrt((b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]));
-            drawCircle(gl, a[0], a[1], radius);
+            drawLine(gl, a[0], a[1], b[0], b[1]);
         }
-
-    }
-
-    void drawCircle(GL gl, int x0, int y0, int radius) {
-
-        IntBuffer buffer = BufferUtil.newIntBuffer(4);
-        gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-        int height = buffer.get(3);
-        y0 = height - y0;
-
-        int x = 0;
-        int y = radius;
-
-        int d = 1 - radius;
-
-
-        while (x <= y) {
-            
-            write_circle_pixel(gl, x, y, x0, y0);
-
-            x++;
-            if (d <= 0) {
-                d = d + 2 * x + 3;
-            } else {
-                d = d + 2 * x - 2 * y + 5;
-                y--;
-            }
-            
+        
+        if(clicks.isLastClickDifferent()){
+            int a[] = clicks.getClick(0);
+            int b[] = clicks.getClick(clicks.size()-1);
+            drawLine(gl, a[0], a[1], b[0], b[1]);
         }
 
     }
@@ -140,14 +116,14 @@ public class Circulo extends GLJPanel implements GLEventListener {
     void drawLine(GL gl, int x0, int y0, int x1, int y1) {
 
         /*
-         A primeira parte irá corrigir os sistemas de coordernadas
+         A primeira parte irï¿½ corrigir os sistemas de coordernadas
          entre o clique do mouse e a ViewPort.
-         É obtido o tamanho da ViewPort e os pontos
-         são refletidos em relação ao eixo das abcissas
+         ï¿½ obtido o tamanho da ViewPort e os pontos
+         sï¿½o refletidos em relaï¿½ï¿½o ao eixo das abcissas
          */
         // Cria um IntBuffer para 4 inteiros
         IntBuffer buffer = BufferUtil.newIntBuffer(4);
-        //Obtém as coordenadas da ViewPort (x0,y0,width,height)
+        //Obtï¿½m as coordenadas da ViewPort (x0,y0,width,height)
         gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
         //Altura recebe o quarto elemento
         int height = buffer.get(3);
@@ -156,22 +132,22 @@ public class Circulo extends GLJPanel implements GLEventListener {
         y1 = height - y1;
 
         int dx = 0, dy = 0, incE, incNE, d, x, y;
-        // Condição para saber se a inclinação da reta
-        // está entre 0 e 45 ou entre 46 e 90 graus.
+        // Condiï¿½ï¿½o para saber se a inclinaï¿½ï¿½o da reta
+        // estï¿½ entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
-        // Usado para saber se a reta é 
+        // Usado para saber se a reta ï¿½ 
         // crescente ou decrescente
         int dy_signal = 1;
 
         dx = x1 - x0;
         dy = y1 - y0;
 
-        // Se dy > dx, então a reta está acima de 45 graus até 90 graus
-        // Neste caso, vamos mudar as variáveis com uma reflexão a reta y = x
+        // Se dy > dx, entï¿½o a reta estï¿½ acima de 45 graus atï¿½ 90 graus
+        // Neste caso, vamos mudar as variï¿½veis com uma reflexï¿½o a reta y = x
         // para usar o algoritmo entre 0 e 45 graus.
-        // A reflexão é feita trocando x_i por y_i e vice versa, onde i = 0 e 1
+        // A reflexï¿½o ï¿½ feita trocando x_i por y_i e vice versa, onde i = 0 e 1
         if (Math.abs(dx) < Math.abs(dy)) {
-            //condição para desenhar diferente
+            //condiï¿½ï¿½o para desenhar diferente
             dx_menor_dy = true;
 
             // Troca dx e dy
@@ -190,8 +166,8 @@ public class Circulo extends GLJPanel implements GLEventListener {
             y1 = aux;
         }
 
-        // A reta sempre é desenhada da esquerda para a direita
-        // Se o valor de x0 e x1 não estão em ordem
+        // A reta sempre ï¿½ desenhada da esquerda para a direita
+        // Se o valor de x0 e x1 nï¿½o estï¿½o em ordem
         // Trocamos os pontos (x0,y0) e (x1,y1) de lugar para que
         // sejam desenhados da esquerda para a direita
         if (x1 < x0) {
@@ -207,15 +183,15 @@ public class Circulo extends GLJPanel implements GLEventListener {
             dy = -dy;
         }
 
-        // Se dy é negativo, a reta é decrescente.
+        // Se dy ï¿½ negativo, a reta ï¿½ decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao invés de incrementar, y é decrementado (por dy_signal)
+        // Mas ao invï¿½s de incrementar, y ï¿½ decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
         }
 
-        //Cálculo das variáveis do algoritmo
+        //Cï¿½lculo das variï¿½veis do algoritmo
         d = 2 * dy - dx;
         incE = 2 * dy;
         incNE = 2 * (dy - dx);
@@ -223,12 +199,12 @@ public class Circulo extends GLJPanel implements GLEventListener {
         x = x0;
         y = y0;
 
-        // O primeiro ponto é desenhado no começo do loop
-        // O loop para quando desenha o último ponto (x1,y1)
+        // O primeiro ponto ï¿½ desenhado no comeï¿½o do loop
+        // O loop para quando desenha o ï¿½ltimo ponto (x1,y1)
         while (x <= x1) {
 
-            // Se o ângulo está entre 0 e 45 graus, desenha normalmente
-            // Se está entre 45 e 90, desenhar o ponto na reflexão
+            // Se o ï¿½ngulo estï¿½ entre 0 e 45 graus, desenha normalmente
+            // Se estï¿½ entre 45 e 90, desenhar o ponto na reflexï¿½o
             if (!dx_menor_dy) {
                 write_pixel(gl, x, y);
             } else {
@@ -251,48 +227,6 @@ public class Circulo extends GLJPanel implements GLEventListener {
         gl.glBegin(GL.GL_POINTS);
         gl.glVertex2d(x, y);
         gl.glEnd();
-    }
-    
-        private void write_circle_pixel(GL gl, int x, int y, int x0, int y0) {
-        gl.glBegin(GL.GL_POINTS);
-            gl.glVertex2d(+x + x0, +y + y0);
-            gl.glVertex2d(-x + x0, +y + y0);
-            gl.glVertex2d(+x + x0, -y + y0);
-            gl.glVertex2d(-x + x0, -y + y0);
-            gl.glVertex2d(+y + x0, +x + y0);
-            gl.glVertex2d(-y + x0, +x + y0);
-            gl.glVertex2d(+y + x0, -x + y0);
-            gl.glVertex2d(-y + x0, -x + y0);
-        gl.glEnd();
-    }
-
-    private void write_8_pixels(GL gl, int x, int y, int x0, int y0) {
-
-        write_pixel(gl, x + x0, y + y0);
-        write_pixel(gl, y + x0, x + y0);
-
-        if (x != 0) {
-            if (y != 0) {
-                write_pixel(gl, -x + x0, y + y0);
-                write_pixel(gl, x + x0, -y + y0);
-                write_pixel(gl, -x + x0, -y + y0);
-                write_pixel(gl, -y + x0, x + y0);
-                write_pixel(gl, y + x0, -x + y0);
-                write_pixel(gl, -y + x0, -x + y0);
-            } else {
-                write_pixel(gl, -x + x0, y0);
-                write_pixel(gl, x + x0, y0);
-                write_pixel(gl, x0, x + y0);
-                write_pixel(gl, x0, -x + y0);
-            }
-        } else {
-            if (y != 0) {
-                write_pixel(gl, x0, y + y0);
-                write_pixel(gl, x0, -y + y0);
-                write_pixel(gl, -y + x0, y0);
-                write_pixel(gl, y + x0, y0);
-            }
-        }
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
