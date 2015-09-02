@@ -4,5 +4,7 @@
 #NETBEANS
 */build/*
 
-/Segmento2/nbproject/private/
-/Segmento/nbproject/private/
+/Segmento/build.xml
+/Segmento/manifest.mf
+/Segmento/nbproject/*
+
