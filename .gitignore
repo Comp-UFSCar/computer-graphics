@@ -1,0 +1,6 @@
+#JAVA
+*.class
+
+#NETBEANS
+*/build/*
+
