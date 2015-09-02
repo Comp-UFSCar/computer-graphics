@@ -6,6 +6,10 @@ Drawing of elementary geometric forms using OpenGL.
 In special, 2D vectors using the [Midpoint Line Algorithm](http://www.mat.univie.ac.at/~kriegl/Skripten/CG/node25.html)
 and circles using [Bresenham's Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
+## Installing and running
+
+If you're having problems installing or executing this project, follow this [steps](https://github.com/lucasdavid/CG-Assignment-1/blob/master/INSTALL.md).
+
 ## Usage
 
 ### Drawing
