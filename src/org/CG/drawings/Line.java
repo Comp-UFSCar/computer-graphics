@@ -11,9 +11,12 @@ import org.CG.infrastructure.Point;
  */
 public class Line extends Drawing {
 
-    private Point end, translated_start;
-    private int incE, incNE;
-    private int dx, dy;
+    private Point end;
+    private Point translated_start;
+    private int incE;
+    private int incNE;
+    private int dx;
+    private int dy;
     private int octant;
 
     /**
@@ -70,7 +73,8 @@ public class Line extends Drawing {
     }
 
     /**
-     * {@inheritDoc }
+     * Draw the line on screen, using the Bresenham's middle point algorithm.
+     * @param gl JOGL object to use in the drawing
      */
     @Override
     public void draw(GL gl) {
@@ -124,34 +128,7 @@ public class Line extends Drawing {
      * octant.
      */
     protected Point translateToFirstOctant(Point pt) {
-        int x = pt.getX();
-        int y = pt.getY();
-        if (octant == 0) {
-            return new Point(x, y);
-        }
-        if (octant == 1) {
-            return new Point(y, x);
-        }
-        if (octant == 2) {
-            return new Point(-y, x);
-        }
-        if (octant == 3) {
-            return new Point(-x, y);
-        }
-        if (octant == 4) {
-            return new Point(-x, -y);
-        }
-        if (octant == 5) {
-            return new Point(-y, -x);
-        }
-        if (octant == 6) {
-            return new Point(y, -x);
-        }
-        if (octant == 7) {
-            return new Point(x, -y);
-        }
-
-        throw new RuntimeException("Unknown octant " + octant);
+        return pt.allOctants()[octant];
     }
 
     /**
@@ -162,33 +139,13 @@ public class Line extends Drawing {
      * octant.
      */
     protected Point restoreToOriginalOctant(Point pt) {
-        int x = pt.getX();
-        int y = pt.getY();
-        if (octant == 0) {
-            return new Point(x, y);
+        int oct = octant;
+        // handles edge case for the secondary diagonal
+        if(oct == 2) {
+            oct = 6;
+        } else if (oct == 6) {
+            oct = 2;
         }
-        if (octant == 1) {
-            return new Point(y, x);
-        }
-        if (octant == 2) {
-            return new Point(y, -x);
-        }
-        if (octant == 3) {
-            return new Point(-x, y);
-        }
-        if (octant == 4) {
-            return new Point(-x, -y);
-        }
-        if (octant == 5) {
-            return new Point(-y, -x);
-        }
-        if (octant == 6) {
-            return new Point(-y, x);
-        }
-        if (octant == 7) {
-            return new Point(x, -y);
-        }
-
-        throw new RuntimeException("Unknown octant " + octant);
+        return pt.allOctants()[oct];
     }
 }
