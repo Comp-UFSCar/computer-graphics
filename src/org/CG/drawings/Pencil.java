@@ -1,12 +1,13 @@
 package org.CG.drawings;
 
+import java.util.ArrayList;
 import org.CG.infrastructure.Drawing;
-import java.util.LinkedList;
 import java.util.List;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Point;
 
 /**
+ * List of Points to draw on screen.
  *
  * @author ldavid
  */
@@ -14,26 +15,22 @@ public class Pencil extends Drawing {
 
     private final List<Point> points;
 
+    /**
+     * Instantiates a new Pencil with an empty list of points.
+     */
     public Pencil() {
         super();
-
-        points = new LinkedList<>();
+        points = new ArrayList<>();
     }
 
+    /**
+     * Translates every point by a certain amount.
+     *
+     * @param point determines dx/dy of the movement
+     * @return this
+     */
     @Override
     public Drawing translate(Point point) {
-        /*point[0] -= start[0];
-        point[1] -= start[1];
-        
-        start[0] += point[0];
-        start[1] += point[1];
-        
-        points.stream().forEach((p) -> {
-        p[0] += point[0];
-        p[1] += point[1];
-        });
-        
-        return this;*/
         point = point.move(-start.getX(), -start.getY());
         start = start.move(point.getX(), point.getY());
 
@@ -44,12 +41,24 @@ public class Pencil extends Drawing {
         return this;
     }
 
+    /**
+     * Adds a new point to the list of points to be drawn.
+     *
+     * @param point new point in the collection
+     * @return this
+     */
     @Override
     public Drawing updateLastCoordinate(Point point) {
         points.add(point);
         return this;
     }
 
+    /**
+     * Draws all the points on screen. Each point is represent by a 3x3 grid
+     * around it, for better visualization.
+     *
+     * @param gl JOGL object
+     */
     @Override
     public void draw(GL gl) {
         gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
