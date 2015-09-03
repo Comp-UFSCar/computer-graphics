@@ -4,6 +4,7 @@ import org.CG.infrastructure.Drawing;
 import java.util.LinkedList;
 import java.util.List;
 import javax.media.opengl.GL;
+import org.CG.infrastructure.Point;
 
 /**
  *
@@ -11,7 +12,7 @@ import javax.media.opengl.GL;
  */
 public class Pencil extends Drawing {
 
-    List<int[]> points;
+    List<Point> points;
 
     public Pencil() {
         super();
@@ -20,35 +21,43 @@ public class Pencil extends Drawing {
     }
 
     @Override
-    public Drawing translate(int[] point) {
-        point[0] -= start[0];
+    public Drawing translate(Point point) {
+        /*point[0] -= start[0];
         point[1] -= start[1];
         
         start[0] += point[0];
         start[1] += point[1];
-
+        
         points.stream().forEach((p) -> {
-            p[0] += point[0];
-            p[1] += point[1];
+        p[0] += point[0];
+        p[1] += point[1];
         });
+        
+        return this;*/
+        point = point.move(-start.getX(), -start.getY());
+        start = start.move(point.getX(), point.getY());
+
+        for (int i = 0; i < points.size(); i++) {
+            points.set(i, points.get(i).move(point.getX(), point.getY()));
+        }
 
         return this;
     }
 
     @Override
-    public Drawing updateLastCoordinate(int[] point) {
+    public Drawing updateLastCoordinate(Point point) {
         points.add(point);
         return this;
     }
 
     @Override
     public void draw(GL gl) {
-        gl.glColor3ub(color[0], color[1], color[2]);
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(GL.GL_POINTS);
 
         points.stream().forEach((point) -> {
-            for (int i = point[0] - 1; i <= point[0] + 1; i++) {
-                for (int j = point[1] - 1; j <= point[1] + 1; j++) {
+            for (int i = point.getX() - 1; i <= point.getX() + 1; i++) {
+                for (int j = point.getY() - 1; j <= point.getY() + 1; j++) {
                     gl.glVertex2i(i, j);
                 }
             }

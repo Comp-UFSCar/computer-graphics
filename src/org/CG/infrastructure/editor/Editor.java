@@ -3,12 +3,15 @@ package org.CG.infrastructure.editor;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
+import org.CG.infrastructure.ColorByte;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
+import org.CG.infrastructure.Point;
 
 /**
  *
@@ -24,6 +27,8 @@ public class Editor {
     Class<? extends Drawing> currentDrawing = Line.class;
     private Mode mode;
 
+    private final Random rand;
+
     public Editor() {
         availableDrawings = DrawingsLoader.getDrawingsClasses();
 
@@ -31,6 +36,7 @@ public class Editor {
         redos = new LinkedList<>();
 
         mode = Mode.DRAWING;
+        rand = new Random();
     }
 
     public void undo() {
@@ -55,7 +61,7 @@ public class Editor {
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
         redos.clear();
 
-        int[] point = new int[]{e.getX(), canvas.getHeight() - e.getY()};
+        Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
         if (e.isControlDown()) {
             mode = Mode.MOVING;
@@ -69,12 +75,12 @@ public class Editor {
             return;
         }
 
-        byte[] color = new byte[]{(byte) (Math.random() * 256), (byte) (Math.random() * 256), (byte) (Math.random() * 256)};
+        ColorByte color = ColorByte.random(rand);
 
         try {
             drawings.add(currentDrawing.newInstance()
-                .setColor(color)
-                .setStart(point));
+                    .setColor(color)
+                    .setStart(point));
 
         } catch (InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,20 +88,20 @@ public class Editor {
     }
 
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        int[] point = {e.getX(), canvas.getHeight() - e.getY()};
+        Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
         if (!e.isControlDown() && mode == Mode.MOVING) {
             mode = Mode.IDLE;
 
         } else if (mode == Mode.MOVING) {
             drawings
-                .getLast()
-                .setStart(point);
+                    .getLast()
+                    .setStart(point);
 
         } else if (mode == Mode.DRAWING) {
             drawings
-                .getLast()
-                .updateLastCoordinate(point);
+                    .getLast()
+                    .updateLastCoordinate(point);
         }
     }
 

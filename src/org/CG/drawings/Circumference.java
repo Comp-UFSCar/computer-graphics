@@ -2,6 +2,7 @@ package org.CG.drawings;
 
 import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
+import org.CG.infrastructure.Point;
 
 /**
  *
@@ -10,26 +11,25 @@ import javax.media.opengl.GL;
 public class Circumference extends Drawing {
 
     int radius;
-    
+
     @Override
-    public Drawing translate(int[] point) {
+    public Drawing translate(Point point) {
         super.translate(point);
         updateLastCoordinate(point);
-        
+
         return this;
     }
-    
+
     @Override
-    public Drawing updateLastCoordinate(int[] point) {
-        int dx = start[0] - point[0], dy = start[1] - point[1];
-        radius = (int) Math.sqrt(dx * dx + dy * dy);
-        
+    public Drawing updateLastCoordinate(Point point) {
+        radius = (int) start.euclidianDistance(point);
+
         return this;
     }
 
     @Override
     public void draw(GL gl) {
-        gl.glColor3ub(color[0], color[1], color[2]);
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(GL.GL_POINTS);
 
         int d = 1 - radius, x = 0, y = radius;
@@ -53,14 +53,14 @@ public class Circumference extends Drawing {
     }
 
     protected void circlepoints(GL gl, int x, int y) {
-        gl.glVertex2i(start[0] + x, start[1] + y);
-        gl.glVertex2i(start[0] - x, start[1] + y);
-        gl.glVertex2i(start[0] - x, start[1] - y);
-        gl.glVertex2i(start[0] + x, start[1] - y);
-        gl.glVertex2i(start[0] + y, start[1] + x);
-        gl.glVertex2i(start[0] - y, start[1] + x);
-        gl.glVertex2i(start[0] - y, start[1] - x);
-        gl.glVertex2i(start[0] + y, start[1] - x);
+        gl.glVertex2i(start.getX() + x, start.getY() + y);
+        gl.glVertex2i(start.getX() - x, start.getY() + y);
+        gl.glVertex2i(start.getX() - x, start.getY() - y);
+        gl.glVertex2i(start.getX() + x, start.getY() - y);
+        gl.glVertex2i(start.getX() + y, start.getY() + x);
+        gl.glVertex2i(start.getX() - y, start.getY() + x);
+        gl.glVertex2i(start.getX() - y, start.getY() - x);
+        gl.glVertex2i(start.getX() + y, start.getY() - x);
     }
 
 }

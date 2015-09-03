@@ -2,32 +2,37 @@ package org.CG.drawings;
 
 import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
+import org.CG.infrastructure.Point;
 
 public class Line extends Drawing {
 
-    int[] end, translated_start;
-    private int incE, incNE;
-    private int dx, dy;
+    private Point end;
+    private Point translated_start;
+    private int incE;
+    private int incNE;
+    private int dx;
+    private int dy;
     private int octant;
 
     @Override
-    public Drawing setStart(int[] start) {
+    public Drawing setStart(Point start) {
         super.setStart(start);
         return updateLastCoordinate(start);
     }
 
     @Override
-    public Drawing translate(int[] point) {
-        int[] t = {end[0] -start[0], end[1] - start[1]};
-        
+    public Drawing translate(Point point) {
+        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
+
         start = point;
-        end = new int[] {point[0] +t[0], point[1]+t[0]};
+        end = new Point(point.getX() + t.getX(), point.getY() + t.getX());
 
         return updateLastCoordinate(end);
     }
 
     /**
-     * Refresh LineInPixel fields based on the last coordinated inputted by the user.
+     * Refresh LineInPixel fields based on the last coordinated inputted by the
+     * user.
      *
      * This refresh override re-calculates the midpoint line algorithm.
      *
@@ -35,11 +40,11 @@ public class Line extends Drawing {
      * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(int[] last) {
-        end = new int[]{last[0], last[1]};
+    public Drawing updateLastCoordinate(Point last) {
+        end = last;
 
-        dx = end[0] - start[0];
-        dy = end[1] - start[1];
+        dx = end.getX() - start.getX();
+        dy = end.getY() - start.getY();
 
         findOctect(dx, dy);
 
@@ -48,36 +53,36 @@ public class Line extends Drawing {
         end = translateToFirstOctant(end);
 
         // Start[x] must be smaller than end[x]. If it isn't, swap points.
-        if (translated_start[0] > end[0]) {
-            int[] t = translated_start;
+        if (translated_start.getX() > end.getY()) {
+            Point t = translated_start;
             translated_start = end;
             end = t;
         }
 
         // Calculate E and NE constants for the Midpoint Line algorithm.
-        dx = end[0] - translated_start[0];
-        dy = end[1] - translated_start[1];
+        dx = end.getX() - translated_start.getX();
+        dy = end.getY() - translated_start.getY();
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
-        
+
         return this;
     }
 
     @Override
     public void draw(GL gl) {
         // Set line color.
-        gl.glColor3ub(color[0], color[1], color[2]);
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(GL.GL_POINTS);
 
-        int x = translated_start[0];
-        int y = translated_start[1];
+        int x = translated_start.getX();
+        int y = translated_start.getY();
         int d = 2 * dy - dx;
 
-        int[] point = restoreToOriginalOctant(x, y);
-        gl.glVertex2i(point[0], point[1]);
+        Point point = restoreToOriginalOctant(x, y);
+        gl.glVertex2i(point.getX(), point.getY());
 
-        while (x < end[0]) {
+        while (x < end.getX()) {
             if (d <= 0) {
                 d += incNE;
             } else {
@@ -87,7 +92,7 @@ public class Line extends Drawing {
             x++;
 
             point = restoreToOriginalOctant(x, y);
-            gl.glVertex2i(point[0], point[1]);
+            gl.glVertex2i(point.getX(), point.getY());
         }
 
         gl.glEnd();
@@ -106,48 +111,50 @@ public class Line extends Drawing {
         octant = (int) (4 * d / Math.PI);
     }
 
-    protected int[] translateToFirstOctant(int[] point) {
-        return translateToFirstOctant(point[0], point[1]);
+    protected Point translateToFirstOctant(Point point) {
+        return translateToFirstOctant(point.getX(), point.getY());
     }
 
     /**
-     * Based on its original @octant, find the representative coordinate of the point (x,y) in the 1st octant.
+     * Based on its original @octant, find the representative coordinate of the
+     * point (x,y) in the 1st octant.
      *
      * @param x The 1st coordinate of the point.
      * @param y The 2nd coordinate of the point.
-     * @return a pair (x1, y1) that represents the translation of (x,y) to the 1st octant.
+     * @return a pair (x1, y1) that represents the translation of (x,y) to the
+     * 1st octant.
      */
-    protected int[] translateToFirstOctant(int x, int y) {
+    protected Point translateToFirstOctant(int x, int y) {
         if (octant == 0) {
-            return new int[]{x, y};
+            return new Point(x, y);
         }
         if (octant == 1) {
-            return new int[]{y, x};
+            return new Point(y, x);
         }
         if (octant == 2) {
-            return new int[]{-y, x};
+            return new Point(-y, x);
         }
         if (octant == 3) {
-            return new int[]{-x, y};
+            return new Point(-x, y);
         }
         if (octant == 4) {
-            return new int[]{-x, -y};
+            return new Point(-x, -y);
         }
         if (octant == 5) {
-            return new int[]{-y, -x};
+            return new Point(-y, -x);
         }
         if (octant == 6) {
-            return new int[]{y, -x};
+            return new Point(y, -x);
         }
         if (octant == 7) {
-            return new int[]{x, -y};
+            return new Point(x, -y);
         }
 
         throw new RuntimeException("Unknown octant " + octant);
     }
 
-    protected int[] restoreToOriginalOctant(int[] point) {
-        return restoreToOriginalOctant(point[0], point[1]);
+    protected Point restoreToOriginalOctant(Point point) {
+        return restoreToOriginalOctant(point.getX(), point.getY());
     }
 
     /**
@@ -155,32 +162,33 @@ public class Line extends Drawing {
      *
      * @param x The 1st coordinate of the point in the 1st octant.
      * @param y The 2nd coordinate of the point in the 1st octant.
-     * @return a pair (x1, y1) that represents the restored point (x, y) to its original octant.
+     * @return a pair (x1, y1) that represents the restored point (x, y) to its
+     * original octant.
      */
-    protected int[] restoreToOriginalOctant(int x, int y) {
+    protected Point restoreToOriginalOctant(int x, int y) {
         if (octant == 0) {
-            return new int[]{x, y};
+            return new Point(x, y);
         }
         if (octant == 1) {
-            return new int[]{y, x};
+            return new Point(y, x);
         }
         if (octant == 2) {
-            return new int[]{y, -x};
+            return new Point(y, -x);
         }
         if (octant == 3) {
-            return new int[]{-x, y};
+            return new Point(-x, y);
         }
         if (octant == 4) {
-            return new int[]{-x, -y};
+            return new Point(-x, -y);
         }
         if (octant == 5) {
-            return new int[]{-y, -x};
+            return new Point(-y, -x);
         }
         if (octant == 6) {
-            return new int[]{-y, x};
+            return new Point(-y, x);
         }
         if (octant == 7) {
-            return new int[]{x, -y};
+            return new Point(x, -y);
         }
 
         throw new RuntimeException("Unknown octant " + octant);
