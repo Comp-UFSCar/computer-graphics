@@ -13,7 +13,7 @@ import org.CG.infrastructure.Point;
  */
 public class Circle extends Drawing {
 
-    int radius;
+    private int radius;
 
     @Override
     public Drawing translate(Point point) {

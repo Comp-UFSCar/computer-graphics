@@ -10,7 +10,7 @@ import org.CG.infrastructure.Point;
  */
 public class Circumference extends Drawing {
 
-    int radius;
+    private int radius;
 
     @Override
     public Drawing translate(Point point) {

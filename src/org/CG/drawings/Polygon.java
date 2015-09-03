@@ -12,7 +12,7 @@ import org.CG.infrastructure.Point;
 public class Polygon extends Drawing {
 
     private Point lastPoint;
-    private LinkedList<Drawing> edges;
+    private final LinkedList<Drawing> edges;
 
     public Polygon() {
         super();

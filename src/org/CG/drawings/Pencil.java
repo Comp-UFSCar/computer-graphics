@@ -12,7 +12,7 @@ import org.CG.infrastructure.Point;
  */
 public class Pencil extends Drawing {
 
-    List<Point> points;
+    private final List<Point> points;
 
     public Pencil() {
         super();
