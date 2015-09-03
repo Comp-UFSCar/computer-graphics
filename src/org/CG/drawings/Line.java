@@ -46,7 +46,7 @@ public class Line extends Drawing {
         dx = end.getX() - start.getX();
         dy = end.getY() - start.getY();
 
-        findOctect(dx, dy);
+        octant = findOctant(dx, dy);
 
         // Find the line representation on the first octant.
         translated_start = translateToFirstOctant(start);
@@ -103,12 +103,13 @@ public class Line extends Drawing {
      *
      * @param dx The difference between ending-point-x and starting-point-x.
      * @param dy The difference between ending-point-y and starting-point-y.
+     * @return the octant (0-7) of the points
      */
-    protected void findOctect(int dx, int dy) {
+    protected int findOctant(int dx, int dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 
-        octant = (int) (4 * d / Math.PI);
+        return (int) (4 * d / Math.PI);
     }
 
     protected Point translateToFirstOctant(Point point) {
