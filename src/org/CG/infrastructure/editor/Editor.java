@@ -19,12 +19,12 @@ import org.CG.infrastructure.Point;
  */
 public class Editor {
 
-    List<Class<? extends Drawing>> availableDrawings;
+    private final List<Class<? extends Drawing>> availableDrawings;
 
-    LinkedList<Drawing> drawings;
-    LinkedList<Drawing> redos;
+    private final LinkedList<Drawing> drawings;
+    private final LinkedList<Drawing> redos;
 
-    Class<? extends Drawing> currentDrawing = Line.class;
+    private Class<? extends Drawing> currentDrawing = Line.class;
     private Mode mode;
 
     private final Random rand;
