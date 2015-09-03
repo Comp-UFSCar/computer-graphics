@@ -10,7 +10,14 @@ import org.CG.infrastructure.Point;
  */
 public class Square extends Drawing {
 
-    int width = 0, height = 0;
+    private int width;
+    private int height;
+
+    public Square() {
+        super();
+        this.width = 0;
+        this.height = 0;
+    }
 
     @Override
     public Drawing updateLastCoordinate(Point point) {
