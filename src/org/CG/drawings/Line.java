@@ -4,19 +4,30 @@ import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Point;
 
+/**
+ * Drawing of a line on the screen. Uses the Bresenham's mid-point algorithm.
+ *
+ * @author ldavid
+ */
 public class Line extends Drawing {
 
-    Point end, translated_start;
+    private Point end, translated_start;
     private int incE, incNE;
     private int dx, dy;
     private int octant;
-    
+
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public Drawing setStart(Point start) {
         super.setStart(start);
         return updateLastCoordinate(start);
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public Drawing translate(Point point) {
         Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
@@ -24,14 +35,12 @@ public class Line extends Drawing {
         end = new Point(point.getX() + t.getX(), point.getY() + t.getX());
         return updateLastCoordinate(end);
     }
-    
 
     /**
-     * Refresh LineInPixel fields based on the last coordinated inputted by the user.
+     * Refresh LineInPixel fields based on the last coordinated inputted by the
+     * user. This refresh override re-calculates the midpoint line algorithm.
      *
-     * This refresh override re-calculates the midpoint line algorithm.
-     *
-     * @param last the last coordinate.
+     * @param last the last coordinate
      * @return this
      */
     @Override
@@ -39,27 +48,30 @@ public class Line extends Drawing {
         end = last;
         dx = end.getX() - start.getX();
         dy = end.getY() - start.getY();
-        
-        findOctect(dx, dy);
-        
+
+        octant = findOctant(dx, dy);
+
         translated_start = translateToFirstOctant(start);
         end = translateToFirstOctant(end);
-        
-        if(translated_start.getX() > end.getX()) {
+
+        if (translated_start.getX() > end.getX()) {
             Point tmp = translated_start;
             translated_start = end;
             end = tmp;
         }
-        
+
         dx = end.getX() - translated_start.getX();
         dy = end.getY() - translated_start.getY();
-        
+
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
-        
+
         return this;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public void draw(GL gl) {
         // Set line color.
@@ -94,19 +106,22 @@ public class Line extends Drawing {
      *
      * @param dx The difference between ending-point-x and starting-point-x.
      * @param dy The difference between ending-point-y and starting-point-y.
+     * @return the octant, in range [0, 7]
      */
-    protected void findOctect(int dx, int dy) {
+    protected int findOctant(int dx, int dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 
-        octant = (int) (4 * d / Math.PI);
+        return (int) (4 * d / Math.PI);
     }
 
     /**
-     * Based on its original @octant, find the representative coordinate of the point (x,y) in the 1st octant.
+     * Based on its original {@link #octant octant}, find the representative
+     * coordinate of the point in the first octant.
      *
      * @param pt point to be translated
-     * @return a pair (x1, y1) that represents the translation of (x,y) to the 1st octant.
+     * @return a point that represents the translation of (x,y) to the first
+     * octant.
      */
     protected Point translateToFirstOctant(Point pt) {
         int x = pt.getX();
@@ -140,10 +155,11 @@ public class Line extends Drawing {
     }
 
     /**
-     * Restore a point from the 1st octant to its original octant.
+     * Restore a point from the first octant to its original octant.
      *
      * @param pt point to be restored
-     * @return a pair (x1, y1) that represents the restored point (x, y) to its original octant.
+     * @return a point that represents the restored point to its original
+     * octant.
      */
     protected Point restoreToOriginalOctant(Point pt) {
         int x = pt.getX();
