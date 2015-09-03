@@ -46,9 +46,9 @@ public class Point {
     }
 
     /**
-     * Creates a new point by translating this point
-     * This point remains unaltered
-     * 
+     * Creates a new point by translating this point This point remains
+     * unaltered
+     *
      * @param dx The movement performed on x-coordinate
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
@@ -58,9 +58,9 @@ public class Point {
     }
 
     /**
-     * Creates a new point by changing the x and y-coordinates
-     * This is effectively translating the octant
-     * 
+     * Creates a new point by changing the x and y-coordinates This is
+     * effectively translating the octant
+     *
      * @return A new point achieved by translating this point in octant
      */
     public Point invert() {
@@ -69,7 +69,7 @@ public class Point {
 
     /**
      * Creates a new point by changing the signal of the y-coordinate
-     * 
+     *
      * @return A new point achieved by mirroring the point upon the X-axis
      */
     public Point mirrorOnHorizontalAxis() {
@@ -78,7 +78,7 @@ public class Point {
 
     /**
      * Creates a new point by changing the signal of the x-coordinate
-     * 
+     *
      * @return A new point achieved by mirroring the point upon the Y-axis
      */
     public Point mirrorOnVerticalAxis() {
@@ -90,24 +90,25 @@ public class Point {
      * Equivalent to calling all permutations of {@link #invert() invert},
      * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and
      * {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis} methods.
-     * 
+     *
      * @return An array of length 8 with the octant variations of this point
      */
     public Point[] allOctants() {
         return new Point[]{
             this,
             invert(),
-            mirrorOnHorizontalAxis(),
-            mirrorOnHorizontalAxis().invert(),
-            mirrorOnVerticalAxis(),
             mirrorOnVerticalAxis().invert(),
+            mirrorOnVerticalAxis(),
             mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
-            mirrorOnHorizontalAxis().mirrorOnVerticalAxis().invert()
+            mirrorOnHorizontalAxis().mirrorOnVerticalAxis().invert(),
+            mirrorOnHorizontalAxis().invert(),
+            mirrorOnHorizontalAxis()
         };
     }
-    
+
     /**
      * Calculates the Euclidian distance between two points
+     *
      * @param distanceTo point to calculate distance
      * @return the distance between this point and the given point
      */
