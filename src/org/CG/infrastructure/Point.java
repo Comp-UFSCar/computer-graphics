@@ -46,7 +46,7 @@ public class Point {
     }
 
     /**
-     * Creates a new point by translating this point This point remains
+     * Creates a new point by translating this point. This point remains
      * unaltered
      *
      * @param dx The movement performed on x-coordinate
@@ -55,6 +55,17 @@ public class Point {
      */
     public Point move(int dx, int dy) {
         return new Point(x + dx, y + dy);
+    }
+
+    /**
+     * Creates a new point by translating this point. This point remains
+     * unaltered.
+     *
+     * @param dp The movement to be performed
+     * @return A new point achieved by translating this point
+     */
+    public Point move(Point dp) {
+        return move(dp.getX(), dp.getY());
     }
 
     /**
