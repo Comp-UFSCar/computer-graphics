@@ -5,7 +5,7 @@ package org.CG.infrastructure;
  *
  * @author Diorge-Mephy
  */
-public final class Point {
+public class Point {
 
     /**
      * The origin (0, 0) point
@@ -53,7 +53,7 @@ public final class Point {
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public final Point move(int dx, int dy) {
+    public Point move(int dx, int dy) {
         return new Point(x + dx, y + dy);
     }
 
@@ -63,7 +63,7 @@ public final class Point {
      * 
      * @return A new point achieved by translating this point in octant
      */
-    public final Point invert() {
+    public Point invert() {
         return new Point(y, x);
     }
 
@@ -72,7 +72,7 @@ public final class Point {
      * 
      * @return A new point achieved by mirroring the point upon the X-axis
      */
-    public final Point mirrorOnHorizontalAxis() {
+    public Point mirrorOnHorizontalAxis() {
         return new Point(x, -y);
     }
 
@@ -81,7 +81,7 @@ public final class Point {
      * 
      * @return A new point achieved by mirroring the point upon the Y-axis
      */
-    public final Point mirrorOnVerticalAxis() {
+    public Point mirrorOnVerticalAxis() {
         return new Point(-x, y);
     }
 
@@ -93,7 +93,7 @@ public final class Point {
      * 
      * @return An array of length 8 with the octant variations of this point
      */
-    public final Point[] allOctants() {
+    public Point[] allOctants() {
         return new Point[]{
             this,
             invert(),
@@ -104,6 +104,17 @@ public final class Point {
             mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
             mirrorOnHorizontalAxis().mirrorOnVerticalAxis().invert()
         };
+    }
+    
+    /**
+     * Calculates the Euclidian distance between two points
+     * @param distanceTo point to calculate distance
+     * @return the distance between this point and the given point
+     */
+    public final double euclidianDistance(Point distanceTo) {
+        double dx = this.getX() - distanceTo.getX();
+        double dy = this.getY() - distanceTo.getY();
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     /**
