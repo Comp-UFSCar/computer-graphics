@@ -89,7 +89,7 @@ public class ColorByte {
      * @param value added to red, green and blue components
      * @return A new color with adjusted brightness
      */
-    public ColorByte adjustBrightness(byte value) {
+    public ColorByte adjustBrightness(int value) {
         return new ColorByte(
                 getRed() + value,
                 getGreen() + value,
