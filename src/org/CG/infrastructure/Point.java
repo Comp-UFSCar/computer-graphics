@@ -89,7 +89,8 @@ public class Point {
      * Finds the 8 octant values relative to this point (this one included)
      * Equivalent to calling all permutations of {@link #invert() invert},
      * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and
-     * {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis} methods.
+     * {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis} methods. The points
+     * are in octant order, starting at the first octant.
      *
      * @return An array of length 8 with the octant variations of this point
      */
@@ -97,11 +98,11 @@ public class Point {
         return new Point[]{
             this,
             invert(),
-            mirrorOnVerticalAxis().invert(),
+            invert().mirrorOnVerticalAxis(),
             mirrorOnVerticalAxis(),
             mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
-            mirrorOnHorizontalAxis().mirrorOnVerticalAxis().invert(),
-            mirrorOnHorizontalAxis().invert(),
+            invert().mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
+            invert().mirrorOnHorizontalAxis(),
             mirrorOnHorizontalAxis()
         };
     }
