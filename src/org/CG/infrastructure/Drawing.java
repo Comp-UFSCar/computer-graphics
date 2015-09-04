@@ -103,6 +103,17 @@ public abstract class Drawing {
     }
 
     /**
+     * Sets the color of the shape
+     *
+     * @param color color of the shape
+     * @return this
+     */
+    public Drawing setColor(ColorFloat color) {
+        setColor(color.toColorByte());
+        return this;
+    }
+
+    /**
      * Sets the drawing as finished or not.
      *
      * @param f
