@@ -2,39 +2,54 @@ package org.CG.drawings;
 
 import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
+import org.CG.infrastructure.Point;
 
 /**
- *
+ * Circumference drawing with Bresenham's algorithm
+ * 
  * @author ldavid
  */
 public class Circumference extends Drawing {
 
-    int radius;
-    
+    private int radius;
+
+    /**
+     * Adjusts the center of the circumference.
+     * 
+     * @param point new center of the circumference
+     * @return this
+     */
     @Override
-    public Drawing translate(int[] point) {
+    public Drawing translate(Point point) {
         super.translate(point);
         updateLastCoordinate(point);
-        
-        return this;
-    }
-    
-    @Override
-    public Drawing updateLastCoordinate(int[] point) {
-        int dx = start[0] - point[0], dy = start[1] - point[1];
-        radius = (int) Math.sqrt(dx * dx + dy * dy);
-        
         return this;
     }
 
+    /**
+     * Adjusts the radius of the circumference.
+     * 
+     * @param point any point of the circumference (edge)
+     * @return this
+     */
+    @Override
+    public Drawing updateLastCoordinate(Point point) {
+        radius = (int) start.euclidianDistance(point);
+        return this;
+    }
+
+    /**
+     * Draws the circumference on screen. Uses the Bresenham's Middle-Point Algorithm.
+     * @param gl JOGL object
+     */
     @Override
     public void draw(GL gl) {
-        gl.glColor3ub(color[0], color[1], color[2]);
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(GL.GL_POINTS);
 
         int d = 1 - radius, x = 0, y = radius;
 
-        circlepoints(gl, x, y);
+        drawCirclePoints(gl, x, y);
 
         while (x < y) {
             if (d <= 0) {
@@ -46,21 +61,21 @@ public class Circumference extends Drawing {
                 y--;
             }
 
-            circlepoints(gl, x, y);
+            drawCirclePoints(gl, x, y);
         }
 
         gl.glEnd();
     }
 
-    protected void circlepoints(GL gl, int x, int y) {
-        gl.glVertex2i(start[0] + x, start[1] + y);
-        gl.glVertex2i(start[0] - x, start[1] + y);
-        gl.glVertex2i(start[0] - x, start[1] - y);
-        gl.glVertex2i(start[0] + x, start[1] - y);
-        gl.glVertex2i(start[0] + y, start[1] + x);
-        gl.glVertex2i(start[0] - y, start[1] + x);
-        gl.glVertex2i(start[0] - y, start[1] - x);
-        gl.glVertex2i(start[0] + y, start[1] - x);
+    protected void drawCirclePoints(GL gl, int x, int y) {
+        gl.glVertex2i(start.getX() + x, start.getY() + y);
+        gl.glVertex2i(start.getX() - x, start.getY() + y);
+        gl.glVertex2i(start.getX() - x, start.getY() - y);
+        gl.glVertex2i(start.getX() + x, start.getY() - y);
+        gl.glVertex2i(start.getX() + y, start.getY() + x);
+        gl.glVertex2i(start.getX() - y, start.getY() + x);
+        gl.glVertex2i(start.getX() - y, start.getY() - x);
+        gl.glVertex2i(start.getX() + y, start.getY() - x);
     }
 
 }

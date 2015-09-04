@@ -2,6 +2,7 @@ package org.CG.drawings;
 
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.Point;
 
 /**
  *
@@ -9,20 +10,20 @@ import org.CG.infrastructure.Drawing;
  */
 public class Rectangle extends Drawing {
 
-    int[] end;
+    private Point end;
 
     @Override
-    public Drawing translate(int[] point) {
-        int[] t = {end[0] -start[0], end[1] - start[1]};
-        
+    public Drawing translate(Point point) {
+        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
+
         start = point;
-        end = new int[] {point[0] +t[0], point[1]+t[0]};
+        end = point.move(t.getX(), t.getX());
 
         return this;
     }
 
     @Override
-    public Drawing updateLastCoordinate(int[] point) {
+    public Drawing updateLastCoordinate(Point point) {
         end = point;
         return this;
     }
@@ -33,13 +34,13 @@ public class Rectangle extends Drawing {
             return;
         }
 
-        gl.glColor3ub(color[0], color[1], color[2]);
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(GL.GL_POLYGON);
 
-        gl.glVertex2i(start[0], start[1]);
-        gl.glVertex2i(start[0], end[1]);
-        gl.glVertex2i(end[0], end[1]);
-        gl.glVertex2i(end[0], start[1]);
+        gl.glVertex2i(start.getX(), start.getY());
+        gl.glVertex2i(start.getX(), end.getY());
+        gl.glVertex2i(end.getX(), end.getY());
+        gl.glVertex2i(end.getX(), start.getY());
 
         gl.glEnd();
     }

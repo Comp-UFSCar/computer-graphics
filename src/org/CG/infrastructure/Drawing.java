@@ -8,8 +8,8 @@ import javax.media.opengl.GL;
  */
 public abstract class Drawing {
 
-    protected int[] start;
-    protected byte[] color;
+    protected Point start;
+    protected ColorByte color;
     protected boolean finished;
 
     public Drawing() {
@@ -17,28 +17,28 @@ public abstract class Drawing {
         finished = true;
     }
 
-    abstract public Drawing updateLastCoordinate(int[] point);
+    abstract public Drawing updateLastCoordinate(Point point);
 
-    public Drawing setNextCoordinate(int[] point) {
+    public Drawing setNextCoordinate(Point point) {
         if (finished) {
             throw new RuntimeException("Cannot set next coordinate if drawing is already finished.");
         }
-        
+
         return this;
     }
 
     abstract public void draw(GL gl);
-    
-    public Drawing translate(int[] point) {
+
+    public Drawing translate(Point point) {
         return setStart(point);
     }
 
-    public Drawing setStart(int[] start) {
+    public Drawing setStart(Point start) {
         this.start = start;
         return this;
     }
 
-    public Drawing setColor(byte[] color) {
+    public Drawing setColor(ColorByte color) {
         this.color = color;
         return this;
     }

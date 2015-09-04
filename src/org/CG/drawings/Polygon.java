@@ -3,6 +3,7 @@ package org.CG.drawings;
 import java.util.LinkedList;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.Point;
 
 /**
  *
@@ -10,8 +11,8 @@ import org.CG.infrastructure.Drawing;
  */
 public class Polygon extends Drawing {
 
-    int[] lastPoint;
-    LinkedList<Drawing> edges;
+    private Point lastPoint;
+    private final LinkedList<Drawing> edges;
 
     public Polygon() {
         super();
@@ -21,7 +22,7 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing setStart(int[] start) {
+    public Drawing setStart(Point start) {
         super.setStart(start);
         lastPoint = start;
 
@@ -29,28 +30,28 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing translate(int[] point) {
+    public Drawing translate(Point point) {
         return this;
     }
 
     @Override
-    public Drawing updateLastCoordinate(int[] point) {
-        lastPoint = new int[]{point[0], point[1]};
+    public Drawing updateLastCoordinate(Point point) {
+        lastPoint = point;
         edges.getLast().updateLastCoordinate(point);
 
         return this;
     }
 
     @Override
-    public Drawing setNextCoordinate(int[] point) {
+    public Drawing setNextCoordinate(Point point) {
         super.setNextCoordinate(point);
 
         edges.add(new Line()
-            .setColor(color)
-            .setStart(lastPoint)
-            .updateLastCoordinate(point));
+                .setColor(color)
+                .setStart(lastPoint)
+                .updateLastCoordinate(point));
 
-        lastPoint = new int[]{point[0], point[1]};
+        lastPoint = point;
         return this;
     }
 
@@ -60,10 +61,10 @@ public class Polygon extends Drawing {
         if (finish) {
             setNextCoordinate(start);
         }
-        
+
         return super.setFinished(finish);
     }
-    
+
     @Override
     public void draw(GL gl) {
         edges.stream().forEach((edge) -> {
