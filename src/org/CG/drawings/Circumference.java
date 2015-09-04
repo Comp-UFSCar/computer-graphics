@@ -7,6 +7,8 @@ import org.CG.infrastructure.Point;
 /**
  * Circumference drawing with Bresenham's algorithm
  *
+ * Reference paper: http://web.engr.oregonstate.edu/~sllu/bcircle.pdf
+ * 
  * @author ldavid
  */
 public class Circumference extends Drawing {
@@ -14,9 +16,9 @@ public class Circumference extends Drawing {
     int radius;
 
     /**
-     * Adjusts the center of the circle
+     * Adjusts the center of the circumference
      *
-     * @param point new center of the circle
+     * @param point new center of the circumference
      * @return this
      */
     @Override
@@ -27,9 +29,9 @@ public class Circumference extends Drawing {
     }
 
     /**
-     * Adjusts the radius of the circle
+     * Adjusts the radius of the circumference
      *
-     * @param point one of the points at the edge of the circle
+     * @param point one of the points at the edge of the circumference
      * @return this
      */
     @Override
@@ -53,7 +55,7 @@ public class Circumference extends Drawing {
         int radiusError = 0;
 
         while (x >= y) {
-            drawCirclePoints(gl, x, y);
+            drawCircumferencePoints(gl, x, y);
 
             y++;
             radiusError += yChange;
@@ -66,7 +68,7 @@ public class Circumference extends Drawing {
         }
     }
 
-    private void drawCirclePoints(GL gl, int x, int y) {
+    private void drawCircumferencePoints(GL gl, int x, int y) {
         int sx = start.getX();
         int sy = start.getY();
         gl.glVertex2i(sx + x, sy + y);
