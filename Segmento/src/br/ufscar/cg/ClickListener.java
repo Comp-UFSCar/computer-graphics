@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package br.ufscar.cg;
+package org.yourorghere;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,10 +6,10 @@ import java.util.ArrayList;
 
 /**
  *
- * @author camilo.moreira
+ *Classe criada para manipular os eventos do mouse e capturar os valore de x e y quando
+ * ocorrer um clique.
  */
 public class ClickListener implements MouseListener{
-    
     private ArrayList< int[]> pontosClicados = new ArrayList<int[]>();
     boolean outroBotao = false;
     
@@ -58,5 +52,4 @@ public class ClickListener implements MouseListener{
     public void mouseExited(MouseEvent e) {
         
     }
-    
 }
