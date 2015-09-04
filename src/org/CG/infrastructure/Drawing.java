@@ -14,7 +14,8 @@ public abstract class Drawing {
     protected int glDrawingType = GL.GL_POINTS;
 
     public Drawing() {
-        // All drawings, except by polygons, are initiated with finished as true, as they don't allow second clicks.
+        // All drawings, except by polygons, are initiated with finished
+        // as true, as they don't allow second clicks.
         finished = true;
     }
 
@@ -22,7 +23,8 @@ public abstract class Drawing {
 
     public Drawing setNextCoordinate(Point point) {
         if (finished) {
-            throw new RuntimeException("Cannot set next coordinate if drawing is already finished.");
+            throw new RuntimeException(
+                "Cannot set next coordinate if drawing is already finished.");
         }
 
         return this;
