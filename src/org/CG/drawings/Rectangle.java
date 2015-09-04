@@ -13,9 +13,7 @@ public class Rectangle extends Drawing {
     protected Point end;
 
     public Rectangle() {
-        super();
-
-        glDrawingType = GL.GL_POLYGON;
+        super(GL.GL_POLYGON);
     }
 
     @Override

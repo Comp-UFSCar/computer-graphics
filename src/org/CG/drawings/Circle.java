@@ -10,6 +10,6 @@ import javax.media.opengl.GL;
 public class Circle extends Circumference {
 
     public Circle() {
-        glDrawingType = GL.GL_LINE_LOOP;
+        super(GL.GL_LINE_LOOP);
     }
 }

@@ -12,16 +12,25 @@ public abstract class Drawing {
     protected Point start;
     protected ColorByte color;
     protected boolean finished;
-    protected int glDrawingType = GL.GL_POINTS;
+    protected final int glDrawingType;
 
     /**
-     * Instantiates a not finished drawing using GL_POINTS as the drawing
+     * Instantiates a finished drawing using GL_POINTS as the drawing
      * method.
      */
     public Drawing() {
+        this(GL.GL_POINTS);
+    }
+    
+    /**
+     * Instantiates a finished drawing with a given drawing method.
+     * @param drawingMethod the drawing method used
+     */
+    public Drawing(int drawingMethod) {
         // All drawings, except by polygons, are initiated with finished
         // as true, as they don't allow second clicks.
         finished = true;
+        this.glDrawingType = drawingMethod;
     }
 
     /**

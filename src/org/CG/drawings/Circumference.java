@@ -14,6 +14,14 @@ import org.CG.infrastructure.Point;
 public class Circumference extends Drawing {
 
     int radius;
+    
+    public Circumference() {
+        super();
+    }
+    
+    protected Circumference(int drawingMethod) {
+        super(drawingMethod);
+    }
 
     /**
      * Adjusts the radius of the circumference
