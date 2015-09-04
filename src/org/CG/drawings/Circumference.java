@@ -8,17 +8,25 @@ import org.CG.infrastructure.Point;
  * Circumference drawing with Bresenham's algorithm
  *
  * Reference paper: http://web.engr.oregonstate.edu/~sllu/bcircle.pdf
- * 
+ *
  * @author ldavid
  */
 public class Circumference extends Drawing {
 
-    int radius;
-    
+    private int radius;
+
+    /**
+     * Instantiates a new Circumference.
+     */
     public Circumference() {
         super();
     }
-    
+
+    /**
+     * Instantiates a new Circumference with a different drawing method.
+     *
+     * @param drawingMethod the GL drawing method
+     */
     protected Circumference(int drawingMethod) {
         super(drawingMethod);
     }
