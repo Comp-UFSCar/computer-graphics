@@ -34,7 +34,6 @@ import org.CG.infrastructure.Drawing;
 public class CGAssignment1 implements GLEventListener {
 
     static int[] start, end;
-    static boolean movingElement;
     private static Editor editor;
 
     public static void main(String[] args) {
@@ -169,9 +168,10 @@ public class CGAssignment1 implements GLEventListener {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
 
-        if (height <= 0) { // avoid a divide by zero error!
+        if (height <= 0) {
             height = 1;
         }
+        
         final float h = (float) width / (float) height;
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
