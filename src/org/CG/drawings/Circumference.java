@@ -16,19 +16,6 @@ public class Circumference extends Drawing {
     int radius;
 
     /**
-     * Adjusts the center of the circumference
-     *
-     * @param point new center of the circumference
-     * @return this
-     */
-    @Override
-    public Drawing translate(Point point) {
-        super.translate(point);
-        updateLastCoordinate(point);
-        return this;
-    }
-
-    /**
      * Adjusts the radius of the circumference
      *
      * @param point one of the points at the edge of the circumference

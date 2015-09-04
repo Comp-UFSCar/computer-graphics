@@ -10,20 +10,20 @@ import org.CG.infrastructure.Point;
  */
 public class Rectangle extends Drawing {
 
+    protected Point end;
+
     public Rectangle() {
         super();
 
         glDrawingType = GL.GL_POLYGON;
     }
 
-    private Point end;
-
     @Override
     public Drawing translate(Point point) {
         Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
 
         start = point;
-        end = point.move(t.getX(), t.getX());
+        end = point.move(t.getX(), t.getY());
 
         return this;
     }
@@ -36,14 +36,17 @@ public class Rectangle extends Drawing {
 
     @Override
     public void drawShape(GL gl) {
-        if (end == null) {
-            return;
-        }
-
         gl.glVertex2i(start.getX(), start.getY());
         gl.glVertex2i(start.getX(), end.getY());
         gl.glVertex2i(end.getX(), end.getY());
         gl.glVertex2i(end.getX(), start.getY());
     }
 
+    @Override
+    public Drawing setStart(Point start) {
+        super.setStart(start);
+        end = start;
+
+        return this;
+    }
 }

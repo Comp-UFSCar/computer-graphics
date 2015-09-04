@@ -13,6 +13,7 @@ public class Line extends Drawing {
 
     private Point end;
     private Point translated_start;
+    private Point translated_end;
     private int incE;
     private int incNE;
     private int dx;
@@ -35,8 +36,8 @@ public class Line extends Drawing {
     public Drawing translate(Point point) {
         Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
         start = point;
-        end = new Point(point.getX() + t.getX(), point.getY() + t.getX());
-        return updateLastCoordinate(end);
+        
+        return updateLastCoordinate(end.move(t));
     }
 
     /**
@@ -55,16 +56,16 @@ public class Line extends Drawing {
         octant = findOctant(dx, dy);
 
         translated_start = translateToFirstOctant(start);
-        end = translateToFirstOctant(end);
+        translated_end = translateToFirstOctant(end);
 
-        if (translated_start.getX() > end.getX()) {
+        if (translated_start.getX() > translated_end.getX()) {
             Point tmp = translated_start;
-            translated_start = end;
-            end = tmp;
+            translated_start = translated_end;
+            translated_end = tmp;
         }
 
-        dx = end.getX() - translated_start.getX();
-        dy = end.getY() - translated_start.getY();
+        dx = translated_end.getX() - translated_start.getX();
+        dy = translated_end.getY() - translated_start.getY();
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
@@ -87,7 +88,7 @@ public class Line extends Drawing {
         Point point = restoreToOriginalOctant(translated_start);
         gl.glVertex2i(point.getX(), point.getY());
 
-        while (x < end.getX()) {
+        while (x < translated_end.getX()) {
             if (d <= 0) {
                 d += incNE;
             } else {

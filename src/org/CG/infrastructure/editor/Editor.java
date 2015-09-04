@@ -96,7 +96,7 @@ public class Editor {
         } else if (mode == Mode.MOVING) {
             drawings
                     .getLast()
-                    .setStart(point);
+                    .translate(point);
             
         } else if (mode == Mode.DRAWING) {
             drawings

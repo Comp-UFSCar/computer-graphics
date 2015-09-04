@@ -1,6 +1,5 @@
 package org.CG.drawings;
 
-import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.Point;
 
@@ -8,35 +7,24 @@ import org.CG.infrastructure.Point;
  *
  * @author ldavid
  */
-public class Square extends Drawing {
+public class Square extends Rectangle {
 
-    private int width;
-    private int height;
-
-    public Square() {
-        super();
-        
-        this.width = 0;
-        this.height = 0;
-        glDrawingType = GL.GL_POLYGON;
-    }
-
+    /**
+     * Update last coordinate based on point, but maintaining proportion
+     * of 1.0 for sides.
+     *
+     * @param point
+     * @return this
+     */
     @Override
     public Drawing updateLastCoordinate(Point point) {
-        int s0 = point.getX() - start.getX();
-        int s1 = point.getY() - start.getY();
+        int dx = point.getX() - start.getX();
+        int dy = point.getY() - start.getY();
 
-        width = Math.abs(s0) >= Math.abs(s1) ? s0 : s1;
-        height = s1 > 0 ? Math.abs(width) : -Math.abs(width);
+        end = Math.abs(dx) > Math.abs(dy)
+            ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx))
+            : start.move((int) Math.signum(dx) * Math.abs(dy), dy);
 
         return this;
-    }
-
-    @Override
-    public void drawShape(GL gl) {
-        gl.glVertex2i(start.getX(), start.getY());
-        gl.glVertex2i(start.getX() + width, start.getY());
-        gl.glVertex2i(start.getX() + width, start.getY() + height);
-        gl.glVertex2i(start.getX(), start.getY() + height);
     }
 }
