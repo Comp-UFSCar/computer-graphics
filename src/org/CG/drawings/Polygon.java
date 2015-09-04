@@ -62,13 +62,13 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing setFinished(boolean finish) {
+    public Drawing isFinished(boolean finish) {
         // Draws the last vector, linking the last coordinate with the first one.
         if (finish) {
             setNextCoordinate(start);
         }
 
-        return super.setFinished(finish);
+        return super.isFinished(finish);
     }
 
     @Override

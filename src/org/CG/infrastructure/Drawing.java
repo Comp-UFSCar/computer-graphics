@@ -108,7 +108,7 @@ public abstract class Drawing {
      * @param f
      * @return this
      */
-    public Drawing setFinished(boolean f) {
+    public Drawing isFinished(boolean f) {
         finished = f;
         return this;
     }
@@ -118,7 +118,7 @@ public abstract class Drawing {
      *
      * @return true if the drawing is finished, false otherwise.
      */
-    public boolean getFinished() {
+    public boolean isFinished() {
         return finished;
     }
 }

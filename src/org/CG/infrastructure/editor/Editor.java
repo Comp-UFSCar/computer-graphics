@@ -52,9 +52,9 @@ public class Editor {
     }
     
     public void finishLastDrawing() {
-        if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
+        if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
             Drawing l = drawings.getLast();
-            l.setFinished(true);
+            l.isFinished(true);
         }
     }
     
@@ -70,7 +70,7 @@ public class Editor {
         
         mode = Mode.DRAWING;
         
-        if (!drawings.isEmpty() && !drawings.getLast().getFinished()) {
+        if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
             drawings.getLast().setNextCoordinate(point);
             return;
         }
