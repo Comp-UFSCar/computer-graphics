@@ -11,6 +11,7 @@ public abstract class Drawing {
     protected Point start;
     protected ColorByte color;
     protected boolean finished;
+    protected int glDrawingType = GL.GL_POINTS;
 
     public Drawing() {
         // All drawings, except by polygons, are initiated with finished as true, as they don't allow second clicks.
@@ -27,7 +28,16 @@ public abstract class Drawing {
         return this;
     }
 
-    abstract public void draw(GL gl);
+    public void draw(GL gl) {
+        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
+        gl.glBegin(glDrawingType);
+
+        drawShape(gl);
+
+        gl.glEnd();
+    }
+
+    abstract protected void drawShape(GL gl);
 
     public Drawing translate(Point point) {
         return setStart(point);

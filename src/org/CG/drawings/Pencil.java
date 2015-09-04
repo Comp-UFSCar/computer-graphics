@@ -60,10 +60,7 @@ public class Pencil extends Drawing {
      * @param gl JOGL object
      */
     @Override
-    public void draw(GL gl) {
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glBegin(GL.GL_POINTS);
-
+    public void drawShape(GL gl) {
         points.stream().forEach((point) -> {
             for (int i = point.getX() - 1; i <= point.getX() + 1; i++) {
                 for (int j = point.getY() - 1; j <= point.getY() + 1; j++) {
@@ -71,7 +68,5 @@ public class Pencil extends Drawing {
                 }
             }
         });
-
-        gl.glEnd();
     }
 }

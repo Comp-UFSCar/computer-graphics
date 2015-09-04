@@ -15,6 +15,10 @@ public class Circle extends Drawing {
 
     private int radius;
 
+    public Circle() {
+        glDrawingType = GL.GL_LINE_LOOP;
+    }
+    
     /**
      * Adjusts the center of the circle
      *
@@ -39,7 +43,7 @@ public class Circle extends Drawing {
         radius = (int) start.euclidianDistance(point);
         return this;
     }
-
+    
     /**
      * Draws the circle on screen. Uses a variant of Bresenham's Algorithm with
      * GL.GL_LINE_LOOP for filling.
@@ -47,10 +51,7 @@ public class Circle extends Drawing {
      * @param gl JOGL object
      */
     @Override
-    public void draw(GL gl) {
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glBegin(GL.GL_LINE_LOOP);
-
+    protected void drawShape(GL gl) {
         int x = radius;
         int y = 0;
         int xChange = 1 - 2 * radius;
@@ -69,8 +70,6 @@ public class Circle extends Drawing {
                 xChange += 2;
             }
         }
-
-        gl.glEnd();
     }
 
     private void drawCirclePoints(GL gl, int x, int y) {

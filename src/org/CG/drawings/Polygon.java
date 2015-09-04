@@ -31,6 +31,12 @@ public class Polygon extends Drawing {
 
     @Override
     public Drawing translate(Point point) {
+        super.translate(point);
+        
+        edges.stream().forEach((e) -> {
+            e.translate(point);
+        });
+
         return this;
     }
 
@@ -66,7 +72,7 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public void draw(GL gl) {
+    protected void drawShape(GL gl) {
         edges.stream().forEach((edge) -> {
             edge.draw(gl);
         });

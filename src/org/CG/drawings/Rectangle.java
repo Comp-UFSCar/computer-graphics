@@ -10,6 +10,12 @@ import org.CG.infrastructure.Point;
  */
 public class Rectangle extends Drawing {
 
+    public Rectangle() {
+        super();
+
+        glDrawingType = GL.GL_POLYGON;
+    }
+
     private Point end;
 
     @Override
@@ -29,20 +35,15 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public void draw(GL gl) {
+    public void drawShape(GL gl) {
         if (end == null) {
             return;
         }
-
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glBegin(GL.GL_POLYGON);
 
         gl.glVertex2i(start.getX(), start.getY());
         gl.glVertex2i(start.getX(), end.getY());
         gl.glVertex2i(end.getX(), end.getY());
         gl.glVertex2i(end.getX(), start.getY());
-
-        gl.glEnd();
     }
 
 }

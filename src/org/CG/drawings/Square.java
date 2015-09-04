@@ -15,8 +15,10 @@ public class Square extends Drawing {
 
     public Square() {
         super();
+        
         this.width = 0;
         this.height = 0;
+        glDrawingType = GL.GL_POLYGON;
     }
 
     @Override
@@ -31,15 +33,10 @@ public class Square extends Drawing {
     }
 
     @Override
-    public void draw(GL gl) {
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glBegin(GL.GL_POLYGON);
-
+    public void drawShape(GL gl) {
         gl.glVertex2i(start.getX(), start.getY());
         gl.glVertex2i(start.getX() + width, start.getY());
         gl.glVertex2i(start.getX() + width, start.getY() + height);
         gl.glVertex2i(start.getX(), start.getY() + height);
-
-        gl.glEnd();
     }
 }

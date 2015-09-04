@@ -74,14 +74,12 @@ public class Line extends Drawing {
 
     /**
      * Draw the line on screen, using the Bresenham's middle point algorithm.
+     *
      * @param gl JOGL object to use in the drawing
      */
     @Override
-    public void draw(GL gl) {
+    protected void drawShape(GL gl) {
         // Set line color.
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glBegin(GL.GL_POINTS);
-
         int x = translated_start.getX();
         int y = translated_start.getY();
         int d = 2 * dy - dx;
@@ -101,8 +99,6 @@ public class Line extends Drawing {
             point = restoreToOriginalOctant(new Point(x, y));
             gl.glVertex2i(point.getX(), point.getY());
         }
-
-        gl.glEnd();
     }
 
     /**
@@ -112,7 +108,7 @@ public class Line extends Drawing {
      * @param dy The difference between ending-point-y and starting-point-y.
      * @return the octant, in range [0, 7]
      */
-    protected int findOctant(int dx, int dy) {
+    protected static int findOctant(int dx, int dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 
@@ -141,7 +137,7 @@ public class Line extends Drawing {
     protected Point restoreToOriginalOctant(Point pt) {
         int oct = octant;
         // handles edge case for the secondary diagonal
-        if(oct == 2) {
+        if (oct == 2) {
             oct = 6;
         } else if (oct == 6) {
             oct = 2;
