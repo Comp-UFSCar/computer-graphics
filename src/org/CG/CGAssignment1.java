@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -29,6 +28,8 @@ import org.CG.infrastructure.Drawing;
  */
 public class CGAssignment1 implements GLEventListener {
 
+    private final static String TITLE = "Line drawing over pixel matrix";
+    
     private static Editor editor;
 
     /**
@@ -44,13 +45,15 @@ public class CGAssignment1 implements GLEventListener {
         }
 
         editor = new Editor();
+        final int width = 1366;
+        final int height = 768;
 
-        final JFrame frame = new JFrame("Line drawing over pixel matrix");
+        final JFrame frame = new JFrame(TITLE);
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(new CGAssignment1());
         frame.add(canvas);
-        frame.setSize(1366, 768);
+        frame.setSize(width, height);
         final Animator animator = new Animator(canvas);
         frame.addWindowListener(new WindowAdapter() {
 
@@ -104,6 +107,24 @@ public class CGAssignment1 implements GLEventListener {
         });
 
         // Interface elements definitions.
+        JMenuBar mb = createMenuBar();
+
+        // Center frame
+        frame.setJMenuBar(mb);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        animator.start();
+    }
+
+    private static JButton createSimpleButton(String text) {
+        JButton b = new JButton(text);
+        b.setBorderPainted(false);
+        b.setFocusPainted(false);
+        b.setContentAreaFilled(false);
+        return b;
+    }
+    
+    private static JMenuBar createMenuBar() {
         JButton b;
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Draw mode");
@@ -131,20 +152,8 @@ public class CGAssignment1 implements GLEventListener {
             editor.redo();
         });
         mb.add("Redo", b);
-
-        // Center frame
-        frame.setJMenuBar(mb);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        animator.start();
-    }
-
-    private static JButton createSimpleButton(String text) {
-        JButton b = new JButton(text);
-        b.setBorderPainted(false);
-        b.setFocusPainted(false);
-        b.setContentAreaFilled(false);
-        return b;
+        
+        return mb;
     }
 
     /**
@@ -175,9 +184,7 @@ public class CGAssignment1 implements GLEventListener {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
 
-        if (height <= 0) {
-            height = 1;
-        }
+        height = Math.max(height, 1);
 
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -198,7 +205,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        editor.getDrawings().forEach((d) -> {
+        editor.getDrawings().forEach(d -> {
             d.draw(gl);
         });
 
