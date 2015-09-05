@@ -29,13 +29,14 @@ import org.CG.infrastructure.Drawing;
 public class CGAssignment1 implements GLEventListener {
 
     private final static String TITLE = "Line drawing over pixel matrix";
-    
+
     private static Editor editor;
 
     /**
      * Opens a new frame for using the CG-Assignment-1 implemented features.
      *
-     * @param args currently not used
+     * @param args if two integer are given, they will be used as width and
+     * height.
      */
     public static void main(String[] args) {
         try {
@@ -45,8 +46,18 @@ public class CGAssignment1 implements GLEventListener {
         }
 
         editor = new Editor();
-        final int width = 1366;
-        final int height = 768;
+        
+        int width = 1366;
+        int height = 768;
+        
+        if(args.length == 2) {
+            try {
+                width = Integer.parseInt(args[0]);
+                height = Integer.parseInt(args[1]);
+            } catch (NumberFormatException ex) {
+                Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
+            }
+        }
 
         final JFrame frame = new JFrame(TITLE);
         GLCanvas canvas = new GLCanvas();
@@ -123,7 +134,7 @@ public class CGAssignment1 implements GLEventListener {
         b.setContentAreaFilled(false);
         return b;
     }
-    
+
     private static JMenuBar createMenuBar() {
         JButton b;
         JMenuBar mb = new JMenuBar();
@@ -152,13 +163,14 @@ public class CGAssignment1 implements GLEventListener {
             editor.redo();
         });
         mb.add("Redo", b);
-        
+
         return mb;
     }
 
     /**
      * Initializes the GL options
-     * @param drawable 
+     *
+     * @param drawable
      */
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -174,6 +186,7 @@ public class CGAssignment1 implements GLEventListener {
 
     /**
      * Adjusts the frame according to window size
+     *
      * @param drawable GL drawable object
      * @param x x-position of the frame inside the viewport
      * @param y y-position of the frame inside the viewport
@@ -196,6 +209,7 @@ public class CGAssignment1 implements GLEventListener {
 
     /**
      * Draws the current drawings on screen
+     *
      * @param drawable JOGL drawing object
      */
     @Override
@@ -214,9 +228,10 @@ public class CGAssignment1 implements GLEventListener {
 
     /**
      * Currently not used.
+     *
      * @param drawable
      * @param modeChanged
-     * @param deviceChanged 
+     * @param deviceChanged
      */
     @Override
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
