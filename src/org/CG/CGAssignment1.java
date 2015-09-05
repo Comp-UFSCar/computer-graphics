@@ -25,17 +25,18 @@ import org.CG.infrastructure.editor.Editor;
 import org.CG.infrastructure.Drawing;
 
 /**
- * CGAssignment1.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel)
- * <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
+ * JOGL Frame for using the CG-Assignment-1 implemented features.
  */
 public class CGAssignment1 implements GLEventListener {
 
     static int[] start, end;
     private static Editor editor;
 
+    /**
+     * Opens a new frame for using the CG-Assignment-1 implemented features.
+     *
+     * @param args currently not used
+     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -147,6 +148,10 @@ public class CGAssignment1 implements GLEventListener {
         return b;
     }
 
+    /**
+     * Initializes the GL options
+     * @param drawable 
+     */
     @Override
     public void init(GLAutoDrawable drawable) {
         // Use debug pipeline
@@ -163,6 +168,14 @@ public class CGAssignment1 implements GLEventListener {
         gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
     }
 
+    /**
+     * Adjusts the frame according to window size
+     * @param drawable GL drawable object
+     * @param x x-position of the frame inside the viewport
+     * @param y y-position of the frame inside the viewport
+     * @param width width of the viewport
+     * @param height height of the viewport
+     */
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
@@ -171,7 +184,7 @@ public class CGAssignment1 implements GLEventListener {
         if (height <= 0) {
             height = 1;
         }
-        
+
         final float h = (float) width / (float) height;
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -181,6 +194,10 @@ public class CGAssignment1 implements GLEventListener {
         gl.glLoadIdentity();
     }
 
+    /**
+     * Draws the current drawings on screen
+     * @param drawable JOGL drawing object
+     */
     @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
@@ -197,6 +214,12 @@ public class CGAssignment1 implements GLEventListener {
         gl.glFlush();
     }
 
+    /**
+     * Currently not used.
+     * @param drawable
+     * @param modeChanged
+     * @param deviceChanged 
+     */
     @Override
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
