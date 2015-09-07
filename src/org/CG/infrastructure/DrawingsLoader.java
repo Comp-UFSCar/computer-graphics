@@ -33,7 +33,7 @@ public class DrawingsLoader {
      * @param classes if a file isn't loaded but still is in the directory
      * @throws ClassNotFoundException
      */
-    private static void checkDirectory(File directory, String pckgname,
+    protected static void checkDirectory(File directory, String pckgname,
         List<Class<?>> classes) throws ClassNotFoundException {
         File tmpDirectory;
 
@@ -68,7 +68,7 @@ public class DrawingsLoader {
      * jar file
      * @throws IOException if it can't correctly read from the jar file.
      */
-    private static void checkJarFile(JarURLConnection connection,
+    protected static void checkJarFile(JarURLConnection connection,
         String pckgname, List<Class<?>> classes)
         throws ClassNotFoundException, IOException {
         final JarFile jarFile = connection.getJarFile();
@@ -97,7 +97,7 @@ public class DrawingsLoader {
      * @return a list of classes that exist within that package
      * @throws ClassNotFoundException if something went wrong
      */
-    public static List<Class<?>> getClassesForPackage(String pckgname)
+    protected static List<Class<?>> getClassesForPackage(String pckgname)
         throws ClassNotFoundException {
         final List<Class<?>> classes = new LinkedList<>();
 
