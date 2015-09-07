@@ -1,5 +1,12 @@
 # CG - Assignment 1
 
+* Repository: [github.com/lucasdavid/CG-Assignment-1](https://github.com/lucasdavid/CG-Assignment-1)
+* Language: Java
+* Authors:
+  * [Diorge Brognara](https://github.com/diorge)
+  * [Fábio Gunkel](https://github.com/Chuckrute)
+  * [Lucas David](https://github.com/lucasdavid)
+
 ## Introduction
 
 Drawing of elementary geometric forms using OpenGL.
