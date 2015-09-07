@@ -11,11 +11,13 @@
 
 Drawing of elementary geometric forms using OpenGL.
 In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.ac.at/~kriegl/Skripten/CG/node25.html),
-polygons (which are dealt here as, essentially, collections of lines) and circles using [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
+polygons (which are dealt here as, essentially, collections of lines) and circles using
+[Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
 ## Installing and running
 
-If you're having problems installing or executing this project, follow this [steps](https://github.com/lucasdavid/CG-Assignment-1/blob/master/INSTALL.md).
+If you're having problems installing or executing this project,
+follow this [steps](https://github.com/lucasdavid/CG-Assignment-1/blob/master/INSTALL.md).
 
 ## Usage
 
@@ -32,11 +34,14 @@ of the form. Releasing the button will then commit it.
 `Polygons` can have their sides drawn in the exact same manner as you would draw a `line`.
 Once you release the left mouse-button, though, you have two options:
 
-* Click and hold the left mouse-button, creating a line which has as starting coordinate
-the end of the previous one.
+* Click and hold the left mouse-button again, creating a line that starts at the end of the previous one.
 * Click with the right mouse-button, commiting the form. If the form is disconnected,
 a new line will be drawn between the end coordinate of the last side and the first coordinate
 of the first one.
+
+An alternative way to draw polygons is to hold the left mouse-button the whole time,
+right-clicking when you want to add a vertex to the polygon. Finally, release the left button
+and click with the right one to commit the polygon.
 
 #### Rectangles
 
@@ -49,7 +54,10 @@ from the two vectors `(x, 0)` and `(0, y)`.
 is considered for its size increase/decrease (the one with greater norm).
 
 ### Undoing and redoing
-You can undo/redo with your mouse wheel.
+You can undo/redo by rotating the mouse wheel.
+
+### Moving structures
+The last structure added is translated when `ctrl` is held.
 
 ## Extending
 
