@@ -2,9 +2,12 @@ package org.CG.infrastructure;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -13,6 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sun.net.www.protocol.file.FileURLConnection;
 
 /**
  *
@@ -20,62 +24,152 @@ import java.util.logging.Logger;
  */
 public class DrawingsLoader {
 
-    protected static LinkedList<String> getClassNamesFromPackage(String packageName) throws IOException, URISyntaxException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL packageURL;
-        LinkedList<String> names = new LinkedList<>();
+    static final String drawingPackages = "org.CG.drawings";
 
-        packageName = packageName.replace(".", "/");
-        packageURL = classLoader.getResource(packageName);
+    /**
+     * Private helper method
+     *
+     * @param directory The directory to start with
+     * @param pckgname The package name to search for. Will be needed for
+     * getting the Class object.
+     * @param classes if a file isn't loaded but still is in the directory
+     * @throws ClassNotFoundException
+     */
+    private static void checkDirectory(File directory, String pckgname,
+        List<Class<?>> classes) throws ClassNotFoundException {
+        File tmpDirectory;
 
-        if (packageURL.getProtocol().equals("jar")) {
-            String jarFileName;
-            JarFile jf;
-            Enumeration<JarEntry> jarEntries;
-            String entryName;
+        if (directory.exists() && directory.isDirectory()) {
+            final String[] files = directory.list();
 
-            // build jar file name, then loop through zipped entries
-            jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
-            jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-            System.out.println(">" + jarFileName);
-            jf = new JarFile(jarFileName);
-            jarEntries = jf.entries();
-            while (jarEntries.hasMoreElements()) {
-                entryName = jarEntries.nextElement().getName();
-                if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5) {
-                    entryName = entryName.substring(packageName.length(), entryName.lastIndexOf('.'));
-                    names.add(entryName);
+            for (final String file : files) {
+                if (file.endsWith(".class")) {
+                    try {
+                        classes.add(Class.forName(pckgname + '.'
+                            + file.substring(0, file.length() - 6)));
+                    } catch (final NoClassDefFoundError e) {
+                        // do nothing. this class hasn't been found by the
+                        // loader, and we don't care.
+                    }
+                } else if ((tmpDirectory = new File(directory, file))
+                    .isDirectory()) {
+                    checkDirectory(tmpDirectory, pckgname + "." + file, classes);
                 }
             }
+        }
+    }
 
-            // loop through files in classpath
-        } else {
-            URI uri = new URI(packageURL.toString());
-            File folder = new File(uri.getPath());
-            // won't work with path which contains blank (%20)
-            // File folder = new File(packageURL.getFile()); 
-            File[] contenuti = folder.listFiles();
-            String entryName;
-            for (File actual : contenuti) {
-                entryName = actual.getName();
-                entryName = entryName.substring(0, entryName.lastIndexOf('.'));
-                names.add(entryName);
+    /**
+     * Private helper method.
+     *
+     * @param connection the connection to the jar
+     * @param pckgname the package name to search for
+     * @param classes the current ArrayList of all classes. This method will
+     * simply add new classes.
+     * @throws ClassNotFoundException if a file isn't loaded but still is in the
+     * jar file
+     * @throws IOException if it can't correctly read from the jar file.
+     */
+    private static void checkJarFile(JarURLConnection connection,
+        String pckgname, List<Class<?>> classes)
+        throws ClassNotFoundException, IOException {
+        final JarFile jarFile = connection.getJarFile();
+        final Enumeration<JarEntry> entries = jarFile.entries();
+        String name;
+
+        for (JarEntry jarEntry = null; entries.hasMoreElements()
+            && ((jarEntry = entries.nextElement()) != null);) {
+            name = jarEntry.getName();
+
+            if (name.contains(".class")) {
+                name = name.substring(0, name.length() - 6).replace('/', '.');
+
+                if (name.contains(pckgname)) {
+                    classes.add(Class.forName(name));
+                }
             }
         }
-        return names;
+    }
+
+    /**
+     * Attempts to list all the classes in the specified package as determined
+     * by the context class loader
+     *
+     * @param pckgname the package name to search
+     * @return a list of classes that exist within that package
+     * @throws ClassNotFoundException if something went wrong
+     */
+    public static List<Class<?>> getClassesForPackage(String pckgname)
+        throws ClassNotFoundException {
+        final List<Class<?>> classes = new LinkedList<>();
+
+        try {
+            final ClassLoader cld = Thread.currentThread()
+                .getContextClassLoader();
+
+            if (cld == null) {
+                throw new ClassNotFoundException("Can't get class loader.");
+            }
+
+            final Enumeration<URL> resources = cld.getResources(pckgname
+                .replace('.', '/'));
+            URLConnection connection;
+
+            for (URL url = null; resources.hasMoreElements()
+                && ((url = resources.nextElement()) != null);) {
+                try {
+                    connection = url.openConnection();
+
+                    if (connection instanceof JarURLConnection) {
+                        checkJarFile((JarURLConnection) connection, pckgname,
+                            classes);
+                    } else if (connection instanceof FileURLConnection) {
+                        try {
+                            checkDirectory(
+                                new File(URLDecoder.decode(url.getPath(),
+                                        "UTF-8")), pckgname, classes);
+                        } catch (final UnsupportedEncodingException ex) {
+                            throw new ClassNotFoundException(
+                                pckgname
+                                + " does not appear to be a valid package (Unsupported encoding)",
+                                ex);
+                        }
+                    } else {
+                        throw new ClassNotFoundException(pckgname + " ("
+                            + url.getPath()
+                            + ") does not appear to be a valid package");
+                    }
+                } catch (final IOException ioex) {
+                    throw new ClassNotFoundException(
+                        "IOException was thrown when trying to get all resources for "
+                        + pckgname, ioex);
+                }
+            }
+        } catch (final NullPointerException ex) {
+            throw new ClassNotFoundException(
+                pckgname
+                + " does not appear to be a valid package (Null pointer exception)",
+                ex);
+        } catch (final IOException ioex) {
+            throw new ClassNotFoundException(
+                "IOException was thrown when trying to get all resources for "
+                + pckgname, ioex);
+        }
+
+        return classes;
     }
 
     public static List<Class<? extends Drawing>> getDrawingsClasses() {
         List<Class<? extends Drawing>> drawings = new LinkedList<>();
-
+        
         try {
-            for (String name : getClassNamesFromPackage("org.CG.drawings")) {
-                drawings.add(Class.forName("org.CG.drawings." + name).asSubclass(Drawing.class));
-            }
-        } catch (IOException | URISyntaxException | ClassNotFoundException ex) {
+            getClassesForPackage(drawingPackages).forEach(c -> {
+                drawings.add(c.asSubclass(Drawing.class));
+            });
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(DrawingsLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return drawings;
     }
 }

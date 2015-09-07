@@ -75,7 +75,7 @@ public class Editor {
             return;
         }
         
-        ColorByte color = ColorByte.random(rand).adjustBrightness(80);
+        ColorByte color = ColorByte.random(rand).adjustBrightness(100);
         
         try {
             drawings.add(currentDrawing.newInstance()
