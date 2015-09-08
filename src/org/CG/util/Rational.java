@@ -100,7 +100,7 @@ public final class Rational {
      * @return reduced version of this
      */
     public Rational reduce() {
-        if(numerator == 0) {
+        if (numerator == 0) {
             return new Rational(integer, 0, 1);
         }
         if (numerator % denominator != 0) {
@@ -124,6 +124,43 @@ public final class Rational {
                 (lcm / lv.denominator) * lv.numerator
                 + (lcm / rv.denominator) * rv.numerator,
                 lcm);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        final Rational reduced = this.reduce();
+        hash = 97 * hash + reduced.integer;
+        hash = 97 * hash + reduced.numerator;
+        hash = 97 * hash + reduced.denominator;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Rational other = ((Rational) obj).reduce();
+        final Rational reduced = this.reduce();
+        if (reduced.integer != other.integer) {
+            return false;
+        }
+        if (reduced.numerator != other.numerator) {
+            return false;
+        }
+        return reduced.denominator == other.denominator;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d + (%d + %d)", integer, numerator, denominator);
     }
 
 }
