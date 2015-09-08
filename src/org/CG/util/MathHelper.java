@@ -79,4 +79,17 @@ public class MathHelper {
         return a;
     }
 
+    /**
+     * Calculates the least common multiple between two integers.
+     *
+     * @param a an integer greater than zero
+     * @param b an integer greater than zero
+     * @return the least common multiple between a and b
+     */
+    public static int leastCommonMultiple(int a, int b) {
+        int dem = greatestCommonDivisor(a, b);
+        int num = Math.abs(a * b);
+        return num / dem;
+    }
+
 }
