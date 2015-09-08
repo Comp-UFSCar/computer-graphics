@@ -56,6 +56,33 @@ public final class Rational {
     }
 
     /**
+     * Gets the integral part of the rational number
+     *
+     * @return integral part (Integer)
+     */
+    public int getInteger() {
+        return integer;
+    }
+
+    /**
+     * Gets the numerator of the fraction
+     *
+     * @return Numerator
+     */
+    public int getNumerator() {
+        return numerator;
+    }
+
+    /**
+     * Gets the denominator of the fraction
+     *
+     * @return Denominator
+     */
+    public int getDenominator() {
+        return denominator;
+    }
+
+    /**
      * Creates a new equivalent Rational with a positive Denominator.
      *
      * @return a Rational with positive Denominator
