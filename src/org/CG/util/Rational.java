@@ -95,6 +95,21 @@ public final class Rational {
     }
 
     /**
+     * Creates a new, reduced Rational number.
+     *
+     * @return reduced version of this
+     */
+    public Rational reduce() {
+        if(numerator == 0) {
+            return new Rational(integer, 0, 1);
+        }
+        if (numerator % denominator != 0) {
+            return new Rational(integer, 1, denominator / numerator);
+        }
+        return this;
+    }
+
+    /**
      * Creates a new Rational from the sum of two Rational numbers.
      *
      * @param other the number to be added to this
