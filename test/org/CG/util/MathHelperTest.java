@@ -225,5 +225,17 @@ public class MathHelperTest extends TestCase {
         int result = MathHelper.greatestCommonDivisor(a, b);
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test the Least Common Multiple.
+     */
+    @Test
+    public void testLeastCommonMultiple() {
+        int a = 21;
+        int b = 6;
+        int expResult = 42;
+        int result = MathHelper.leastCommonMultiple(a, b);
+        assertEquals(expResult, result);
+    }
 
 }
