@@ -55,4 +55,28 @@ public class MathHelper {
         return (t - v0) / (v1 - v0);
     }
 
+    /**
+     * Calculates the greatest common divisor by using the Euclidean Algorithm.
+     *
+     * @param a a number greater than zero
+     * @param b a number greater than zero
+     * @return the GCD between a and b
+     */
+    public static int greatestCommonDivisor(int a, int b) {
+        if (a <= 0) {
+            throw new IllegalArgumentException("a");
+        }
+        if (b <= 0) {
+            throw new IllegalArgumentException("b");
+        }
+        while (a != b) {
+            if (a > b) {
+                a -= b;
+            } else {
+                b -= a;
+            }
+        }
+        return a;
+    }
+
 }
