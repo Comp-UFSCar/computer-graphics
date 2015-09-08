@@ -1,6 +1,7 @@
 package org.CG.util;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Test cases for Math Helper utility functions
@@ -27,6 +28,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for float overload, of class MathHelper
      * Value is between min and max
      */
+    @Test
     public void testClamp_float_inRange() {
         float min = 0.0f;
         float max = 255.0f;
@@ -40,6 +42,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for float overload, of class MathHelper
      * Value is lower than min
      */
+    @Test
     public void testClamp_float_lower() {
         float min = 10.0f;
         float max = 100.0f;
@@ -53,6 +56,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for float overload, of class MathHelper
      * Value is higher than max
      */
+    @Test
     public void testClamp_float_higher() {
         float min = 0.0f;
         float max = 100.0f;
@@ -66,6 +70,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for int overload, of class MathHelper
      * Value is between min and max
      */
+    @Test
     public void testClamp_int_inRange() {
         int min = 0;
         int max = 255;
@@ -79,6 +84,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for int overload, of class MathHelper
      * Value is lower than min
      */
+    @Test
     public void testClamp_int_lower() {
         int min = 10;
         int max = 100;
@@ -92,6 +98,7 @@ public class MathHelperTest extends TestCase {
      * Test of clamp method for int overload, of class MathHelper
      * Value is higher than max
      */
+    @Test
     public void testClamp_int_higher() {
         int min = 0;
         int max = 100;
@@ -105,6 +112,7 @@ public class MathHelperTest extends TestCase {
      * Test of lerp method, of class MathHelper.
      * t = v0
      */
+    @Test
     public void testLerp_onOrigin() {
         float v0 = 5.0f;
         float v1 = 10.0f;
@@ -118,6 +126,7 @@ public class MathHelperTest extends TestCase {
      * Test of lerp method, of class MathHelper.
      * t = v1
      */
+    @Test
     public void testLerp_onDestination() {
         float v0 = 5.0f;
         float v1 = 10.0f;
@@ -131,6 +140,7 @@ public class MathHelperTest extends TestCase {
      * Test of lerp method, of class MathHelper.
      * t is between v0 and v1
      */
+    @Test
     public void testLerp_betweenPoints() {
         float v0 = 5.0f;
         float v1 = 10.0f;
@@ -144,6 +154,7 @@ public class MathHelperTest extends TestCase {
      * Test of normalize method, of class MathHelper.
      * t = v0
      */
+    @Test
     public void testNormalize_onMinimum() {
         float v0 = 5.0f;
         float v1 = 10.0f;
@@ -157,6 +168,7 @@ public class MathHelperTest extends TestCase {
      * Test of normalize method, of class MathHelper.
      * t = v1
      */
+    @Test
     public void testNormalize_onMaximum() {
         float v0 = 5.0f;
         float v1 = 10.0f;
@@ -170,6 +182,7 @@ public class MathHelperTest extends TestCase {
      * Test of normalize method, of class MathHelper.
      * t is between v0 and v1
      */
+    @Test
     public void testNormalize_betweenPoints() {
         float v0 = 5.0f;
         float v1 = 10.0f;
