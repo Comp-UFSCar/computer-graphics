@@ -58,8 +58,8 @@ public class MathHelper {
     /**
      * Calculates the greatest common divisor by using the Euclidean Algorithm.
      *
-     * @param a a number greater than zero
-     * @param b a number greater than zero
+     * @param a an integer greater than zero
+     * @param b an integer greater than zero
      * @return the GCD between a and b
      */
     public static int greatestCommonDivisor(int a, int b) {
