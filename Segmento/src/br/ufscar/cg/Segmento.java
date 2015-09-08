@@ -18,7 +18,16 @@ import java.nio.IntBuffer;
 
 /**
  * Classe onde os métodos da OpenGl são implementados por meio da JOGL, e onde se encontram 
- * os algoritmos para poder desenhar o segmento.
+ * os algoritmos para poder desenhar o segmento. <br><br>
+ *
+ * Autores:<br>
+ * Breno da Silveira Souza RA: 551481<br>
+ * Camilo Moreira RA: 359645<br>
+ * João Paulo Soares RA: 408034
+ * 
+ * @author João Paulo
+ * @author Breno Silveira
+ * @author Camilo Moreira
  */
 public class Segmento implements GLEventListener {
 
@@ -59,17 +68,9 @@ public class Segmento implements GLEventListener {
     }
 
     public void init(GLAutoDrawable drawable) {
-        // Use debug pipeline
-        // drawable.setGL(new DebugGL(drawable.getGL()));
 
         final GL gl = drawable.getGL();
-        //System.err.println("INIT GL IS: " + gl.getClass().getName());
-
-        // Enable VSync
-        //gl.setSwapInterval(1);
-        // Setup the drawing area and shading mode
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-        //gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
 
     }
 
@@ -89,6 +90,7 @@ public class Segmento implements GLEventListener {
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
+    
     /**
      * Nesse método os valores de x e y na posição do clique são recuperados, 
      * e o método drawLine é chamado em um loop passando como parâmetros os valores
@@ -126,37 +128,45 @@ public class Segmento implements GLEventListener {
     /**
     * Método drawLine realiza a conversão matricial do segmento de reta, além
     * de ajustar os pontos para que o algoritmo funcione em um ângulo que não
-    * pertença ao primeiro octante.
+    * pertença ao segundo octante.<br><br>
+    * 
     * A primeira parte irá corrigir o sistema de coordernada entre o clique do 
     * mouse e a ViewPort. É obtido o tamanho da ViewPort e os pontos
-    * são refletidos em relação ao eixo das abcissas    
+    * são refletidos em relação ao eixo das abcissas.
     * Foi criado um IntBuffer para 4 inteiros e com o comando "gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);" 
     * e depois as coordenadas da ViewPort (x0,y0,width,height) foram obtidas
-    * As coordenadas do eixo y foram ajustadas atribuindo aos valores de y0 e y1 ao valor da altura
+    * As coordenadas do eixo y foram ajustadas atribuindo aos valores de y0 e y1 o valor da altura
     * da viewport subtraido pelo valor do y obtido a partir do clique. Isso se deve ao fato de que 
-    * a posicao (0,0) pro mouse se localiza no canto superior esquerdo, enquanto que na viewport se
-    * localiza no canto inferior esquerdo.
+    * a posicao (0,0) para o mouse se localiza no canto superior esquerdo, enquanto que na viewport se
+    * localiza no canto inferior esquerdo.<br><br>
+    * 
     * Uma variavel lógica, dx_menor_dy, foi criada para servir como condição sobre a inclinação
     * da reta estar entre 0 e 45, ou 46 e 90 graus. Se a reta estiver entre 45 e 90, o dx (x1 -x0) será 
-    * maior que o dy (y1 -y0), caso contrário, será menor.
+    * maior que o dy (y1 -y0), caso contrário, será menor.<br><br>
+    * 
     * Antes de implementar o algoritmo da reta, foram feitas algumas verificações. A primeira é feita a
     * partir do cálculo de dx e dy. Se o valor em módulo de dx é menor que o valor em módulo de dy,
     * a reta não se encontra com uma inclinação entre 0 e 45. Para poder utilizar o algoritmo a inclinação
     * deve ser menor que 45, então é feita uma reflexão da reta y = x. A reflexão é feita trocando x_i por y_i
-    * e vice versa, onde i = 0 e 1. A próxima parte do algoritmo verifica se x0 é menor que x1. Isso se 
+    * e vice versa, onde i = 0 e 1. <br><br>
+    * 
+    * A próxima parte do algoritmo verifica se x0 é menor que x1. Isso se 
     * deve ao fato de que a reta sempre eh desenhada da esquerda para a direita. Se o valor de x0 e x1 não estão
     * em ordem,  trocamos os pontos (x0,y0) e (x1,y1) de lugar para que a reta seja desenhada da esquerda para a
-    * direita. Apés isso, é verificado o sinal de dy. Se dy eh negativo, a reta é decrescente. Esse teste
+    * direita. <br><br>
+    * 
+    * Apés isso, é verificado o sinal de dy. Se dy eh negativo, a reta é decrescente. Esse teste
     * serve para guiar na execução do algoritmo da reta. Se dy for negativo, ao invés de incrementar durante a
     * execução, deve decrementar, para que a reta seja desenhada corretamente. Durante a execução do
     * algoritmo, é verificado também o valor da variavel booleana dx_menor_dy. Se ela for verdadeira
     * o ponto deve ser desenhado na reflexão, o que justifica a passagem dos parametros x e y de forma
     * trocada. Se for falso, os parametros sao passados corretamente.
-    * @param gl eh o objeto GL que sera desenhado
-    * @param x0 eh o valor do x do primeiro clique
-    * @param y0 eh o valor do y do primeiro clique
-    * @param x1 eh o valor do x do segundo clique
-    * @param y1 eh o valor do y do segundo clique
+    * 
+    * @param gl objeto GL que sera desenhado
+    * @param x0 valor do x do primeiro clique
+    * @param y0 valor do y do primeiro clique
+    * @param x1 valor do x do segundo clique
+    * @param y1 valor do y do segundo clique
     */
     public void drawLine(GL gl, int x0, int y0, int x1, int y1) {
 
@@ -263,10 +273,10 @@ public class Segmento implements GLEventListener {
     }
 
     /**
-     * Classe que escreve um ponto na coordenada (x,y)
-     * @param gl o objeto a ser desenhado
-     * @param x eh a coordenada x do ponto a ser desenhado
-     * @param y eh a coordenada y do ponto a ser desenhado
+     * Método que escreve um ponto na coordenada (x,y)
+     * @param gl objeto a ser desenhado
+     * @param x coordenada x do ponto a ser desenhado
+     * @param y coordenada y do ponto a ser desenhado
      */
     public void write_pixel(GL gl, int x, int y) {
         gl.glBegin(GL.GL_POINTS);

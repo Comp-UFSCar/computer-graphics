@@ -8,6 +8,10 @@ import java.util.ArrayList;
  *
  *Classe criada para manipular os eventos do mouse e capturar os valore de x e y quando
  * ocorrer um clique.
+ * 
+ * @author João Paulo
+ * @author Breno Silveira
+ * @author Camilo Moreira
  */
 public class ClickListener implements MouseListener{
     private ArrayList< int[]> pontosClicados = new ArrayList<int[]>();
