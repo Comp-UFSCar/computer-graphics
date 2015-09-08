@@ -103,10 +103,10 @@ public final class Rational {
         if (numerator == 0) {
             return new Rational(integer, 0, 1);
         }
-        if (numerator % denominator != 0) {
-            return new Rational(integer, 1, denominator / numerator);
-        }
-        return this;
+        Rational adjusted = this.adjustSign();
+        int gcd = MathHelper.greatestCommonDivisor(Math.abs(adjusted.numerator), adjusted.denominator);
+        
+        return new Rational(adjusted.integer, adjusted.numerator / gcd, adjusted.denominator / gcd);
     }
 
     /**
