@@ -5,28 +5,28 @@ import org.junit.Test;
 
 /**
  * Test cases for Math Helper utility functions
- * 
+ *
  * @author Diorge-Mephy
  */
 public class MathHelperTest extends TestCase {
-    
+
     public MathHelperTest(String testName) {
         super(testName);
     }
-    
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
     /**
-     * Test of clamp method for float overload, of class MathHelper
-     * Value is between min and max
+     * Test of clamp method for float overload, of class MathHelper Value is
+     * between min and max
      */
     @Test
     public void testClamp_float_inRange() {
@@ -37,10 +37,10 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.clamp(min, max, value);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of clamp method for float overload, of class MathHelper
-     * Value is lower than min
+     * Test of clamp method for float overload, of class MathHelper Value is
+     * lower than min
      */
     @Test
     public void testClamp_float_lower() {
@@ -51,10 +51,10 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.clamp(min, max, value);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of clamp method for float overload, of class MathHelper
-     * Value is higher than max
+     * Test of clamp method for float overload, of class MathHelper Value is
+     * higher than max
      */
     @Test
     public void testClamp_float_higher() {
@@ -66,9 +66,9 @@ public class MathHelperTest extends TestCase {
         assertEquals(expResult, result, 0.0);
     }
 
-/**
-     * Test of clamp method for int overload, of class MathHelper
-     * Value is between min and max
+    /**
+     * Test of clamp method for int overload, of class MathHelper Value is
+     * between min and max
      */
     @Test
     public void testClamp_int_inRange() {
@@ -79,10 +79,10 @@ public class MathHelperTest extends TestCase {
         int result = MathHelper.clamp(min, max, value);
         assertEquals(expResult, result);
     }
-    
+
     /**
-     * Test of clamp method for int overload, of class MathHelper
-     * Value is lower than min
+     * Test of clamp method for int overload, of class MathHelper Value is lower
+     * than min
      */
     @Test
     public void testClamp_int_lower() {
@@ -93,10 +93,10 @@ public class MathHelperTest extends TestCase {
         int result = MathHelper.clamp(min, max, value);
         assertEquals(expResult, result);
     }
-    
+
     /**
-     * Test of clamp method for int overload, of class MathHelper
-     * Value is higher than max
+     * Test of clamp method for int overload, of class MathHelper Value is
+     * higher than max
      */
     @Test
     public void testClamp_int_higher() {
@@ -109,8 +109,7 @@ public class MathHelperTest extends TestCase {
     }
 
     /**
-     * Test of lerp method, of class MathHelper.
-     * t = v0
+     * Test of lerp method, of class MathHelper. t = v0
      */
     @Test
     public void testLerp_onOrigin() {
@@ -121,10 +120,9 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.lerp(v0, v1, t);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of lerp method, of class MathHelper.
-     * t = v1
+     * Test of lerp method, of class MathHelper. t = v1
      */
     @Test
     public void testLerp_onDestination() {
@@ -135,10 +133,9 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.lerp(v0, v1, t);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of lerp method, of class MathHelper.
-     * t is between v0 and v1
+     * Test of lerp method, of class MathHelper. t is between v0 and v1
      */
     @Test
     public void testLerp_betweenPoints() {
@@ -151,8 +148,7 @@ public class MathHelperTest extends TestCase {
     }
 
     /**
-     * Test of normalize method, of class MathHelper.
-     * t = v0
+     * Test of normalize method, of class MathHelper. t = v0
      */
     @Test
     public void testNormalize_onMinimum() {
@@ -163,10 +159,9 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.normalize(v0, v1, t);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of normalize method, of class MathHelper.
-     * t = v1
+     * Test of normalize method, of class MathHelper. t = v1
      */
     @Test
     public void testNormalize_onMaximum() {
@@ -177,10 +172,9 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.normalize(v0, v1, t);
         assertEquals(expResult, result, 0.0);
     }
-    
+
     /**
-     * Test of normalize method, of class MathHelper.
-     * t is between v0 and v1
+     * Test of normalize method, of class MathHelper. t is between v0 and v1
      */
     @Test
     public void testNormalize_betweenPoints() {
@@ -191,5 +185,45 @@ public class MathHelperTest extends TestCase {
         float result = MathHelper.normalize(v0, v1, t);
         assertEquals(expResult, result, 0.0);
     }
+
+    /**
+     * Test GCD when a is less than or equal zero.
+     */
+    @Test
+    public void testGreatestCommonDivisor_aBelowOne() {
+        int a = 0;
+        int b = 5;
+        try {
+            int result = MathHelper.greatestCommonDivisor(a, b);
+            fail("Expected exception not thrown");
+        } catch (IllegalArgumentException ex) {
+        }
+    }
     
+    /**
+     * Test GCD when b is less than or equal zero.
+     */
+    @Test
+    public void testGreatestCommonDivisor_bBelowOne() {
+        int a = 2;
+        int b = -5;
+        try {
+            int result = MathHelper.greatestCommonDivisor(a, b);
+            fail("Expected exception not thrown");
+        } catch (IllegalArgumentException ex) {
+        }
+    }
+    
+    /**
+     * Test the Greatest Common Divisor.
+     */
+    @Test
+    public void testGreatestCommonDivisor() {
+        int a = 8;
+        int b = 12;
+        int expResult = 4;
+        int result = MathHelper.greatestCommonDivisor(a, b);
+        assertEquals(expResult, result);
+    }
+
 }
