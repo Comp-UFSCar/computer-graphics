@@ -160,7 +160,7 @@ public final class Rational {
 
     @Override
     public String toString() {
-        return String.format("%d + (%d + %d)", integer, numerator, denominator);
+        return String.format("%d + (%d / %d)", integer, numerator, denominator);
     }
 
 }
