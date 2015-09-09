@@ -1,6 +1,6 @@
-package org.yourorghere;
+package br.ufscar.cgm;
 
-import org.yourorghere.ClickListener;
+import br.ufscar.cgm.ClickListener;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.FPSAnimator;
@@ -17,21 +17,27 @@ import java.nio.IntBuffer;
 
 
 /**
- * Classe onde os mÈtodos da OpenGl s„o implementados por meio da JOGL, e onde se encontram 
- * os algoritmos para poder desenhar o segmento. <br><br>
+ * Classe onde os m√©todos da OpenGL s√£o implementados por meio da biblioteca JOGL e onde se encontram 
+ * os algoritmos para desenhar o segmento. <br><br>
  *
  * Autores:<br>
  * Breno da Silveira Souza RA: 551481<br>
  * Camilo Moreira RA: 359645<br>
- * Jo„o Paulo Soares RA: 408034
+ * Jo√£o Paulo Soares RA: 408034
  * 
- * @author Jo„o Paulo
  * @author Breno Silveira
  * @author Camilo Moreira
+ * @author Jo√£o Paulo
  */
 public class Segmento implements GLEventListener {
 
     private ClickListener clicks = new ClickListener();
+    
+    /**
+     * M√©todo que inicia a execu√ß√£o.
+     * 
+     * @param args 
+     */
 
     public static void main(String[] args) {
         Frame frame = new Frame("Primeiro Trebalho CG");
@@ -49,9 +55,6 @@ public class Segmento implements GLEventListener {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                // Run this on another thread than the AWT event queue to
-                // make sure the call to Animator.stop() completes before
-                // exiting
                 new Thread(new Runnable() {
 
                     public void run() {
@@ -61,7 +64,6 @@ public class Segmento implements GLEventListener {
                 }).start();
             }
         });
-        // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
@@ -79,7 +81,7 @@ public class Segmento implements GLEventListener {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
 
-        if (height <= 0) { // avoid a divide by zero error!
+        if (height <= 0) {
 
             height = 1;
         }
@@ -92,9 +94,9 @@ public class Segmento implements GLEventListener {
     }
     
     /**
-     * Nesse mÈtodo os valores de x e y na posiÁ„o do clique s„o recuperados, 
-     * e o mÈtodo drawLine È chamado em um loop passando como par‚metros os valores
-     * de x e y do primeiro e do segundo ponto.
+     * Nesse m√©todo, os valores de x e y na posi√ß√£o do clique s√£o recuperados, 
+     * e o m√©todo drawLine √© chamado em um loop passando como par√¢metros os valores
+     * de x e y de dois em dois pontos.
      * @param drawable 
      */
     public void display(GLAutoDrawable drawable) {
@@ -111,7 +113,7 @@ public class Segmento implements GLEventListener {
         gl.glVertex2i(200, 200);
         gl.glEnd();
 
-        for (int i = 0; i < clicks.size() - 1; i += 1) {
+        for (int i = 0; i < clicks.getNumeroCliques() - 1; i += 1) {
             int a[] = clicks.getClick(i);
             int b[] = clicks.getClick(i + 1);
             drawLine(gl, a[0], a[1], b[0], b[1]);
@@ -119,48 +121,37 @@ public class Segmento implements GLEventListener {
         
         if(clicks.isLastClickDifferent()){
             int a[] = clicks.getClick(0);
-            int b[] = clicks.getClick(clicks.size()-1);
+            int b[] = clicks.getClick(clicks.getNumeroCliques()-1);
             drawLine(gl, a[0], a[1], b[0], b[1]);
         }
 
     }
     
     /**
-    * MÈtodo drawLine realiza a convers„o matricial do segmento de reta, alÈm
-    * de ajustar os pontos para que o algoritmo funcione em um ‚ngulo que n„o
-    * pertenÁa ao segundo octante.<br><br>
+    * M√©todo drawLine realiza a convers√£o matricial do segmento de reta, al√©m
+    * de ajustar os pontos para que o algoritmo funcione em um √¢ngulo que n√£o
+    * perten√ßa ao primeiro octante.<br><br>
     * 
-    * A primeira parte ir· corrigir o sistema de coordernada entre o clique do 
-    * mouse e a ViewPort. … obtido o tamanho da ViewPort e os pontos
-    * s„o refletidos em relaÁ„o ao eixo das abcissas.
-    * Foi criado um IntBuffer para 4 inteiros e com o comando "gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);" 
-    * e depois as coordenadas da ViewPort (x0,y0,width,height) foram obtidas
+    * A primeira parte ir√° corrigir o sistema de coordernadas entre o clique do 
+    * mouse e a ViewPort. √â obtido o tamanho da ViewPort e os pontos
+    * s√£o refletidos em rela√ß√£o ao eixo das abcissas (meio da tela).
     * As coordenadas do eixo y foram ajustadas atribuindo aos valores de y0 e y1 o valor da altura
     * da viewport subtraido pelo valor do y obtido a partir do clique. Isso se deve ao fato de que 
     * a posicao (0,0) para o mouse se localiza no canto superior esquerdo, enquanto que na viewport se
     * localiza no canto inferior esquerdo.<br><br>
     * 
-    * Uma variavel lÛgica, dx_menor_dy, foi criada para servir como condiÁ„o sobre a inclinaÁ„o
-    * da reta estar entre 0 e 45, ou 46 e 90 graus. Se a reta estiver entre 45 e 90, o dx (x1 -x0) ser· 
-    * maior que o dy (y1 -y0), caso contr·rio, ser· menor.<br><br>
+    * Uma variavel l√≥gica, dx_menor_dy, foi criada para servir como condi√ß√£o sobre a inclina√ß√£o
+    * da reta estiver entre 0 e 45, ou 46 e 90 graus. Se a reta estiver entre 45 e 90, o dx ser√° 
+    * menor que o dy e os pontos precisam ser refletidos na reta y = x<br><br>
     * 
-    * Antes de implementar o algoritmo da reta, foram feitas algumas verificaÁıes. A primeira È feita a
-    * partir do c·lculo de dx e dy. Se o valor em mÛdulo de dx È menor que o valor em mÛdulo de dy,
-    * a reta n„o se encontra com uma inclinaÁ„o entre 0 e 45. Para poder utilizar o algoritmo a inclinaÁ„o
-    * deve ser menor que 45, ent„o È feita uma reflex„o da reta y = x. A reflex„o È feita trocando x_i por y_i
-    * e vice versa, onde i = 0 e 1. <br><br>
-    * 
-    * A prÛxima parte do algoritmo verifica se x0 È menor que x1. Isso se 
-    * deve ao fato de que a reta sempre eh desenhada da esquerda para a direita. Se o valor de x0 e x1 n„o est„o
+    * A pr√≥xima parte do algoritmo verifica se x0 √© menor que x1. Isso se 
+    * deve ao fato de que a reta sempre eh desenhada da esquerda para a direita. Se o valor de x0 e x1 n√£o est√£o
     * em ordem,  trocamos os pontos (x0,y0) e (x1,y1) de lugar para que a reta seja desenhada da esquerda para a
     * direita. <br><br>
     * 
-    * ApÈs isso, È verificado o sinal de dy. Se dy eh negativo, a reta È decrescente. Esse teste
-    * serve para guiar na execuÁ„o do algoritmo da reta. Se dy for negativo, ao invÈs de incrementar durante a
-    * execuÁ„o, deve decrementar, para que a reta seja desenhada corretamente. Durante a execuÁ„o do
-    * algoritmo, È verificado tambÈm o valor da variavel booleana dx_menor_dy. Se ela for verdadeira
-    * o ponto deve ser desenhado na reflex„o, o que justifica a passagem dos parametros x e y de forma
-    * trocada. Se for falso, os parametros sao passados corretamente.
+    * Ap√≥s isso, √© verificado o sinal de dy. Se dy eh negativo, a reta √© decrescente. Esse teste
+    * serve para guiar na execu√ß√£o do algoritmo da reta. Se dy for negativo, ao inv√©s de incrementar durante a
+    * execu√ß√£o, deve decrementar, para que a reta seja desenhada corretamente.
     * 
     * @param gl objeto GL que sera desenhado
     * @param x0 valor do x do primeiro clique
@@ -181,22 +172,21 @@ public class Segmento implements GLEventListener {
         y1 = height - y1;
 
         int dx = 0, dy = 0, incE, incNE, d, x, y;
-        // Condi??o para saber se a inclina??o da reta
-        // est? entre 0 e 45 ou entre 46 e 90 graus.
+        // Condi√ß√£o para saber se a inclina√ß√£o da reta
+        // est√° entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
-        // Usado para saber se a reta ? 
+        // Usado para saber se a reta √© 
         // crescente ou decrescente
         int dy_signal = 1;
 
         dx = x1 - x0;
         dy = y1 - y0;
 
-        // Se dy > dx, ent?o a reta est? acima de 45 graus at? 90 graus
-        // Neste caso, vamos mudar as vari?veis com uma reflex?o a reta y = x
+        // Se dy > dx, ent√£o a reta est√° acima de 45 graus at√© 90 graus
+        // Neste caso, vamos mudar as vari√°veis com uma reflex√£o a reta y = x
         // para usar o algoritmo entre 0 e 45 graus.
-        // A reflex?o ? feita trocando x_i por y_i e vice versa, onde i = 0 e 1
+        // A reflex√£o √© feita trocando x_i por y_i e vice versa, onde i = 0 e 1
         if (Math.abs(dx) < Math.abs(dy)) {
-            //condi??o para desenhar diferente
             dx_menor_dy = true;
 
             // Troca dx e dy
@@ -215,8 +205,8 @@ public class Segmento implements GLEventListener {
             y1 = aux;
         }
 
-        // A reta sempre ? desenhada da esquerda para a direita
-        // Se o valor de x0 e x1 n?o est?o em ordem
+        // A reta sempre √© desenhada da esquerda para a direita
+        // Se o valor de x0 e x1 nao estao em ordem
         // Trocamos os pontos (x0,y0) e (x1,y1) de lugar para que
         // sejam desenhados da esquerda para a direita
         if (x1 < x0) {
@@ -232,15 +222,15 @@ public class Segmento implements GLEventListener {
             dy = -dy;
         }
 
-        // Se dy ? negativo, a reta ? decrescente.
+        // Se dy √© negativo, a reta √© decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao inv?s de incrementar, y ? decrementado (por dy_signal)
+        // Mas ao inv√©s de incrementar, y √© decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
         }
 
-        //C?lculo das vari?veis do algoritmo
+        //C√°lculo das vari√°veis do algoritmo
         d = 2 * dy - dx;
         incE = 2 * dy;
         incNE = 2 * (dy - dx);
@@ -248,12 +238,12 @@ public class Segmento implements GLEventListener {
         x = x0;
         y = y0;
 
-        // O primeiro ponto ? desenhado no come?o do loop
-        // O loop para quando desenha o ?ltimo ponto (x1,y1)
+        // O primeiro ponto √© desenhado no come√ßo do loop
+        // O loop para quando desenha o √∫ltimo ponto (x1,y1)
         while (x <= x1) {
 
-            // Se o ?ngulo est? entre 0 e 45 graus, desenha normalmente
-            // Se est? entre 45 e 90, desenhar o ponto na reflex?o
+            // Se o angulo esta entre 0 e 45 graus, desenha normalmente
+            // Se esta entre 45 e 90, desenhar o ponto na reflexao
             if (!dx_menor_dy) {
                 write_pixel(gl, x, y);
             } else {
@@ -273,7 +263,7 @@ public class Segmento implements GLEventListener {
     }
 
     /**
-     * MÈtodo que escreve um ponto na coordenada (x,y)
+     * M√©todo que desenha um ponto na coordenada (x,y) na tela
      * @param gl objeto a ser desenhado
      * @param x coordenada x do ponto a ser desenhado
      * @param y coordenada y do ponto a ser desenhado
