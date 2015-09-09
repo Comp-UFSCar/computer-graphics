@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Classe criada para manipular os eventos do mouse.
  * 
- * @author Jo�o Paulo
+ * @author João Paulo
  * @author Breno Silveira
  * @author Camilo Moreira
  */
