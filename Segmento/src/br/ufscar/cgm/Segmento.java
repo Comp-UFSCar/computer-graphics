@@ -25,9 +25,9 @@ import java.nio.IntBuffer;
  * Camilo Moreira RA: 359645<br>
  * João Paulo Soares RA: 408034
  * 
+ * @author João Paulo
  * @author Breno Silveira
  * @author Camilo Moreira
- * @author João Paulo
  */
 public class Segmento implements GLEventListener {
 
