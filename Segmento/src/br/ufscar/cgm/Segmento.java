@@ -1,6 +1,6 @@
 package br.ufscar.cgm;
 
-import br.ufscar.cgm.ClickListener;
+import br.ufscar.cgm.*;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.FPSAnimator;
@@ -40,6 +40,18 @@ public class Segmento implements GLEventListener {
      */
 
     public static void main(String[] args) {
+        
+        Racional r = new Racional((int)(Math.random()*100)%100, (int)(Math.random()*100)%100, (int)(Math.random()*100)%100+1);
+        Racional rr = new Racional((int)(Math.random()*100)%100, (int)(Math.random()*100)%100, (int)(Math.random()*100)%100+1);
+        System.out.println("Soma");
+        r.soma(rr);
+        System.out.println("Subtração");
+        r.subtrai(rr);
+        System.out.println("Muliplicação");
+        r.multiplica(rr);
+        System.out.println("Divisão");
+        r.divide(rr);
+        
         Frame frame = new Frame("Primeiro Trebalho CG");
         GLCanvas canvas = new GLCanvas();
 
