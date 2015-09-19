@@ -41,8 +41,8 @@ public class Segmento implements GLEventListener {
 
     public static void main(String[] args) {
         
-        Racional r = new Racional((int)(Math.random()*100)%100, (int)(Math.random()*100)%100, (int)(Math.random()*100)%100+1);
-        Racional rr = new Racional((int)(Math.random()*100)%100, (int)(Math.random()*100)%100, (int)(Math.random()*100)%100+1);
+        Racional r = new Racional((int)(Math.random()*100)%10, (int)(Math.random()*100)%10, (int)(Math.random()*100)%10+1);
+        Racional rr = new Racional((int)(Math.random()*100)%10, (int)(Math.random()*100)%10, (int)(Math.random()*100)%10+1);
         System.out.println("Soma");
         r.soma(rr);
         System.out.println("Subtração");

@@ -10,13 +10,12 @@ package br.ufscar.cgm;
  * @author camilo
  */
 public class Racional {
-    private int inteiro;
-    private int numerador;
-    private int denominador;
+    private final int inteiro;
+    private final int numerador;
+    private final int denominador;
     
     public Racional(int inteiro, int numerador, int denominador){
-        this.inteiro = inteiro;
-        
+                
         if(denominador == 0){
             throw new ArithmeticException("Denominador não pode ser nulo.");
         }
@@ -26,14 +25,6 @@ public class Racional {
             numerador *= -1;
         }
         
-        this.numerador = numerador;
-        this.denominador = denominador;
-        
-        normaliza();
-        System.out.println(toString());
-    }
-    
-    private void normaliza(){
         if(numerador >= denominador){
             int tmp = numerador/denominador;
             inteiro += tmp;
@@ -46,7 +37,12 @@ public class Racional {
             numerador /= mmc;
             denominador /= mmc;
         }
-            
+        
+        this.inteiro = inteiro;
+        this.numerador = numerador;
+        this.denominador = denominador;
+        
+        System.out.println(toString());
     }
     
     private int MMC(int a, int b){
@@ -56,7 +52,7 @@ public class Racional {
     @Override
     public String toString(){
         return (String.valueOf(inteiro)
-                + getSinal(denominador)
+                + getSinal(numerador)
                 + String.valueOf(numerador)
                 + "/" 
                 + String.valueOf(denominador));
@@ -66,7 +62,7 @@ public class Racional {
         if(i >= 0)
             return "+";
         else
-            return "-";
+            return "";
     }
     
     public Racional soma(Racional r){
