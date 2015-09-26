@@ -32,6 +32,8 @@ import java.nio.IntBuffer;
 public class Segmento implements GLEventListener {
 
     private ClickListener clicks = new ClickListener();
+    private ET TabelaET;
+    private No AET;
     
     /**
      * Método que inicia a execução.
@@ -135,6 +137,8 @@ public class Segmento implements GLEventListener {
             int a[] = clicks.getClick(0);
             int b[] = clicks.getClick(clicks.getNumeroCliques()-1);
             drawLine(gl, a[0], a[1], b[0], b[1]);
+            
+            inicializaET(gl);
         }
 
     }
@@ -284,6 +288,45 @@ public class Segmento implements GLEventListener {
         gl.glBegin(GL.GL_POINTS);
         gl.glVertex2d(x, y);
         gl.glEnd();
+    }
+    
+    public void inicializaET(GL gl)
+    {
+        IntBuffer buffer = BufferUtil.newIntBuffer(4);
+        
+        gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+    
+        int height = buffer.get(3);
+        
+        TabelaET = new ET(height);
+        
+        for (int i = 0; i < clicks.size() - 1; i += 1) {
+            int[] a;
+            int b[];
+            
+            if(i == (clicks.size() - 1))
+            {
+                a = clicks.getClick(i);
+                b = clicks.getClick(0);
+            }else{
+                a = clicks.getClick(i);
+                b = clicks.getClick(i + 1);
+            }
+            
+            No novoNo;
+            if(a[1]!=b[1])     //se a linha não esta desenhada na horizontal
+            {
+                if(a[1]>b[1])
+                {
+                    novoNo = new No(new Racional(a[1],0,1),new Racional(b[0],0,1),new Racional(0,b[0]-a[0],b[1]-a[1]));
+                    TabelaET.AdicionaNo(novoNo, b[1]);
+                }else
+                {
+                    novoNo = new No(new Racional(b[1],0,1),new Racional(a[0],0,1),new Racional(0,b[0]-a[0],b[1]-a[1]));
+                    TabelaET.AdicionaNo(novoNo, a[1]);
+                }
+            }
+        }
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
