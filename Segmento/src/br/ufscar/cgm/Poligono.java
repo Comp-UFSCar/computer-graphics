@@ -1,6 +1,7 @@
 package br.ufscar.cgm;
 
-import br.ufscar.cgm.*;
+import br.ufscar.cgm.preenchimento.ET;
+import br.ufscar.cgm.preenchimento.No;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.FPSAnimator;
@@ -29,10 +30,10 @@ import java.nio.IntBuffer;
  * @author Breno Silveira
  * @author Camilo Moreira
  */
-public class Segmento implements GLEventListener {
+public class Poligono implements GLEventListener {
 
     private ClickListener clicks = new ClickListener();
-    private ET TabelaET;
+    private ET tabelaET;
     private No AET;
     
     /**
@@ -43,21 +44,10 @@ public class Segmento implements GLEventListener {
 
     public static void main(String[] args) {
         
-        Racional r = new Racional((int)(Math.random()*100)%10, (int)(Math.random()*100)%10, (int)(Math.random()*100)%10+1);
-        Racional rr = new Racional((int)(Math.random()*100)%10, (int)(Math.random()*100)%10, (int)(Math.random()*100)%10+1);
-        System.out.println("Soma");
-        r.soma(rr);
-        System.out.println("Subtração");
-        r.subtrai(rr);
-        System.out.println("Muliplicação");
-        r.multiplica(rr);
-        System.out.println("Divisão");
-        r.divide(rr);
-        
-        Frame frame = new Frame("Primeiro Trebalho CG");
+        Frame frame = new Frame("Segundo Trabalho de  CG");
         GLCanvas canvas = new GLCanvas();
 
-        Segmento s = new Segmento();
+        Poligono s = new Poligono();
 
         canvas.addGLEventListener(s);
         canvas.addMouseListener(s.clicks);
@@ -293,40 +283,40 @@ public class Segmento implements GLEventListener {
     public void inicializaET(GL gl)
     {
         IntBuffer buffer = BufferUtil.newIntBuffer(4);
-        
         gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-    
         int height = buffer.get(3);
         
-        TabelaET = new ET(height);
-        
-        for (int i = 0; i < clicks.size() - 1; i += 1) {
-            int[] a;
-            int b[];
+        tabelaET = new ET(height);
+             
+        int[] a, b;
+        No novoNo;
+        for (int i = 0; i < clicks.getNumeroCliques(); i++) {
             
-            if(i == (clicks.size() - 1))
+            if(i == clicks.getNumeroCliques() - 1)
             {
                 a = clicks.getClick(i);
                 b = clicks.getClick(0);
-            }else{
+            } else {
                 a = clicks.getClick(i);
                 b = clicks.getClick(i + 1);
             }
             
-            No novoNo;
-            if(a[1]!=b[1])     //se a linha não esta desenhada na horizontal
+            //se a linha não esta desenhada na horizontal
+            if(a[1]!=b[1])
             {
-                if(a[1]>b[1])
+                if(a[1] > b[1])
                 {
-                    novoNo = new No(new Racional(a[1],0,1),new Racional(b[0],0,1),new Racional(0,b[0]-a[0],b[1]-a[1]));
-                    TabelaET.AdicionaNo(novoNo, b[1]);
-                }else
-                {
-                    novoNo = new No(new Racional(b[1],0,1),new Racional(a[0],0,1),new Racional(0,b[0]-a[0],b[1]-a[1]));
-                    TabelaET.AdicionaNo(novoNo, a[1]);
+                    novoNo = new No(a[1],b[0],new Racional(0,b[0]-a[0],b[1]-a[1]));
+                    tabelaET.AdicionaNo(novoNo, b[1]);
+                } else {
+                    novoNo = new No(b[1],a[0],new Racional(0,b[0]-a[0],b[1]-a[1]));
+                    tabelaET.AdicionaNo(novoNo, a[1]);
                 }
             }
         }
+        
+        tabelaET.exibe();
+        System.out.println();
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
