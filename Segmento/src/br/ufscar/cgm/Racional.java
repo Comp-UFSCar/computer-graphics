@@ -5,11 +5,13 @@
  */
 package br.ufscar.cgm;
 
+import java.util.Comparator;
+
 /**
  *
  * @author camilo
  */
-public class Racional {
+public class Racional implements Comparable<Racional>{
     private final int inteiro;
     private final int numerador;
     private final int denominador;
@@ -25,7 +27,7 @@ public class Racional {
             numerador *= -1;
         }
         
-        if(numerador >= denominador){
+        if(Math.abs(numerador) >= denominador){
             int tmp = numerador/denominador;
             inteiro += tmp;
             numerador -= tmp*denominador;
@@ -123,6 +125,31 @@ public class Racional {
             return inteiro;
         else
             return inteiro - 1;
+    }
+
+    public int getInteiro() {
+        return inteiro;
+    }
+
+    public int getNumerador() {
+        return numerador;
+    }
+
+    public int getDenominador() {
+        return denominador;
+    }
+
+    public int compareTo(Racional t) {
+        if(this.inteiro < t.inteiro)
+            return -1;
+        else if (this.inteiro > t.inteiro)
+            return 1;
+        else if (this.numerador*t.denominador < this.denominador*t.numerador)
+            return -1;
+        else if(this.numerador*t.denominador == this.denominador*t.numerador)
+            return 0;
+        else
+            return 1;      
     }
     
     
