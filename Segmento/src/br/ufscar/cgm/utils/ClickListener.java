@@ -1,4 +1,4 @@
-package br.ufscar.cgm;
+package br.ufscar.cgm.utils;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
