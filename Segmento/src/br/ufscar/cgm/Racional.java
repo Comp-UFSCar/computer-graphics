@@ -41,8 +41,6 @@ public class Racional {
         this.inteiro = inteiro;
         this.numerador = numerador;
         this.denominador = denominador;
-        
-        System.out.println(toString());
     }
     
     private int MMC(int a, int b){
@@ -111,6 +109,20 @@ public class Racional {
     
     public Racional divide(int i){
         return this.divide(new Racional(i,0,1));
+    }
+    
+    public int arredondaParaCima(){
+        if(this.numerador > 0)
+            return inteiro + 1;
+        else
+            return inteiro;
+    }
+    
+    public int arredondaParaBaixo(){
+        if(this.numerador > 0)
+            return inteiro;
+        else
+            return inteiro - 1;
     }
     
     
