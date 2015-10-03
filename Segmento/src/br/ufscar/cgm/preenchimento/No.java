@@ -1,25 +1,22 @@
 
-package org.yourorghere;
+package br.ufscar.cgm.preenchimento;
+
+import br.ufscar.cgm.Racional;
 
 public class No{
     
     private No proximo;
-    Racional Ymax;
-    Racional XdoYmin; 
-    Racional DXDY;
+    private Racional Ymax;
+    private Racional XdoYmin; 
+    private Racional DXDY;
     
     
-    public No(Racional Ymax,Racional XdoYmin, Racional DXDY)
+    public No(int Ymax, int XdoYmin, Racional DXDY)
     {
-        this.Ymax = Ymax;
-        this.XdoYmin = XdoYmin;
+        this.Ymax = new Racional(Ymax,0,1);
+        this.XdoYmin = new Racional(XdoYmin,0,1);
         this.DXDY = DXDY;
         this.proximo =null;
-    }
-    
-    public int getXdoYmin()
-    {
-        return this.XdoYmin.getInteiro();
     }
 
     public void setProximo(No proximoNo) {
@@ -28,6 +25,14 @@ public class No{
 
     public No getProximo() {
         return this.proximo;
+    }
+    
+    @Override
+    public String toString(){
+        boolean next = false;
+        if(proximo != null)
+            next = true;
+        return "("+Ymax+","+XdoYmin+","+DXDY+")"+"->"+next;
     }
   
 }

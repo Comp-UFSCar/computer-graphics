@@ -1,4 +1,4 @@
-package org.yourorghere;
+package br.ufscar.cgm.preenchimento;
 
 
 public class ET {
@@ -15,7 +15,8 @@ public class ET {
             posicoes[posicao] = nocriado;
         else
         {
-            No i = posicoes[posicao].getProximo();
+            No i = posicoes[posicao];
+            
             while(i.getProximo() != null)
             {
                 i = i.getProximo();
@@ -23,6 +24,20 @@ public class ET {
             
             i.setProximo(nocriado);
             
+        }
+    }
+
+    public void exibe(){
+        for(int i=0; i < posicoes.length; i++){
+            if(posicoes[i] != null){
+                System.out.println("y="+i);
+                No tmp = posicoes[i];
+                while(tmp != null){
+                    System.out.print(tmp.toString() + " ");
+                    tmp = tmp.getProximo();
+                }
+                System.out.println();
+            }
         }
     }
 }
