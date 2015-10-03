@@ -9,7 +9,7 @@ public class ET {
         this.posicoes = new No[alturaTela];
     }
     
-    public void AdicionaNo(No nocriado, int posicao)
+    public void adicionaNo(No nocriado, int posicao)
     {
         if(posicoes[posicao] == null)
             posicoes[posicao] = nocriado;
@@ -25,6 +25,18 @@ public class ET {
             i.setProximo(nocriado);
             
         }
+    }
+    
+    public No getNivel(int i){
+        return posicoes[i];
+    }
+    
+    public boolean isNivelVazio(int i){
+        return (posicoes[i] == null);
+    }
+    
+    public int getTamanho(){
+        return posicoes.length;
     }
 
     public void exibe(){
