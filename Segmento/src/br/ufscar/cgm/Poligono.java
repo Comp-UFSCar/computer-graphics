@@ -1,5 +1,7 @@
 package br.ufscar.cgm;
 
+import br.ufscar.cgm.utils.ClickListener;
+import br.ufscar.cgm.utils.Racional;
 import br.ufscar.cgm.preenchimento.ET;
 import br.ufscar.cgm.preenchimento.No;
 import com.sun.opengl.util.Animator;
@@ -45,7 +47,7 @@ public class Poligono implements GLEventListener {
 
     public static void main(String[] args) {
         
-        Frame frame = new Frame("Segundo Trabalho de  CG");
+        Frame frame = new Frame("Segundo Trabalho de CG");
         GLCanvas canvas = new GLCanvas();
 
         Poligono s = new Poligono();

@@ -1,7 +1,7 @@
 
 package br.ufscar.cgm.preenchimento;
 
-import br.ufscar.cgm.Racional;
+import br.ufscar.cgm.utils.Racional;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,17 +81,10 @@ public class No implements Comparable<No> {
         //Ordena o ArrayList pelo valor XdoYmin
         Collections.sort(todos_os_nos);
         //Atualiza o próximo de cada nó
-        System.out.println();
-        for(int i = 0; i < todos_os_nos.size() - 1; i++){
-            todos_os_nos.get(i).setProximo(todos_os_nos.get(i+1));
-            System.out.println(todos_os_nos.get(i).XdoYmin);
-            
-        }
-        
-        //Atualiza o valor próximo do último nó
+        for(int i = 0; i < todos_os_nos.size() - 1; i++)
+            todos_os_nos.get(i).setProximo(todos_os_nos.get(i+1));   
+        //Atualiza o próximo do último nó
         todos_os_nos.get(todos_os_nos.size() - 1).setProximo(null);
-        System.out.println(todos_os_nos.get(todos_os_nos.size() - 1).XdoYmin);
-        System.out.println();
         
         return todos_os_nos.get(0);
     }

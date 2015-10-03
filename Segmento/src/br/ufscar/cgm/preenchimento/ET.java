@@ -14,17 +14,8 @@ public class ET {
         if(posicoes[posicao] == null)
             posicoes[posicao] = nocriado;
         else
-        {
-            No i = posicoes[posicao];
-            
-            while(i.getProximo() != null)
-            {
-                i = i.getProximo();
-            }
-            
-            i.setProximo(nocriado);
-            
-        }
+            posicoes[posicao].setUltimoProximo(nocriado);
+
     }
     
     public No getNivel(int i){
