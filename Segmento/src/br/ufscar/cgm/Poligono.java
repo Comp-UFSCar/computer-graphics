@@ -14,6 +14,7 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 
 
@@ -111,12 +112,6 @@ public class Poligono implements GLEventListener {
         // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
 
-        gl.glBegin(GL.GL_LINE);
-        gl.glColor3f(1.0f, 1.0f, 1.0f);
-        gl.glVertex2i(10, 10);
-        gl.glVertex2i(200, 200);
-        gl.glEnd();
-
         for (int i = 0; i < clicks.getNumeroCliques() - 1; i += 1) {
             int a[] = clicks.getClick(i);
             int b[] = clicks.getClick(i + 1);
@@ -129,6 +124,7 @@ public class Poligono implements GLEventListener {
             drawLine(gl, a[0], a[1], b[0], b[1]);
             
             inicializaET(gl);
+            preenche(gl);
         }
 
     }
@@ -169,9 +165,7 @@ public class Poligono implements GLEventListener {
 
         
         IntBuffer buffer = BufferUtil.newIntBuffer(4);
-        
         gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-    
         int height = buffer.get(3);
 
         y0 = height - y0;
@@ -307,16 +301,88 @@ public class Poligono implements GLEventListener {
                 if(a[1] > b[1])
                 {
                     novoNo = new No(a[1],b[0],new Racional(0,b[0]-a[0],b[1]-a[1]));
-                    tabelaET.AdicionaNo(novoNo, b[1]);
+                    tabelaET.adicionaNo(novoNo, b[1]);
                 } else {
                     novoNo = new No(b[1],a[0],new Racional(0,b[0]-a[0],b[1]-a[1]));
-                    tabelaET.AdicionaNo(novoNo, a[1]);
+                    tabelaET.adicionaNo(novoNo, a[1]);
                 }
             }
         }
         
-        tabelaET.exibe();
-        System.out.println();
+        //tabelaET.exibe();
+    }
+    
+    public void preenche(GL gl){
+        No AET = null;
+        
+        int nivel = 0;
+        int nivel_max = tabelaET.getTamanho();
+        
+        //Inicializa AET
+        while(tabelaET.isNivelVazio(nivel) && nivel < nivel_max)
+                nivel++;
+        //ET está vazia
+        if(nivel == nivel_max)
+            return;
+        
+        boolean AET_esta_vazia = false;
+        No p1, p2;
+        while(!AET_esta_vazia && nivel < nivel_max){
+            //AET recebe os nós que ymin = nivel
+            if(AET == null)
+                AET = tabelaET.getNivel(nivel);
+            else
+                AET.setUltimoProximo(tabelaET.getNivel(nivel));
+            
+            //Remove os nós que ymax = nivel
+            //Remove os pontos de ymax no começo da AET
+            while(AET != null && AET.getYmax() == nivel){
+                AET = AET.getProximo();
+            }
+            if(AET == null){
+                AET_esta_vazia = true;
+                continue;
+            }
+            //Remove os pontos de ymax no meio da AET
+            p1 = AET;
+            p2 = AET.getProximo();
+            while(p2 != null){
+                if(p2.getYmax() == nivel)
+                    p1.setProximo(p2.getProximo());
+                
+                p1 = p1.getProximo();
+                p2 = p1.getProximo();
+            }
+            
+            //ordena AET
+            AET = No.ordena(AET);
+            
+            //preenche figura
+            p1 = AET;
+            int x1, x2;
+            while(p1 != null){
+                //Caso especial
+                x1 = p1.getXdoYmin().arredondaParaCima();
+                x2 = p1.getProximo().getXdoYmin().arredondaParaBaixo();
+                if(x1 > x2)
+                    drawLine(gl, x1, nivel, x1, nivel);
+                else
+                    drawLine(gl, x1, nivel, x2, nivel);
+                
+                p1 = p1.getProximo().getProximo();
+            }
+            
+            //Atualiza o nível
+            nivel++;
+            
+            //Atualiza o valor dos Nós
+            p1 = AET;
+            while(p1 != null){
+                p1.setXdoYmin(p1.getXdoYmin().soma(p1.getDXDY()));
+                p1 = p1.getProximo();
+            }
+                
+        }
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
