@@ -36,7 +36,7 @@ public class Line extends Drawing {
     public Drawing translate(Point point) {
         Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
         start = point;
-        
+
         return updateLastCoordinate(end.move(t));
     }
 
@@ -144,5 +144,9 @@ public class Line extends Drawing {
             oct = 2;
         }
         return pt.allOctants()[oct];
+    }
+
+    public Point getEnd() {
+        return end;
     }
 }
