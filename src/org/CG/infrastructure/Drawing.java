@@ -141,4 +141,8 @@ public abstract class Drawing {
     public boolean isFinished() {
         return finished;
     }
+
+    public Point getStart() {
+        return start;
+    }
 }
