@@ -1,4 +1,4 @@
-package org.CG.infrastructure.editor;
+package org.CG.editor;
 
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
+import org.CG.drawings.Polygon;
 import org.CG.infrastructure.ColorByte;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
@@ -24,7 +25,7 @@ public class Editor {
     private final LinkedList<Drawing> drawings;
     private final LinkedList<Drawing> redos;
     
-    private Class<? extends Drawing> currentDrawing = Line.class;
+    private Class<? extends Drawing> currentDrawing = Polygon.class;
     private Mode mode;
     
     private final Random rand;

@@ -1,4 +1,4 @@
-package org.CG.infrastructure.editor;
+package org.CG.editor;
 
 /**
  *

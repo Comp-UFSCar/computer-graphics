@@ -20,7 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.CG.infrastructure.editor.Editor;
+import org.CG.editor.Editor;
 import org.CG.infrastructure.Drawing;
 
 /**
