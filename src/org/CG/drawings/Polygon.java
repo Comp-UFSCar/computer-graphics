@@ -11,8 +11,8 @@ import org.CG.infrastructure.Point;
  */
 public class Polygon extends Drawing {
 
-    private Point lastPoint;
-    private final LinkedList<Drawing> edges;
+    protected Point lastPoint;
+    protected final LinkedList<Line> edges;
 
     public Polygon() {
         super();
@@ -26,16 +26,19 @@ public class Polygon extends Drawing {
         super.setStart(start);
         lastPoint = start;
 
-        return setNextCoordinate(start);
+        return this;
     }
 
     @Override
     public Drawing translate(Point point) {
-        super.translate(point);
+        Point lastTranslation = point;
         
-        edges.stream().forEach((e) -> {
-            e.translate(point);
-        });
+        for (Line edge : edges) {
+            edge.translate(lastTranslation);
+            lastTranslation = edge.getEnd();
+        }
+        
+        lastPoint = lastTranslation;
 
         return this;
     }
@@ -52,7 +55,7 @@ public class Polygon extends Drawing {
     public Drawing setNextCoordinate(Point point) {
         super.setNextCoordinate(point);
 
-        edges.add(new Line()
+        edges.add((Line) new Line()
                 .setColor(color)
                 .setStart(lastPoint)
                 .updateLastCoordinate(point));

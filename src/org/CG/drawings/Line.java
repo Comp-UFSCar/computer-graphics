@@ -34,7 +34,7 @@ public class Line extends Drawing {
      */
     @Override
     public Drawing translate(Point point) {
-        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
+        Point t = new Point(point.getX() - start.getX(), point.getY() - start.getY());
         start = point;
 
         return updateLastCoordinate(end.move(t));
