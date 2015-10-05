@@ -1,4 +1,4 @@
-package org.CG.util;
+package org.CG.infrastructure;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -139,4 +139,35 @@ public class RationalTest extends TestCase {
         assertEquals(expResult, result);
     }
 
+    public void testSub() {
+        Rational a = new Rational(4, 1, 3), b = new Rational(4, 2, 3),
+            expected = new Rational(0, -1, 3);
+        
+        Rational actual = a.sub(b);
+        
+        assertEquals(expected, actual);
+    }
+    
+    public void testGreaterOrEqualThan() {
+        Rational a, b;
+        boolean expected;
+        
+        a = new Rational(0);
+        b = new Rational(3);
+        expected = false;
+        
+        assertEquals(expected, a.gte(b));
+        
+        a = new Rational(0, 1, 4);
+        b = new Rational(3);
+        expected = false;
+        
+        assertEquals(expected, a.gte(b));
+        
+        a = new Rational(4, 3, 4);
+        b = new Rational(4, 3, 5);
+        expected = true;
+        
+        assertEquals(expected, a.gte(b));
+    }
 }

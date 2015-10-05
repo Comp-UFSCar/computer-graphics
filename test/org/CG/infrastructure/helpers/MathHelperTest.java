@@ -1,4 +1,4 @@
-package org.CG.util;
+package org.CG.infrastructure.helpers;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -199,7 +199,7 @@ public class MathHelperTest extends TestCase {
         } catch (IllegalArgumentException ex) {
         }
     }
-    
+
     /**
      * Test GCD when b is less than or equal zero.
      */
@@ -213,7 +213,7 @@ public class MathHelperTest extends TestCase {
         } catch (IllegalArgumentException ex) {
         }
     }
-    
+
     /**
      * Test the Greatest Common Divisor.
      */
@@ -225,7 +225,7 @@ public class MathHelperTest extends TestCase {
         int result = MathHelper.greatestCommonDivisor(a, b);
         assertEquals(expResult, result);
     }
-    
+
     /**
      * Test the Least Common Multiple.
      */

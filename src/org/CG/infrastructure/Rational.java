@@ -1,4 +1,6 @@
-package org.CG.util;
+package org.CG.infrastructure;
+
+import org.CG.infrastructure.helpers.MathHelper;
 
 /**
  * Represents an immutable Rational number (fraction) of form
@@ -24,7 +26,7 @@ public final class Rational {
      */
     public Rational(int num, int den) {
         if (den == 0) {
-            throw new IllegalArgumentException("den");
+            throw new IllegalArgumentException("Denominator cannot be 0.");
         }
         this.integer = num / den;
         this.numerator = num % den;
@@ -126,6 +128,32 @@ public final class Rational {
                 lcm);
     }
 
+    /**
+     * Creates a new Rational from the subtraction of two Rational numbers.
+     *
+     * @param other the number to be added to this
+     * @return this - other
+     */
+    public Rational sub(Rational other) {
+        return add(new Rational(-other.getInteger(), -other.getNumerator(), other.getDenominator()));
+    }
+    
+    /**
+     * Checks if this Rational number if greater or equal than @other.
+     * 
+     * @param other the number to be compared against.
+     * @return this - other >= 0
+     */
+    public boolean gte(Rational other) {
+        Rational result = sub(other).adjustSign();
+        return result.getInteger() > 0 || result.getInteger() == 0 && result.getNumerator() >= 0;
+    }
+    
+    public boolean gt(Rational other) {
+        Rational result = sub(other).adjustSign();
+        return result.getInteger() > 0 || result.getInteger() == 0 && result.getNumerator() > 0;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;

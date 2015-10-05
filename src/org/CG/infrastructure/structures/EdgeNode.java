@@ -1,6 +1,6 @@
-package org.CG.datastructure;
+package org.CG.infrastructure.structures;
 
-import org.CG.util.Rational;
+import org.CG.infrastructure.Rational;
 
 /**
  * Node for the Edge Table and Alive Edge Table data structures.

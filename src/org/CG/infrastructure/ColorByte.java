@@ -1,7 +1,7 @@
 package org.CG.infrastructure;
 
 import java.util.Random;
-import org.CG.util.MathHelper;
+import org.CG.infrastructure.helpers.MathHelper;
 
 /**
  * Represents an immutable RGBA color on the [0, 255] discrete spectrum.

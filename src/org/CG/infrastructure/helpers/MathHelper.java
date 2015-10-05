@@ -1,4 +1,4 @@
-package org.CG.util;
+package org.CG.infrastructure.helpers;
 
 /**
  * Useful math functions for computational graphics
