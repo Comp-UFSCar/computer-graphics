@@ -17,6 +17,10 @@ import java.util.logging.Logger;
 import sun.net.www.protocol.file.FileURLConnection;
 
 /**
+ * Loader for drawings.
+ * 
+ * Automatically loads drawings that are placed inside
+ * the org.CG.drawings package.
  *
  * @author ldavid
  */
@@ -31,7 +35,7 @@ public class DrawingsLoader {
      * @param pckgname The package name to search for. Will be needed for
      * getting the Class object.
      * @param classes if a file isn't loaded but still is in the directory
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException if drawings are not accessible.
      */
     protected static void checkDirectory(File directory, String pckgname,
         List<Class<?>> classes) throws ClassNotFoundException {

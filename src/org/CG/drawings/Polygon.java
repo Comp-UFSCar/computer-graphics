@@ -6,6 +6,7 @@ import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.Point;
 
 /**
+ * Polygon drawing using list of lines.
  *
  * @author ldavid
  */

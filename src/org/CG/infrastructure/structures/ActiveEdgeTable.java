@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Active Edge Table (AET) for the Scan-Line Algorithm.
  *
  * @author ldavid
  */
@@ -16,13 +17,13 @@ public class ActiveEdgeTable {
      * Add a list of @EdgeNode to the AET.
      * 
      * If the current line scanned is @y, should insert only nodes with 
-     * @yMinimum == @y.
+     * yMinimum is equal to @y.
      * 
      * ActiveEdgeTable ignores empty or null lists.
      *
      * @param edges list containing @EdgeNodes that will be merged
      * into the current scanned line.
-     * @return
+     * @return this.
      */
     public ActiveEdgeTable addEdges(List<EdgeNode> edges) {
         if (edges != null && !edges.isEmpty()) {
@@ -52,7 +53,7 @@ public class ActiveEdgeTable {
     /**
      * Remove all @EdgeNode that have their maximumY equal to @y.
      *
-     * @param y
+     * @param y coordinate used for comparison during the removal process.
      * @return true, if any element was removed. False, otherwise.
      */
     public boolean removeEdgesWithMaximumYOf(int y) {

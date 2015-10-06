@@ -8,6 +8,7 @@ import org.CG.infrastructure.Point;
 import org.CG.infrastructure.Rational;
 
 /**
+ * Edge Table (ET) for the Scan-Line Algorithm.
  *
  * @author ldavid
  */

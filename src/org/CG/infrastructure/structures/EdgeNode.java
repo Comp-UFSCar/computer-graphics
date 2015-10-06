@@ -41,7 +41,7 @@ public class EdgeNode {
     /**
      * Gets the current x-coordinate of the scan line.
      *
-     * @return
+     * @return the current x-coordinate.
      */
     public Rational getCurrentX() {
         return currentX;

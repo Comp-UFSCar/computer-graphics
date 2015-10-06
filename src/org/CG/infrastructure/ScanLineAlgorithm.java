@@ -9,7 +9,8 @@ import org.CG.infrastructure.structures.EdgeNode;
 import org.CG.infrastructure.structures.EdgeTable;
 
 /**
- *
+ * Performs the Scan-Line Algorithm to fill a polygon.
+ * 
  * @author ldavid
  */
 public class ScanLineAlgorithm {
@@ -55,8 +56,8 @@ public class ScanLineAlgorithm {
     /**
      * Fill the polygon represented by @edgePoints.
      *
-     * @param gl
-     * @return self
+     * @param gl OpenGL drawing API object.
+     * @return self.
      */
     public ScanLineAlgorithm draw(GL gl) {
         for (int y = yMin; y <= yMax; y++) {

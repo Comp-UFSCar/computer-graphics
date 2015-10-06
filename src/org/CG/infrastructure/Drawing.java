@@ -125,11 +125,11 @@ public abstract class Drawing {
     /**
      * Sets the drawing as finished or not.
      *
-     * @param f
+     * @param finished states if drawing should be finished or not.
      * @return this
      */
-    public Drawing isFinished(boolean f) {
-        finished = f;
+    public Drawing isFinished(boolean finished) {
+        this.finished = finished;
         return this;
     }
 

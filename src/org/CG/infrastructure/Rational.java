@@ -140,9 +140,9 @@ public final class Rational {
 
     /**
      * Checks if this Rational number if greater or equal than @other.
-     *
+     * 
      * @param other the number to be compared against.
-     * @return this - other >= 0
+     * @return true, if this is greater or equal than other. False, otherwise.
      */
     public boolean gte(Rational other) {
         Rational result = sub(other).adjustSign();
@@ -151,9 +151,9 @@ public final class Rational {
 
     /**
      * Checks if this Rational number if greater than @other.
-     *
+     * 
      * @param other the number to be compared against.
-     * @return this - other > 0
+     * @return true, if this is greater than other. False, otherwise.
      */
     public boolean gt(Rational other) {
         Rational result = sub(other).adjustSign();

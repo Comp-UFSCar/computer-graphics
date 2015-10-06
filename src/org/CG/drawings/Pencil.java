@@ -7,7 +7,7 @@ import javax.media.opengl.GL;
 import org.CG.infrastructure.Point;
 
 /**
- * List of Points to draw on screen.
+ * Pencil drawing using list of points.
  *
  * @author ldavid
  */

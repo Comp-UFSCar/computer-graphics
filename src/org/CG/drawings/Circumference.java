@@ -5,7 +5,7 @@ import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.Point;
 
 /**
- * Circumference drawing with Bresenham's algorithm
+ * Circumference drawing with Bresenham's algorithm.
  *
  * Reference paper: http://web.engr.oregonstate.edu/~sllu/bcircle.pdf
  *

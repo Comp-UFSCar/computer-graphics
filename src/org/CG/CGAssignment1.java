@@ -24,7 +24,7 @@ import org.CG.editor.Editor;
 import org.CG.infrastructure.Drawing;
 
 /**
- * JOGL Frame for using the CG-Assignment-1 implemented features.
+ * Matrix Paint main class.
  */
 public class CGAssignment1 implements GLEventListener {
 
@@ -170,7 +170,7 @@ public class CGAssignment1 implements GLEventListener {
     /**
      * Initializes the GL options
      *
-     * @param drawable
+     * @param drawable OpenGL API @drawable object.
      */
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -229,9 +229,9 @@ public class CGAssignment1 implements GLEventListener {
     /**
      * Currently not used.
      *
-     * @param drawable
-     * @param modeChanged
-     * @param deviceChanged
+     * @param drawable OpenGL API drawable object.
+     * @param modeChanged indicates if mode has changed.
+     * @param deviceChanged indicates if device has changed.
      */
     @Override
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {

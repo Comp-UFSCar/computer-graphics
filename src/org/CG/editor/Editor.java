@@ -14,7 +14,8 @@ import org.CG.infrastructure.DrawingsLoader;
 import org.CG.infrastructure.Point;
 
 /**
- *
+ * Matrix Paint Editor.
+ * 
  * @author ldavid
  */
 public class Editor {

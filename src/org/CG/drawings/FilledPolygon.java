@@ -8,6 +8,7 @@ import org.CG.infrastructure.Point;
 import org.CG.infrastructure.ScanLineAlgorithm;
 
 /**
+ * Filled Polygon drawing using Polygon and ScanLineAlgorithm.
  *
  * @author ldavid
  */

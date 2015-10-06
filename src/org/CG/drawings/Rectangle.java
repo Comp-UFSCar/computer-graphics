@@ -5,6 +5,7 @@ import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.Point;
 
 /**
+ * Rectangle drawing using two points.
  *
  * @author ldavid
  */

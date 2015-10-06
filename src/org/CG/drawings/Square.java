@@ -4,6 +4,7 @@ import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.Point;
 
 /**
+ * Square drawing using a restrictive rectangle.
  *
  * @author ldavid
  */
@@ -13,8 +14,8 @@ public class Square extends Rectangle {
      * Update last coordinate based on point, but maintaining proportion
      * of 1.0 for sides.
      *
-     * @param point
-     * @return this
+     * @param point coordinate to where the square should be moved.
+     * @return this.
      */
     @Override
     public Drawing updateLastCoordinate(Point point) {
