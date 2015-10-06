@@ -67,6 +67,11 @@ You can undo/redo by rotating the mouse wheel.
 ### Moving structures
 The last structure added is translated when dragging the mouse with the `left mouse-button` and `ctrl` pressed.
 
+### Coloring
+Random colors are selected for each drawing. You may use `Color` option in the main menu bar and click `Pick`
+to bring up a color picker. The picked color will be used for every drawing therefore. To returning back
+to the random color behavior, click `Color` in the main menu bar, and then click `Random`.
+
 ## Extending
 
 ### Implementing new drawings
