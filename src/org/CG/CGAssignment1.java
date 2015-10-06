@@ -1,12 +1,15 @@
 package org.CG;
 
 import com.sun.opengl.util.Animator;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -14,6 +17,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.editor.Editor;
+import org.CG.infrastructure.ColorByte;
 import org.CG.infrastructure.Drawing;
 
 /**
@@ -46,11 +51,11 @@ public class CGAssignment1 implements GLEventListener {
         }
 
         editor = new Editor();
-        
+
         int width = 1366;
         int height = 768;
-        
-        if(args.length == 2) {
+
+        if (args.length == 2) {
             try {
                 width = Integer.parseInt(args[0]);
                 height = Integer.parseInt(args[1]);
@@ -163,6 +168,26 @@ public class CGAssignment1 implements GLEventListener {
             editor.redo();
         });
         mb.add("Redo", b);
+
+        // color picker
+        m = new JMenu("Color");
+        b = createSimpleButton("Random");
+        b.addActionListener((ActionEvent e) -> {
+            editor.useRandomColor();
+        });
+        m.add(b);
+        b = createSimpleButton("Pick");
+        b.addActionListener((ActionEvent e) -> {
+            Color c = JColorChooser.showDialog(null, "Choose the color", Color.yellow);
+            if (c != null) {
+                editor.setSelectedColor(new ColorByte(
+                        c.getRed(), c.getGreen(),
+                        c.getBlue(), c.getAlpha()
+                ));
+            }
+        });
+        m.add(b);
+        mb.add(m);
 
         return mb;
     }
