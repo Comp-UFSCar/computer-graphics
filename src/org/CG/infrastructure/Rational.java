@@ -107,7 +107,7 @@ public final class Rational {
         }
         Rational adjusted = this.adjustSign();
         int gcd = MathHelper.greatestCommonDivisor(Math.abs(adjusted.numerator), adjusted.denominator);
-        
+
         return new Rational(adjusted.integer, adjusted.numerator / gcd, adjusted.denominator / gcd);
     }
 
@@ -122,10 +122,10 @@ public final class Rational {
         Rational rv = other.adjustSign();
         int lcm = MathHelper.leastCommonMultiple(lv.denominator, rv.denominator);
         return new Rational(
-                lv.integer + rv.integer,
-                (lcm / lv.denominator) * lv.numerator
-                + (lcm / rv.denominator) * rv.numerator,
-                lcm);
+            lv.integer + rv.integer,
+            (lcm / lv.denominator) * lv.numerator
+            + (lcm / rv.denominator) * rv.numerator,
+            lcm);
     }
 
     /**
@@ -137,10 +137,10 @@ public final class Rational {
     public Rational sub(Rational other) {
         return add(new Rational(-other.getInteger(), -other.getNumerator(), other.getDenominator()));
     }
-    
+
     /**
      * Checks if this Rational number if greater or equal than @other.
-     * 
+     *
      * @param other the number to be compared against.
      * @return this - other >= 0
      */
@@ -148,12 +148,31 @@ public final class Rational {
         Rational result = sub(other).adjustSign();
         return result.getInteger() > 0 || result.getInteger() == 0 && result.getNumerator() >= 0;
     }
-    
+
+    /**
+     * Checks if this Rational number if greater than @other.
+     *
+     * @param other the number to be compared against.
+     * @return this - other > 0
+     */
     public boolean gt(Rational other) {
         Rational result = sub(other).adjustSign();
         return result.getInteger() > 0 || result.getInteger() == 0 && result.getNumerator() > 0;
     }
-    
+
+    /**
+     * Create a new Rational that's the ceil of this Rational.
+     * 
+     * @return ceil(x)
+     */
+    public Rational ceil() {
+        return add(new Rational(numerator == 0 ? 0 : 1)).truncate();
+    }
+
+    public Rational truncate() {
+        return new Rational(reduce().integer);
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

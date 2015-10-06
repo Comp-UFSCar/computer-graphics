@@ -40,21 +40,23 @@ public class ScanLineAlgorithm {
         this.yMax = yMax;
     }
 
+    /**
+     * Fill the polygon represented by @edgePoints.
+     *
+     * @param gl
+     * @return self
+     */
     public ScanLineAlgorithm draw(GL gl) {
         for (int y = yMin; y <= yMax; y++) {
             aet.removeEdgesWithMaximumYOf(y);
             aet.addEdges(et.getEdgesAtLine(y));
 
             Iterator<EdgeNode> i = aet.getEdges().iterator();
-
             while (i.hasNext()) {
-                EdgeNode current = i.next();
-                EdgeNode next = i.next();
+                Rational left = i.next().getCurrentX().ceil(),
+                    right = i.next().getCurrentX();
 
-                for (Rational x = current.getCurrentX();
-                    next.getCurrentX().gt(x);
-                    x = x.add(new Rational(1))) {
-                    
+                for (Rational x = left; right.gt(x); x = x.add(new Rational(1))) {
                     gl.glVertex2i(x.getInteger(), y);
                 }
             }
