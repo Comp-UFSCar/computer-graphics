@@ -19,10 +19,27 @@ public class EdgeTable {
         lines = new HashMap<>();
     }
 
+    /**
+     * Get all edges of the polygon that begin at @y.
+     * 
+     * 
+     *
+     * @param y the line being currently scanned.
+     * @return the list or null, if not found.
+     */
     public List<EdgeNode> getEdgesAtLine(int y) {
         return lines.getOrDefault(y, null);
     }
 
+    /**
+     * Add multiple @EdgeNodes to the table based on the edges start and ending.
+     * 
+     * Furthermore, this operation sorts all lists in the table.
+     *
+     * @param edges the list of pairs (Point, Point) that describe the edges
+     * that will be inserted.
+     * @return this.
+     */
     public EdgeTable addEdges(List<Pair<Point, Point>> edges) {
         edges.stream().forEach((edge) -> {
             addEdge(edge.getKey(), edge.getValue());
@@ -45,6 +62,13 @@ public class EdgeTable {
         return this;
     }
 
+    /**
+     * Add @EdgeNode to the table based on a edge start and ending.
+     * 
+     * @param start the origin of the edge.
+     * @param end the end of the edge.
+     * @return this.
+     */
     protected EdgeTable addEdge(Point start, Point end) {
         // Ignore horizontal lines, as they will cause
         // a exception to be thrown at @Rational class.

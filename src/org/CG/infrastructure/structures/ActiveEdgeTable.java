@@ -12,14 +12,35 @@ public class ActiveEdgeTable {
 
     List<EdgeNode> edges = new LinkedList<>();
 
+    /**
+     * Add a list of @EdgeNode to the AET.
+     * 
+     * If the current line scanned is @y, should insert only nodes with 
+     * @yMinimum == @y.
+     * 
+     * ActiveEdgeTable ignores empty or null lists.
+     *
+     * @param edges list containing @EdgeNodes that will be merged
+     * into the current scanned line.
+     * @return
+     */
     public ActiveEdgeTable addEdges(List<EdgeNode> edges) {
-        if (edges != null) {
+        if (edges != null && !edges.isEmpty()) {
             this.edges.addAll(edges);
+            sortEdgesByTheirXCoordinate();
         }
-
-        return sortEdgesByTheirXCoordinate();
+        
+        return this;
     }
 
+    /**
+     * Signal AET that all nodes should have their x incremented by their
+     * respective delta.
+     * 
+     * At the end of this operation, the list of nodes will also be sorted.
+     *
+     * @return this
+     */
     public ActiveEdgeTable nextScanLine() {
         edges.stream().forEach((e) -> {
             e.goToNextScanLine();
@@ -28,14 +49,25 @@ public class ActiveEdgeTable {
         return sortEdgesByTheirXCoordinate();
     }
 
-    public void removeEdgesWithMaximumYOf(int y) {
+    /**
+     * Remove all @EdgeNode that have their maximumY equal to @y.
+     *
+     * @param y
+     * @return true, if any element was removed. False, otherwise.
+     */
+    public boolean removeEdgesWithMaximumYOf(int y) {
+        boolean anyRemoved = false;
+        
         Iterator<EdgeNode> i = edges.iterator();
 
         while (i.hasNext()) {
             if (i.next().getMaximumY() == y) {
                 i.remove();
+                anyRemoved = true;
             }
         }
+        
+        return anyRemoved;
     }
 
     protected ActiveEdgeTable sortEdgesByTheirXCoordinate() {
