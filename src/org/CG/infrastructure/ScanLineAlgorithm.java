@@ -19,6 +19,10 @@ public class ScanLineAlgorithm {
     protected EdgeTable et;
     protected int yMin, yMax;
 
+    /**
+     * Instatiates a new solver for the Scanline Algorithm.
+     * @param edgePoints list of the edges of the polygon.
+     */
     public ScanLineAlgorithm(List<Pair<Point, Point>> edgePoints) {
         if (yMin > yMax) {
             throw new IllegalArgumentException(
