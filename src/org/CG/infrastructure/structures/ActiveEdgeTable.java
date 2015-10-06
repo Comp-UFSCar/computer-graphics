@@ -25,13 +25,15 @@ public class ActiveEdgeTable {
      * into the current scanned line.
      * @return this.
      */
-    public ActiveEdgeTable addEdges(List<EdgeNode> edges) {
+    public boolean addEdges(List<EdgeNode> edges) {
         if (edges != null && !edges.isEmpty()) {
             this.edges.addAll(edges);
             sortEdgesByTheirXCoordinate();
+            
+            return true;
         }
         
-        return this;
+        return false;
     }
 
     /**
