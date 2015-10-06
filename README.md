@@ -1,4 +1,4 @@
-# CG - Assignment 1
+# CG - Matrix Paint
 
 * Repository: [github.com/lucasdavid/CG-Assignment-1](https://github.com/lucasdavid/CG-Assignment-1)
 * Language: Java
@@ -10,9 +10,12 @@
 ## Introduction
 
 Drawing of elementary geometric forms using OpenGL.
+
 In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.ac.at/~kriegl/Skripten/CG/node25.html),
 polygons (which are dealt here as, essentially, collections of lines) and circles using
 [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
+
+Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/lucasdavid/CG-Assignment-1/blob/master/src/org/CG/infrastructure/ScanLineAlgorithm.java).
 
 ## Installing and running
 
