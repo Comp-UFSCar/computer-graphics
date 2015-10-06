@@ -51,11 +51,11 @@ public class CGAssignment1 implements GLEventListener {
         }
 
         editor = new Editor();
-        
+
         int width = 1366;
         int height = 768;
-        
-        if(args.length == 2) {
+
+        if (args.length == 2) {
             try {
                 width = Integer.parseInt(args[0]);
                 height = Integer.parseInt(args[1]);
@@ -168,7 +168,7 @@ public class CGAssignment1 implements GLEventListener {
             editor.redo();
         });
         mb.add("Redo", b);
-        
+
         // color picker
         m = new JMenu("Color");
         b = createSimpleButton("Random");
@@ -179,11 +179,12 @@ public class CGAssignment1 implements GLEventListener {
         b = createSimpleButton("Pick");
         b.addActionListener((ActionEvent e) -> {
             Color c = JColorChooser.showDialog(null, "Choose the color", Color.yellow);
-            editor.setSelectedColor(new ColorByte(
-                    c.getRed(), c.getGreen(),
-                    c.getBlue(), c.getAlpha()
-            ));
-            
+            if (c != null) {
+                editor.setSelectedColor(new ColorByte(
+                        c.getRed(), c.getGreen(),
+                        c.getBlue(), c.getAlpha()
+                ));
+            }
         });
         m.add(b);
         mb.add(m);
