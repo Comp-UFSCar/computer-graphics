@@ -44,8 +44,8 @@ public class ScanLineAlgorithm {
         yMax = Math.max(first.getKey().getY(), first.getValue().getY());
 
         edgePoints.stream().forEach((p) -> {
-            int localYMin = Math.min(p.getKey().getY(), p.getValue().getY()),
-                localYMax = Math.max(p.getKey().getY(), p.getValue().getY());
+            int localYMin = Math.min(p.getKey().getY(), p.getValue().getY());
+            int localYMax = Math.max(p.getKey().getY(), p.getValue().getY());
 
             if (localYMin < yMin) {
                 yMin = localYMin;
@@ -70,8 +70,8 @@ public class ScanLineAlgorithm {
 
             Iterator<EdgeNode> i = aet.getEdges().iterator();
             while (i.hasNext()) {
-                Rational left = i.next().getCurrentX().ceil(),
-                    right = i.next().getCurrentX();
+                Rational left = i.next().getCurrentX().ceil();
+                Rational right = i.next().getCurrentX();
 
                 for (Rational x = left; right.gt(x); x = x.add(new Rational(1))) {
                     gl.glVertex2i(x.getInteger(), y);
