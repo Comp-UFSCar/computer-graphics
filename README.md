@@ -1,6 +1,6 @@
 # CG - Matrix Paint
 
-* Repository: [github.com/lucasdavid/CG-Assignment-1](https://github.com/lucasdavid/CG-Assignment-1)
+* Repository: [github.com/lucasdavid/Matrix-Paint](https://github.com/lucasdavid/Matrix-Paint)
 * Language: Java
 * Authors:
   * [Diorge Brognara](https://github.com/diorge)
@@ -15,12 +15,12 @@ In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.a
 polygons (which are dealt here as, essentially, collections of lines) and circles using
 [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
-Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/lucasdavid/CG-Assignment-1/blob/master/src/org/CG/infrastructure/ScanLineAlgorithm.java).
+Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/lucasdavid/Matrix-Paint/blob/master/src/org/CG/infrastructure/ScanLineAlgorithm.java).
 
 ## Installing and running
 
 If you're having problems installing or executing this project,
-follow this [steps](https://github.com/lucasdavid/CG-Assignment-1/blob/master/INSTALL.md).
+follow this [steps](https://github.com/lucasdavid/Matrix-Paint/blob/master/INSTALL.md).
 
 ## Usage
 
