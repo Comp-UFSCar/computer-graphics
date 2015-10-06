@@ -28,7 +28,7 @@ import org.CG.infrastructure.Drawing;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    private final static String TITLE = "Line drawing over pixel matrix";
+    private final static String TITLE = "Matrix Paint";
 
     private static Editor editor;
 
