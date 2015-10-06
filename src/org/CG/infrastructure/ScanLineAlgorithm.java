@@ -19,10 +19,6 @@ public class ScanLineAlgorithm {
     protected int yMin, yMax;
 
     public ScanLineAlgorithm(List<Pair<Point, Point>> edgePoints) {
-
-    }
-
-    public ScanLineAlgorithm(List<Pair<Point, Point>> edgePoints, int yMin, int yMax) {
         if (yMin > yMax) {
             throw new IllegalArgumentException(
                 "yMin (" + yMin + ") cannot be greater than yMax (" + yMax + ").");
@@ -36,8 +32,24 @@ public class ScanLineAlgorithm {
         et = new EdgeTable().addEdges(edgePoints);
         aet = new ActiveEdgeTable();
 
-        this.yMin = yMin;
-        this.yMax = yMax;
+        Pair<Point, Point> first = edgePoints.get(0);
+
+        // Find the minimum and maximum Y of all set.
+        yMin = Math.min(first.getKey().getY(), first.getValue().getY());
+        yMax = Math.max(first.getKey().getY(), first.getValue().getY());
+
+        edgePoints.stream().forEach((p) -> {
+            int localYMin = Math.min(p.getKey().getY(), p.getValue().getY()),
+                localYMax = Math.max(p.getKey().getY(), p.getValue().getY());
+
+            if (localYMin < yMin) {
+                yMin = localYMin;
+            }
+
+            if (localYMax > yMax) {
+                yMax = localYMax;
+            }
+        });
     }
 
     /**
