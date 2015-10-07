@@ -23,15 +23,10 @@ import java.util.ArrayList;
 /**
  * Classe onde os métodos da OpenGL são implementados por meio da biblioteca JOGL e onde se encontram 
  * os algoritmos para desenhar o segmento. <br><br>
- *
- * Autores:<br>
- * Breno da Silveira Souza RA: 551481<br>
- * Camilo Moreira RA: 359645<br>
- * João Paulo Soares RA: 408034
  * 
- * @author João Paulo
- * @author Breno Silveira
- * @author Camilo Moreira
+ * @author João Paulo RA:408034
+ * @author Breno Silveira RA:551481
+ * @author Camilo Moreira RA:35964
  */
 public class Poligono implements GLEventListener {
 
@@ -42,7 +37,6 @@ public class Poligono implements GLEventListener {
     /**
      * Método que inicia a execução.
      * 
-     * @param args 
      */
 
     public static void main(String[] args) {
@@ -314,6 +308,9 @@ public class Poligono implements GLEventListener {
         //tabelaET.exibe();
     }
     
+    /**
+    * Algoritmo de preenchimento de poligono usando tabela de arestas ativas.
+    */
     public void preenche(GL gl){
         No AET = null;
         
