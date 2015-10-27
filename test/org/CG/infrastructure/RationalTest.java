@@ -1,5 +1,6 @@
 package org.CG.infrastructure;
 
+import org.CG.infrastructure.structures.Rational;
 import junit.framework.TestCase;
 import org.junit.Test;
 

@@ -1,8 +1,9 @@
 package org.CG.drawings;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.base.Drawing;
+import org.CG.infrastructure.structures.Point;
 
 /**
  * Circumference drawing with Bresenham's algorithm.
@@ -50,7 +51,7 @@ public class Circumference extends Drawing {
      * @param gl JOGL object
      */
     @Override
-    protected void drawShape(GL gl) {
+    protected void drawShape(GL gl, GLUT glut) {
         int x = radius;
         int y = 0;
         int xChange = 1 - 2 * radius;

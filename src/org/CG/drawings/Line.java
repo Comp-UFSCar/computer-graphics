@@ -1,8 +1,9 @@
 package org.CG.drawings;
 
-import org.CG.infrastructure.Drawing;
+import com.sun.opengl.util.GLUT;
+import org.CG.infrastructure.base.Drawing;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.structures.Point;
 
 /**
  * Drawing of a line on the screen. Uses the Bresenham's mid-point algorithm.
@@ -79,7 +80,7 @@ public class Line extends Drawing {
      * @param gl JOGL object to use in the drawing
      */
     @Override
-    protected void drawShape(GL gl) {
+    protected void drawShape(GL gl, GLUT glut) {
         // Set line color.
         int x = translated_start.getX();
         int y = translated_start.getY();

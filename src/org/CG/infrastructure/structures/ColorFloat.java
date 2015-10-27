@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.structures;
 
 import java.util.Random;
 import org.CG.infrastructure.helpers.MathHelper;

@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.structures;
 
 import java.util.Random;
 import org.CG.infrastructure.helpers.MathHelper;
@@ -17,6 +17,10 @@ public class ColorByte {
     private final byte blue;
 
     private final byte alpha;
+    
+    public ColorByte() {
+        this(0, 0, 0, 255);
+    }
 
     /**
      * Instantiates a new Color with given parameters and alpha 255. Clamps the

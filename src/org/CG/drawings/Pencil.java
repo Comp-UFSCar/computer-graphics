@@ -1,10 +1,11 @@
 package org.CG.drawings;
 
+import com.sun.opengl.util.GLUT;
 import java.util.ArrayList;
-import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.base.Drawing;
 import java.util.List;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.structures.Point;
 
 /**
  * Pencil drawing using list of points.
@@ -58,9 +59,10 @@ public class Pencil extends Drawing {
      * around it, for better visualization.
      *
      * @param gl JOGL object
+     * @param glut JOGL object
      */
     @Override
-    public void drawShape(GL gl) {
+    public void drawShape(GL gl, GLUT glut) {
         points.stream().forEach((point) -> {
             for (int i = point.getX() - 1; i <= point.getX() + 1; i++) {
                 for (int j = point.getY() - 1; j <= point.getY() + 1; j++) {

@@ -1,8 +1,9 @@
 package org.CG.drawings;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.base.Drawing;
+import org.CG.infrastructure.structures.Point;
 
 /**
  * Rectangle drawing using two points.
@@ -34,7 +35,7 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public void drawShape(GL gl) {
+    public void drawShape(GL gl, GLUT glut) {
         gl.glVertex2i(start.getX(), start.getY());
         gl.glVertex2i(start.getX(), end.getY());
         gl.glVertex2i(end.getX(), end.getY());

@@ -1,5 +1,7 @@
 package org.CG.infrastructure;
 
+import org.CG.infrastructure.structures.Rational;
+import org.CG.infrastructure.structures.Point;
 import java.util.Iterator;
 import java.util.List;
 import javafx.util.Pair;

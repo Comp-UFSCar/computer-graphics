@@ -7,5 +7,5 @@ package org.CG.editor;
  */
 public enum Mode {
 
-    IDLE, DRAWING, MOVING
+    IDLE, SELECTING, DRAWING, MOVING
 }

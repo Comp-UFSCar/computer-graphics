@@ -1,9 +1,10 @@
 package org.CG.drawings;
 
+import com.sun.opengl.util.GLUT;
 import java.util.LinkedList;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.base.Drawing;
+import org.CG.infrastructure.structures.Point;
 
 /**
  * Polygon drawing using list of lines.
@@ -76,9 +77,9 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    protected void drawShape(GL gl) {
+    protected void drawShape(GL gl, GLUT glut) {
         lines.stream().forEach((edge) -> {
-            edge.draw(gl);
+            edge.draw(gl, glut);
         });
     }
 }
