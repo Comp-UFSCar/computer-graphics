@@ -3,7 +3,9 @@ package org.CG;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.GLUT;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,17 +21,23 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
 import org.CG.drawings.Cube;
 import org.CG.editor.Editor;
 import org.CG.editor.Camera;
+import org.CG.editor.Mode;
 import org.CG.infrastructure.structures.ColorByte;
 import org.CG.infrastructure.base.Drawing;
 import org.CG.infrastructure.structures.Vector;
@@ -38,9 +46,9 @@ import org.CG.infrastructure.structures.Vector;
  * Matrix Paint main class.
  */
 public class CGAssignment1 implements GLEventListener {
-    
+
     private final static String TITLE = "Matrix Paint";
-    
+
     private GLU glu;
     private GLUT glut;
     private static Camera camera;
@@ -59,7 +67,7 @@ public class CGAssignment1 implements GLEventListener {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
         }
-        
+
         editor = new Editor();
         Cube s = new Cube(2);
         s.move(new Vector(1, 10, 0));
@@ -67,7 +75,7 @@ public class CGAssignment1 implements GLEventListener {
         
         width = 1366;
         height = 768;
-        
+
         if (args.length == 2) {
             try {
                 width = Integer.parseInt(args[0]);
@@ -76,18 +84,18 @@ public class CGAssignment1 implements GLEventListener {
                 Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
             }
         }
-        
+
         final JFrame frame = new JFrame(TITLE);
         GLCanvas canvas = new GLCanvas();
-        
+
         CGAssignment1 program = new CGAssignment1();
-        
+
         canvas.addGLEventListener(program);
         frame.add(canvas);
         frame.setSize(width, height);
         final Animator animator = new FPSAnimator(canvas, 60);
         frame.addWindowListener(new WindowAdapter() {
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
                 new Thread(() -> {
@@ -96,13 +104,13 @@ public class CGAssignment1 implements GLEventListener {
                 }).start();
             }
         });
-        
+
         canvas.addKeyListener(new KeyListener() {
-            
+
             @Override
             public void keyTyped(KeyEvent e) {
             }
-            
+
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyChar() == 'a') {
@@ -119,14 +127,14 @@ public class CGAssignment1 implements GLEventListener {
                     camera.move(new Vector(0, 1, 0));
                 }
             }
-            
+
             @Override
             public void keyReleased(KeyEvent e) {
             }
         });
-        
+
         canvas.addMouseListener(new MouseAdapter() {
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -135,7 +143,7 @@ public class CGAssignment1 implements GLEventListener {
                     editor.finishLastDrawing();
                 }
             }
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -143,7 +151,7 @@ public class CGAssignment1 implements GLEventListener {
                 }
             }
         });
-        
+
         canvas.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -152,9 +160,9 @@ public class CGAssignment1 implements GLEventListener {
                 }
             }
         });
-        
+
         canvas.addMouseWheelListener(new MouseAdapter() {
-            
+
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() > 0) {
@@ -167,13 +175,13 @@ public class CGAssignment1 implements GLEventListener {
 
         // Interface elements definitions.
         frame.setJMenuBar(createMenuBar());
+        frame.add(createStatusBar(frame.getWidth(), 16), BorderLayout.SOUTH);
 
-        // Center frame
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
     }
-    
+
     private static JButton createSimpleButton(String text) {
         JButton b = new JButton(text);
         b.setBorderPainted(false);
@@ -181,23 +189,38 @@ public class CGAssignment1 implements GLEventListener {
         b.setContentAreaFilled(false);
         return b;
     }
-    
+
     private static JMenuBar createMenuBar() {
         JButton b;
+        
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Mode");
-        
-        for (Class<? extends Drawing> d : editor.getAvailableDrawings()) {
-            String name = d.getSimpleName();
-            b = createSimpleButton(name);
-            
-            b.addActionListener((ActionEvent e) -> {
-                editor.setCurrentDrawing(d);
+        for (Mode mode : Mode.values()) {
+            b = createSimpleButton(mode.toString().toLowerCase());
+            b.setActionCommand(mode.toString());
+            b.addActionListener((e) -> {
+                editor.setMode(Mode.valueOf(e.getActionCommand()));
             });
             m.add(b);
         }
         
         mb.add(m);
+        
+        m = new JMenu("Shape");
+
+        for (Class<? extends Drawing> d : editor.getAvailableDrawings()) {
+            String name = d.getSimpleName();
+            b = createSimpleButton(name);
+
+            b.addActionListener((ActionEvent e) -> {
+                editor.setCurrentDrawing(d);
+            });
+            m.add(b);
+        }
+
+        mb.add(m);
+        
+        
 
         // color picker
         m = new JMenu("Color");
@@ -218,20 +241,36 @@ public class CGAssignment1 implements GLEventListener {
         });
         m.add(b);
         mb.add(m);
-        
+
         b = createSimpleButton("<");
         b.addActionListener((ActionEvent e) -> {
             editor.undo();
         });
         mb.add("<", b);
-        
+
         b = createSimpleButton(">");
         b.addActionListener((ActionEvent e) -> {
             editor.redo();
         });
         mb.add(">", b);
-        
+
         return mb;
+    }
+
+    private static JPanel createStatusBar(int width, int height) {
+        JPanel statusPanel = new JPanel();
+
+        statusPanel.setPreferredSize(new Dimension(width, height));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        JLabel statusLabel = new JLabel("Drawing mode: " + editor.getMode().toString().toLowerCase());
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusPanel.add(statusLabel);
+        
+        editor.setModeChangeListener((Mode previous, Mode current) -> {
+            statusLabel.setText("Drawing mode: " + current.toString().toLowerCase());
+        });
+
+        return statusPanel;
     }
 
     /**
@@ -266,18 +305,18 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
-        
+
         height = Math.max(height, 1);
-        
+
         CGAssignment1.height = height;
         CGAssignment1.width = width;
-        
+
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
-        
+
         glu.gluPerspective(45, (float) (width) / height, 2, 20);
         gl.glMatrixMode(GL.GL_MODELVIEW);
-        
+
         gl.glLoadIdentity();
     }
 
@@ -289,16 +328,16 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         camera.syncGraphics();
-        
+
         GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        
+
         configLightning(gl);
-        
+
         editor.getDrawings().forEach(d -> {
             d.draw(gl, glut);
         });
-        
+
         gl.glFlush();
     }
 
@@ -312,7 +351,7 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
-    
+
     private void configLightning(GL gl) {
         float SHINE_ALL_DIRECTIONS = 1;
         float[] lightPos = {-20, 10, -40, SHINE_ALL_DIRECTIONS};
