@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.abstractions;
 
 /**
  * Represents an immutable two-dimensional pair of integers

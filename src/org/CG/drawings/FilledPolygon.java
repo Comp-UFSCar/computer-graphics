@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Point;
-import org.CG.infrastructure.ScanLineAlgorithm;
+import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.ScanLineAlgorithm;
 
 /**
  * Filled Polygon drawing using Polygon and ScanLineAlgorithm.

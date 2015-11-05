@@ -1,4 +1,4 @@
-package org.CG.infrastructure.structures;
+package org.CG.infrastructure.abstractions;
 
 import java.util.Iterator;
 import java.util.LinkedList;

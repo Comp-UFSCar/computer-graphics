@@ -1,5 +1,8 @@
 package org.CG.infrastructure;
 
+import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.ColorFloat;
+import org.CG.infrastructure.abstractions.ColorByte;
 import javax.media.opengl.GL;
 
 /**

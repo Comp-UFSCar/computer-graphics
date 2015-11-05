@@ -8,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
-import org.CG.infrastructure.ColorByte;
+import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Matrix Paint Editor.

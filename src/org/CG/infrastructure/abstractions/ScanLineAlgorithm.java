@@ -1,12 +1,12 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.abstractions;
 
 import java.util.Iterator;
 import java.util.List;
 import javafx.util.Pair;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.structures.ActiveEdgeTable;
-import org.CG.infrastructure.structures.EdgeNode;
-import org.CG.infrastructure.structures.EdgeTable;
+import org.CG.infrastructure.abstractions.ActiveEdgeTable;
+import org.CG.infrastructure.abstractions.EdgeNode;
+import org.CG.infrastructure.abstractions.EdgeTable;
 
 /**
  * Performs the Scan-Line Algorithm to fill a polygon.

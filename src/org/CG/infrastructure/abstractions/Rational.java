@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.CG.infrastructure.abstractions;
 
 import org.CG.infrastructure.helpers.MathHelper;
 

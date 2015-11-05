@@ -1,6 +1,4 @@
-package org.CG.infrastructure.structures;
-
-import org.CG.infrastructure.Rational;
+package org.CG.infrastructure.abstractions;
 
 /**
  * Node for the Edge Table and Alive Edge Table data structures.

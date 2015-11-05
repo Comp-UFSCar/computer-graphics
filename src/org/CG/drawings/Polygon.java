@@ -3,7 +3,7 @@ package org.CG.drawings;
 import java.util.LinkedList;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Polygon drawing using list of lines.

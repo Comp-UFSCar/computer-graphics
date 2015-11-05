@@ -2,7 +2,7 @@ package org.CG.drawings;
 
 import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Drawing of a line on the screen. Uses the Bresenham's mid-point algorithm.

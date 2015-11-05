@@ -2,7 +2,7 @@ package org.CG.drawings;
 
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Circumference drawing with Bresenham's algorithm.

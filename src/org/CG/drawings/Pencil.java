@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.CG.infrastructure.Drawing;
 import java.util.List;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Point;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Pencil drawing using list of points.
