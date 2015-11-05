@@ -1,6 +1,6 @@
-# CG - Matrix Paint
+﻿# CG - Matrix Paint
 
-* Repository: [github.com/lucasdavid/Matrix-Paint](https://github.com/lucasdavid/Matrix-Paint)
+* Repository: [github.com/UFSCar-CS/computer-graphics-2015-2](https://github.com/UFSCar-CS/computer-graphics-2015-2)
 * Language: Java
 * Authors:
   * [Diorge Brognara](https://github.com/diorge)
@@ -15,12 +15,14 @@ In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.a
 polygons (which are dealt here as, essentially, collections of lines) and circles using
 [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
-Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/lucasdavid/Matrix-Paint/blob/master/src/org/CG/infrastructure/ScanLineAlgorithm.java).
+Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/src/org/CG/infrastructure/ScanLineAlgorithm.java).
+
+The [screenshots](http://https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/screenshots) folder contains some illustrations of the executing program.
 
 ## Installing and running
 
 If you're having problems installing or executing this project,
-follow this [steps](https://github.com/lucasdavid/Matrix-Paint/blob/master/INSTALL.md).
+follow this [steps](https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/INSTALL.md).
 
 ## Usage
 
