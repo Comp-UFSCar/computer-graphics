@@ -26,16 +26,13 @@ public class Editor {
     private final LinkedList<Drawing> redos;
 
     private Class<? extends Drawing> currentDrawing = Line.class;
-
-    private Mode mode = Mode.MOVING;
-    private State state;
-    private ModeChangeListener modeChangeListener;
+    private Mode mode;
 
     private final Random rand;
     private ColorByte selectedColor;
 
     /**
-     * Instantiates a new editor, without drawings and in Drawing state.
+     * Instantiates a new editor, without drawings and in Drawing mode.
      */
     public Editor() {
         availableDrawings = DrawingsLoader.getDrawingsClasses();
@@ -43,7 +40,7 @@ public class Editor {
         drawings = new LinkedList<>();
         redos = new LinkedList<>();
 
-        state = State.IDLE;
+        mode = Mode.SELECTING;
         rand = new Random();
     }
 
@@ -88,11 +85,11 @@ public class Editor {
         Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
         if (e.isControlDown()) {
-            state = State.MOVING;
-        } else if (state == State.DRAWING || state == State.IDLE) {
+            mode = Mode.MOVING;
+        } else if (mode == Mode.DRAWING || mode == Mode.IDLE) {
             redos.clear();
 
-            state = State.DRAWING;
+            mode = Mode.DRAWING;
 
             if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
                 drawings.getLast().setNextCoordinate(point);
@@ -121,15 +118,15 @@ public class Editor {
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
         Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
-        if (!e.isControlDown() && state == State.MOVING) {
-            state = State.IDLE;
+        if (!e.isControlDown() && mode == Mode.MOVING) {
+            mode = Mode.IDLE;
 
-        } else if (state == State.MOVING) {
+        } else if (mode == Mode.MOVING) {
             drawings
                 .getLast()
                 .translate(point);
 
-        } else if (state == State.DRAWING) {
+        } else if (mode == Mode.DRAWING) {
             drawings
                 .getLast()
                 .updateLastCoordinate(point);
@@ -198,27 +195,5 @@ public class Editor {
             return selectedColor;
         }
         return ColorByte.random(rand).adjustBrightness(100);
-    }
-
-    public Mode getMode() {
-        return mode;
-    }
-
-    public void setMode(Mode mode) {
-        Mode previous = this.mode;
-        this.mode = mode;
-
-        if (modeChangeListener != null) {
-            modeChangeListener.notify(previous, mode);
-        }
-    }
-
-    public void setModeChangeListener(ModeChangeListener listener) {
-        modeChangeListener = listener;
-    }
-
-    public static interface ModeChangeListener {
-
-        public void notify(Mode previous, Mode current);
     }
 }
