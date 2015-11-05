@@ -1,4 +1,4 @@
-package org.CG.infrastructure.structures;
+package org.CG.infrastructure;
 
 import org.CG.infrastructure.helpers.MathHelper;
 

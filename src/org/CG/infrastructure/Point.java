@@ -1,4 +1,4 @@
-package org.CG.infrastructure.structures;
+package org.CG.infrastructure;
 
 /**
  * Represents an immutable two-dimensional pair of integers

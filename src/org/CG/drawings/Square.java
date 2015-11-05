@@ -1,7 +1,7 @@
 package org.CG.drawings;
 
-import org.CG.infrastructure.base.Drawing;
-import org.CG.infrastructure.structures.Point;
+import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.Point;
 
 /**
  * Square drawing using a restrictive rectangle.

@@ -8,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
-import org.CG.infrastructure.structures.ColorByte;
-import org.CG.infrastructure.base.Drawing;
+import org.CG.infrastructure.ColorByte;
+import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
-import org.CG.infrastructure.structures.Point;
+import org.CG.infrastructure.Point;
 
 /**
  * Matrix Paint Editor.
@@ -40,7 +40,7 @@ public class Editor {
         drawings = new LinkedList<>();
         redos = new LinkedList<>();
 
-        mode = Mode.SELECTING;
+        mode = Mode.DRAWING;
         rand = new Random();
     }
 
@@ -81,31 +81,31 @@ public class Editor {
      * @param canvas the GL canvas object.
      */
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
+        redos.clear();
 
         Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
         if (e.isControlDown()) {
             mode = Mode.MOVING;
-        } else if (mode == Mode.DRAWING || mode == Mode.IDLE) {
-            redos.clear();
+            return;
+        }
 
-            mode = Mode.DRAWING;
+        mode = Mode.DRAWING;
 
-            if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
-                drawings.getLast().setNextCoordinate(point);
-                return;
-            }
+        if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
+            drawings.getLast().setNextCoordinate(point);
+            return;
+        }
 
-            ColorByte color = this.getDrawingColor();
+        ColorByte color = this.getDrawingColor();
 
-            try {
-                drawings.add(currentDrawing.newInstance()
+        try {
+            drawings.add(currentDrawing.newInstance()
                     .setColor(color)
                     .setStart(point));
 
-            } catch (InstantiationException | IllegalAccessException ex) {
-                Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -123,13 +123,13 @@ public class Editor {
 
         } else if (mode == Mode.MOVING) {
             drawings
-                .getLast()
-                .translate(point);
+                    .getLast()
+                    .translate(point);
 
         } else if (mode == Mode.DRAWING) {
             drawings
-                .getLast()
-                .updateLastCoordinate(point);
+                    .getLast()
+                    .updateLastCoordinate(point);
         }
     }
 

@@ -1,9 +1,5 @@
-package org.CG.infrastructure.base;
+package org.CG.infrastructure;
 
-import com.sun.opengl.util.GLUT;
-import org.CG.infrastructure.structures.ColorByte;
-import org.CG.infrastructure.structures.ColorFloat;
-import org.CG.infrastructure.structures.Point;
 import javax.media.opengl.GL;
 
 /**
@@ -11,7 +7,7 @@ import javax.media.opengl.GL;
  *
  * @author ldavid
  */
-public abstract class Drawing extends Interactive {
+public abstract class Drawing {
 
     protected Point start;
     protected ColorByte color;
@@ -24,7 +20,6 @@ public abstract class Drawing extends Interactive {
      */
     public Drawing() {
         this(GL.GL_POINTS);
-        color = new ColorByte();
     }
     
     /**
@@ -64,14 +59,13 @@ public abstract class Drawing extends Interactive {
     /**
      * Draws the shape on screen.
      *
-     * @param gl JOGL object used to draw.
-     * @param glut GLUT object used to draw.
+     * @param gl JOGL object used to draw
      */
-    public void draw(GL gl, GLUT glut) {
+    public void draw(GL gl) {
         gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(glDrawingType);
 
-        drawShape(gl, glut);
+        drawShape(gl);
 
         gl.glEnd();
     }
@@ -80,10 +74,9 @@ public abstract class Drawing extends Interactive {
      * Implementation of the draw method. The methods glColor(), glBegin() and
      * glEnd() are already called.
      *
-     * @param gl JOGL object used to draw.
-     * @param glut GLUT object used to draw 3D elements.
+     * @param gl JOGL object used to draw
      */
-    abstract protected void drawShape(GL gl, GLUT glut);
+    abstract protected void drawShape(GL gl);
 
     /**
      * Translates the shape.

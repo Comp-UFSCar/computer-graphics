@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
+import org.CG.infrastructure.Point;
+import org.CG.infrastructure.Rational;
 
 /**
  * Edge Table (ET) for the Scan-Line Algorithm.
