@@ -14,6 +14,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -31,7 +32,8 @@ import org.CG.infrastructure.Drawing;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    private final static String TITLE = "Pixelpaint";
+    final static String TITLE = "Pixelpaint";
+    final static String ICON = "resources/icon.png";
 
     private static Editor editor;
 
@@ -123,9 +125,14 @@ public class CGAssignment1 implements GLEventListener {
         // Interface elements definitions.
         JMenuBar mb = createMenuBar();
 
-        // Center frame
+        // Center frame on the screen.
         frame.setJMenuBar(mb);
         frame.setLocationRelativeTo(null);
+        
+        // Add icon to program.
+        ImageIcon img = new ImageIcon(ICON);
+        frame.setIconImage(img.getImage());
+        
         frame.setVisible(true);
         animator.start();
     }
