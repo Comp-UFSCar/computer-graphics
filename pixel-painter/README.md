@@ -15,14 +15,14 @@ In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.a
 polygons (which are dealt here as, essentially, collections of lines) and circles using
 [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
-Additionally, forms are being filled with the [Scan-line Algorithm](https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/src/org/CG/infrastructure/ScanLineAlgorithm.java).
+Additionally, forms are being filled with the [Scan-line Algorithm](pixel-painter/src/org/CG/infrastructure/ScanLineAlgorithm.java).
 
-The [screenshots](http://https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/screenshots) folder contains some illustrations of the executing program.
+The [screenshots](pixel-painter/screenshots) folder contains some illustrations of the executing program.
 
 ## Installing and running
 
 If you're having problems installing or executing this project,
-follow this [steps](https://github.com/UFSCar-CS/computer-graphics-2015-2/blob/master/pixel-painter/INSTALL.md).
+follow this [steps](pixel-painter/INSTALL.md).
 
 ## Usage
 
