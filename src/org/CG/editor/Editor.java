@@ -47,28 +47,18 @@ public class Editor {
         rand = new Random();
     }
 
-    /**
-     * Undo the last action. Must be at least one undo-able action and less than
-     * 100 undo-ed actions.
-     */
     public void undo() {
         if (drawings.size() > 0 && redos.size() < 100) {
             redos.add(drawings.removeLast());
         }
     }
 
-    /**
-     * Redo the last undone action.
-     */
     public void redo() {
         if (redos.size() > 0) {
             drawings.add(redos.removeLast());
         }
     }
 
-    /**
-     * Finish the current drawing. This will close polygons if applicable.
-     */
     public void finishLastDrawing() {
         if (!drawings.isEmpty() && !drawings.getLast().isFinished()) {
             Drawing l = drawings.getLast();
@@ -76,13 +66,6 @@ public class Editor {
         }
     }
 
-    /**
-     * Listens to mouse presses on the canvas, potentially drawing or starting
-     * to draw new shapes.
-     *
-     * @param e the action performed by the mouse.
-     * @param canvas the GL canvas object.
-     */
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
 
         Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
@@ -112,12 +95,6 @@ public class Editor {
         }
     }
 
-    /**
-     * Listens to mouse drags on the canvas.
-     *
-     * @param e the action performed by the mouse.
-     * @param canvas the GL canvas object.
-     */
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
         Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
 
@@ -136,38 +113,17 @@ public class Editor {
         }
     }
 
-    /**
-     * Listens to mouse release on the canvas.
-     *
-     * @param e the action performed by the mouse.
-     * @param canvas the GL canvas object.
-     */
     public void onMouseReleasedOnCanvas(MouseEvent e, GLCanvas canvas) {
     }
 
-    /**
-     * Gets the collection of all current drawings.
-     *
-     * @return list of all drawings.
-     */
     public LinkedList<Drawing> getDrawings() {
         return drawings;
     }
 
-    /**
-     * Gets the collection of possible Drawing shapes.
-     *
-     * @return list of Drawings that can be drawn.
-     */
     public List<Class<? extends Drawing>> getAvailableDrawings() {
         return availableDrawings;
     }
 
-    /**
-     * Sets the drawing shape for the current drawing.
-     *
-     * @param currentDrawing shape for current drawing.
-     */
     public void setCurrentDrawing(Class<? extends Drawing> currentDrawing) {
         this.currentDrawing = currentDrawing;
     }
