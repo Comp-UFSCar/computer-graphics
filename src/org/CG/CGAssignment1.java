@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -25,7 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.editor.Editor;
-import org.CG.infrastructure.ColorByte;
+import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
 
 /**
@@ -33,7 +31,7 @@ import org.CG.infrastructure.Drawing;
  */
 public class CGAssignment1 implements GLEventListener {
 
-    private final static String TITLE = "Matrix Paint";
+    private final static String TITLE = "Pixelpaint";
 
     private static Editor editor;
 
