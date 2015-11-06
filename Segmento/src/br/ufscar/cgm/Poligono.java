@@ -346,11 +346,15 @@ public class Poligono implements GLEventListener {
             p1 = AET;
             p2 = AET.getProximo();
             while(p2 != null){
-                if(p2.getYmax() == nivel)
+                if(p2.getYmax() == nivel){
                     p1.setProximo(p2.getProximo());
-                
-                p1 = p1.getProximo();
-                p2 = p1.getProximo();
+                    p2 = p1.getProximo();
+                }
+                else
+                {
+                    p1 = p1.getProximo();
+                    p2 = p1.getProximo();
+                }
             }
             
             //ordena AET
