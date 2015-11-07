@@ -1,6 +1,7 @@
 package br.ufscar.cgm.preenchimento;
 
 import br.ufscar.cgm.geometria.Aresta3D;
+import br.ufscar.cgm.utils.Drawer;
 import br.ufscar.cgm.utils.Racional;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -29,16 +30,23 @@ public class No implements Comparable<No> {
         if(a.inicio == null || a.fim == null)
             throw new ExceptionInInitializerError("Aresta não pode ter pontos vazios.");
         
-        dx = a.inicio.x - a.fim.x;
-        dy = a.inicio.y - a.fim.y;
-        dz = a.inicio.z - a.fim.z;
+        int m = Drawer.precision;
+        
+        dx = (a.inicio.x - a.fim.x);
+        dy = (a.inicio.y - a.fim.y);
+        dz = (a.inicio.z - a.fim.z);
         
         dx_dz = new Racional(0, dx, dz);
         dy_dz = new Racional(0, dy, dz);
         
         if(a.inicio.z <= a.fim.z){
-            x_do_min = new Racional(a.inicio.x,0,1);
-            y_do_min = new Racional(a.inicio.y,0,1);
+            x_do_min = new Racional(a.inicio.x*m,0,1);
+            y_do_min = new Racional(a.inicio.y*m,0,1);
+            z_max = a.fim.z*m;
+        } else {
+            x_do_min = new Racional(a.fim.x*m,0,1);
+            y_do_min = new Racional(a.fim.y*m,0,1);
+            z_max = a.inicio.z*m;
         }
     }
 

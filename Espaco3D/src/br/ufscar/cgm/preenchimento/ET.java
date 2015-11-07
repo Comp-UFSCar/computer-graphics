@@ -1,5 +1,8 @@
 package br.ufscar.cgm.preenchimento;
 
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Classe que representa a estrutura da tabela de arestas e que também possui a
  * lógica para adicionar e exibir nós. <br><br>
@@ -10,24 +13,22 @@ package br.ufscar.cgm.preenchimento;
  */
 public class ET {
     
-    private No posicoes[];
+    private HashMap<Integer,No> pos;
+    private Integer min = null, max = null;
     
-    public ET(int z_max)
+    public ET()
     {
-        this.posicoes = new No[z_max];
+        pos = new HashMap<Integer, No>();
     }
     
-    /**
-    * Adiciona um novo nó na linha especificada.
-    * @param nocriado Novo nó.
-    * @param posicao linha.
-    */
+
     public void adicionaNo(No nocriado, int posicao)
     {
-        if(posicoes[posicao] == null)
-            posicoes[posicao] = nocriado;
+
+        if(pos.containsKey(posicao))
+            pos.get(posicao).setUltimoProximo(nocriado);
         else
-            posicoes[posicao].setUltimoProximo(nocriado);
+            pos.put(posicao, nocriado);
 
     }
     
@@ -36,7 +37,10 @@ public class ET {
     * @param i linha.
     */
     public No getNivel(int i){
-        return posicoes[i];
+        if(pos.containsKey(i))
+            return pos.get(i);
+        else
+            return null;
     }
     
     /**
@@ -44,29 +48,29 @@ public class ET {
     * @param i linha a ser verificada.
     */
     public boolean isNivelVazio(int i){
-        return (posicoes[i] == null);
+        return pos.containsKey(i);
     }
     
     /**
     * @return A quantidade de posições em ET.
     */
     public int getTamanho(){
-        return posicoes.length;
+        return max;
     }
 
     /**
     * Rotina responsável por mostrar uma visualização da ET no output para Debug.
     */
     public void exibe(){
-        for(int i=0; i < posicoes.length; i++){
-            if(posicoes[i] != null){
-                System.out.println("y="+i);
-                No tmp = posicoes[i];
-                while(tmp != null){
-                    System.out.print(tmp.toString() + " ");
-                    tmp = tmp.getProximo();
-                }
-                System.out.println();
+        Set<Integer> s = pos.keySet();
+        for(Integer ss: s){
+            pos.get(ss);
+            System.out.println("z="+ss);
+            No n = pos.get(ss);
+            System.out.println(n.toString());
+            while(n.getProximo() != null){
+                n = n.getProximo();
+                System.out.println(n.toString());
             }
         }
     }

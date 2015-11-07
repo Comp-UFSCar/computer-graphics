@@ -116,12 +116,18 @@ public class Espaco3D implements GLEventListener {
         //Drawer.drawCube(gl, 1, 0, 0, 0);
         novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
         faces.addAll(novasFaces);
+        
+        //Drawer.original_size = true;
+        Drawer.drawLine3D(gl, 0, 0, 0, 200, 200, 200);
+        //Drawer.original_size = false;
+        
         //Drawer.drawCube(gl, 3, 0, 0, 0);
         
         gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
 
         // Flush all drawing operations to the graphics card
+        inicializaET();
         gl.glFlush();
     }
 
@@ -135,7 +141,7 @@ public class Espaco3D implements GLEventListener {
         if(faces == null || faces.size() == 0)
             return;
         
-        tabelaET = new ET(50*Drawer.precision);
+        tabelaET = new ET();
              
         No novoNo;
         for (int i = 0; i < faces.get(0).arestas.size(); i++) {
@@ -145,7 +151,7 @@ public class Espaco3D implements GLEventListener {
             if(s.inicio.z != s.fim.z)
             {
                 novoNo = new No(s);
-                tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z)*Drawer.precision);
+                tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z));
             }
         }
         
