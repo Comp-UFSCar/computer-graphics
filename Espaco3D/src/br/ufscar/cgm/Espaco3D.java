@@ -1,12 +1,20 @@
 package br.ufscar.cgm;
 
+import br.ufscar.cgm.geometria.Aresta3D;
+import br.ufscar.cgm.geometria.Face;
+import br.ufscar.cgm.preenchimento.ET;
+import br.ufscar.cgm.preenchimento.No;
 import br.ufscar.cgm.utils.Drawer;
+import br.ufscar.cgm.utils.Racional;
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -21,6 +29,10 @@ import javax.media.opengl.glu.GLU;
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 public class Espaco3D implements GLEventListener {
+    
+    ArrayList<Face> faces = new ArrayList<Face>();
+    ET tabelaET;
+    No AET;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -93,6 +105,7 @@ public class Espaco3D implements GLEventListener {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
         GLUT glut = new GLUT();
+        ArrayList<Face> novasFaces = new ArrayList<Face>();
 
         // Clear the drawing area
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -100,9 +113,10 @@ public class Espaco3D implements GLEventListener {
         gl.glLoadIdentity();
         
         //Drawer.drawLine2D(gl, -1, -1, 0, 0);
-        Drawer.drawCube(gl, 1, 0, 0, 0);
-        Drawer.drawCube(gl, 2, 0, 0, 0);
-        Drawer.drawCube(gl, 3, 0, 0, 0);
+        //Drawer.drawCube(gl, 1, 0, 0, 0);
+        novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
+        faces.addAll(novasFaces);
+        //Drawer.drawCube(gl, 3, 0, 0, 0);
         
         gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
@@ -112,6 +126,30 @@ public class Espaco3D implements GLEventListener {
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+    
+    }
+    
+    public void inicializaET()
+    {
+        //Nada para preencher
+        if(faces == null || faces.size() == 0)
+            return;
+        
+        tabelaET = new ET(50*Drawer.precision);
+             
+        No novoNo;
+        for (int i = 0; i < faces.get(0).arestas.size(); i++) {
+            Aresta3D s = faces.get(0).arestas.get(i);
+            
+            //se a linha não esta desenhada na horizontal
+            if(s.inicio.z != s.fim.z)
+            {
+                novoNo = new No(s);
+                tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z)*Drawer.precision);
+            }
+        }
+        
+        tabelaET.exibe();
     }
 }
 

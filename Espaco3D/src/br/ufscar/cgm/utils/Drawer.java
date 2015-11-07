@@ -5,13 +5,17 @@
  */
 package br.ufscar.cgm.utils;
 
+import br.ufscar.cgm.geometria.Aresta3D;
+import br.ufscar.cgm.geometria.Face;
+import br.ufscar.cgm.geometria.Ponto3D;
 import com.sun.opengl.util.BufferUtil;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 public class Drawer {
     
-    private static int precision = 1000;
+    public static int precision = 100;
     
     public static void drawPixel2D(GL gl, double x, double y) {
         drawPixel3D(gl,x,y,0);
@@ -260,11 +264,42 @@ public class Drawer {
 
     }
     
-    public static void drawCube(GL gl, int r, int x, int y, int z){
-        Drawer.drawLine3D(gl, x+r, y+r, z+r, x-r, y+r, z+r);
-        Drawer.drawLine3D(gl, x+r, y+r, z+r, x+r, y-r, z+r);
-        Drawer.drawLine3D(gl, x+r, y+r, z+r, x+r, y+r, z-r);
-        Drawer.drawLine3D(gl, x+r, y+r, z-r, x-r, y+r, z-r);
+    public static void drawLine3D(GL gl, Aresta3D a) {
+      
+        Drawer.drawLine3D(gl, a.inicio.x, a.inicio.y, a.inicio.z, a.fim.x, a.fim.y, a.fim.z);
+    }
+    
+    
+    public static ArrayList<Face> drawCube(GL gl, int r, int x, int y, int z){
+        Ponto3D p0, p1;
+        Aresta3D a0,a1,a2,a3;
+        ArrayList<Face> faces = new ArrayList<Face>();
+        ArrayList<Aresta3D> arestas = new ArrayList<Aresta3D>();
+        
+        p0 = new Ponto3D(x+r, y+r, z+r);
+        p1 = new Ponto3D(x-r, y+r, z+r);
+        a0 = new Aresta3D(p0, p1);
+        Drawer.drawLine3D(gl, a0);
+        arestas.add(a0);
+        
+        p1 = new Ponto3D(x+r, y-r, z+r);
+        a1 = new Aresta3D(p0, p1);
+        Drawer.drawLine3D(gl, a1);
+        arestas.add(a1);
+        
+        p1 = new Ponto3D(x+r, y+r, z-r);
+        a2 = new Aresta3D(p0, p1);
+        Drawer.drawLine3D(gl, a2);
+        arestas.add(a2);
+        
+        p0 = new Ponto3D(x+r, y+r, z-r);
+        p1 = new Ponto3D(x-r, y+r, z-r);
+        a3 = new Aresta3D(p0, p1);
+        Drawer.drawLine3D(gl, a3);
+        arestas.add(a3);
+        
+        faces.add(new Face(arestas));
+        
         Drawer.drawLine3D(gl, x+r, y+r, z-r, x+r, y-r, z-r);
         Drawer.drawLine3D(gl, x+r, y-r, z+r, x-r, y-r, z+r);
         Drawer.drawLine3D(gl, x+r, y-r, z+r, x+r, y-r, z-r);
@@ -273,6 +308,8 @@ public class Drawer {
         Drawer.drawLine3D(gl, x-r, y-r, z+r, x-r, y-r, z-r);
         Drawer.drawLine3D(gl, x-r, y+r, z-r, x-r, y-r, z-r);
         Drawer.drawLine3D(gl, x+r, y-r, z-r, x-r, y-r, z-r);
+        
+        return faces;
     }
 
 

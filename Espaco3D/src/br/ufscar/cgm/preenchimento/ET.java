@@ -9,16 +9,12 @@ package br.ufscar.cgm.preenchimento;
  * @author Camilo Moreira RA:35964
  */
 public class ET {
+    
     private No posicoes[];
     
-    /**
-    * Inicializa uma estrutura de nós com no máximo de entradas igual à altura
-    * da tela
-    * @param alturaTela altura da tela.
-    */
-    public ET(int alturaTela)
+    public ET(int z_max)
     {
-        this.posicoes = new No[alturaTela];
+        this.posicoes = new No[z_max];
     }
     
     /**
