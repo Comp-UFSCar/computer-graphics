@@ -1,5 +1,6 @@
 package br.ufscar.cgm.preenchimento;
 
+import br.ufscar.cgm.utils.Drawer;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ import java.util.Set;
 public class ET {
     
     private HashMap<Integer,No> pos;
-    private Integer min = null, max = null;
     
     public ET()
     {
@@ -24,7 +24,7 @@ public class ET {
 
     public void adicionaNo(No nocriado, int posicao)
     {
-
+        posicao = posicao*Drawer.precision;
         if(pos.containsKey(posicao))
             pos.get(posicao).setUltimoProximo(nocriado);
         else
@@ -49,13 +49,6 @@ public class ET {
     */
     public boolean isNivelVazio(int i){
         return pos.containsKey(i);
-    }
-    
-    /**
-    * @return A quantidade de posições em ET.
-    */
-    public int getTamanho(){
-        return max;
     }
 
     /**

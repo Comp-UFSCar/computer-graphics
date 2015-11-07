@@ -117,10 +117,6 @@ public class Espaco3D implements GLEventListener {
         novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
         faces.addAll(novasFaces);
         
-        //Drawer.original_size = true;
-        Drawer.drawLine3D(gl, 0, 0, 0, 200, 200, 200);
-        //Drawer.original_size = false;
-        
         //Drawer.drawCube(gl, 3, 0, 0, 0);
         
         gl.glColor3f(1.0f, 0f, 0f);
@@ -128,6 +124,7 @@ public class Espaco3D implements GLEventListener {
 
         // Flush all drawing operations to the graphics card
         inicializaET();
+        preenche(gl);
         gl.glFlush();
     }
 
@@ -157,5 +154,85 @@ public class Espaco3D implements GLEventListener {
         
         tabelaET.exibe();
     }
+    
+    public void preenche(GL gl){
+        No AET = null;
+        
+        // TODO implementar min e max de Faces
+        int nivel = -1000;
+        int nivel_max = 1000;
+        
+        //Inicializa AET
+        while(tabelaET.isNivelVazio(nivel) && nivel < nivel_max)
+                nivel++;
+        //ET está vazia
+        if(nivel == nivel_max)
+            return;
+        
+        boolean AET_esta_vazia = false;
+        No p1, p2;
+        while(!AET_esta_vazia && nivel < nivel_max){
+            //AET recebe os nós que ymin = nivel
+            if(AET == null)
+                AET = tabelaET.getNivel(nivel);
+            else
+                AET.setUltimoProximo(tabelaET.getNivel(nivel));
+            
+            //Remove os nós que ymax = nivel
+            //Remove os pontos de ymax no começo da AET
+            while(AET != null && AET.getZmax() == nivel){
+                AET = AET.getProximo();
+            }
+            if(AET == null){
+                AET_esta_vazia = true;
+                continue;
+            }
+            //Remove os pontos de ymax no meio da AET
+            p1 = AET;
+            p2 = AET.getProximo();
+            while(p2 != null){
+                if(p2.getZmax() == nivel){
+                    p1.setProximo(p2.getProximo());
+                    p2 = p1.getProximo();
+                }
+                else
+                {
+                    p1 = p1.getProximo();
+                    p2 = p1.getProximo();
+                }
+            }
+            
+            /*
+            //ordena AET
+            AET = No.ordena(AET);
+            
+            //preenche figura
+            p1 = AET;
+            int x1, x2;
+            while(p1 != null){
+                //Caso especial
+                x1 = p1.getXdoYmin().arredondaParaCima();
+                x2 = p1.getProximo().getXdoYmin().arredondaParaBaixo();
+                if(x1 > x2)
+                    drawLine(gl, x1, nivel, x1, nivel);
+                else
+                    drawLine(gl, x1, nivel, x2, nivel);
+                
+                p1 = p1.getProximo().getProximo();
+            }
+            
+            //Atualiza o nível
+            nivel++;
+            
+            //Atualiza o valor dos Nós
+            p1 = AET;
+            while(p1 != null){
+                p1.setXdoYmin(p1.getXdoYmin().soma(p1.getDXDY()));
+                p1 = p1.getProximo();
+            }*/
+                
+        }
+    }
+
 }
 
