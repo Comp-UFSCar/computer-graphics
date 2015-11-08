@@ -276,34 +276,86 @@ public class Drawer {
     
     
     public static ArrayList<Face> drawCube(GL gl, int r, int x, int y, int z){
-        Aresta3D a0,a1,a2,a3;
         ArrayList<Face> faces = new ArrayList<Face>();
         ArrayList<Aresta3D> arestas;
         
-        Ponto3D p0 = new Ponto3D(x+r, y+r, z+r);
-        Ponto3D p1 = new Ponto3D(x+r, y+r, z-r);
-        Ponto3D p2 = new Ponto3D(x+r, y-r, z+r);
-        Ponto3D p3 = new Ponto3D(x+r, y-r, z-r);
-        Ponto3D p4 = new Ponto3D(x-r, y+r, z+r);
-        Ponto3D p5 = new Ponto3D(x-r, y+r, z-r);
-        Ponto3D p6 = new Ponto3D(x-r, y-r, z+r);
-        Ponto3D p7 = new Ponto3D(x-r, y-r, z-r);
+        Ponto3D[] p = new Ponto3D[8];
+        p[0] = new Ponto3D(x+r, y+r, z+r);
+        p[1] = new Ponto3D(x+r, y+r, z-r);
+        p[2] = new Ponto3D(x+r, y-r, z+r);
+        p[3] = new Ponto3D(x+r, y-r, z-r);
+        p[4] = new Ponto3D(x-r, y+r, z+r);
+        p[5] = new Ponto3D(x-r, y+r, z-r);
+        p[6] = new Ponto3D(x-r, y-r, z+r);
+        p[7] = new Ponto3D(x-r, y-r, z-r);
+        
+        Aresta3D[] a = new Aresta3D[12];
+        a[0] = new Aresta3D(p[0], p[1]);
+        drawLine3D(gl, a[0]);
+        a[1] = new Aresta3D(p[0], p[2]);
+        drawLine3D(gl, a[1]);
+        a[2] = new Aresta3D(p[0], p[4]);
+        drawLine3D(gl, a[2]);
+        a[3] = new Aresta3D(p[1], p[3]);
+        drawLine3D(gl, a[3]);
+        a[4] = new Aresta3D(p[1], p[5]);
+        drawLine3D(gl, a[4]);
+        a[5] = new Aresta3D(p[2], p[3]);
+        drawLine3D(gl, a[5]);
+        a[6] = new Aresta3D(p[2], p[6]);
+        drawLine3D(gl, a[6]);
+        a[7] = new Aresta3D(p[3], p[7]);
+        drawLine3D(gl, a[7]);
+        a[8] = new Aresta3D(p[4], p[5]);
+        drawLine3D(gl, a[8]);
+        a[9] = new Aresta3D(p[4], p[6]);
+        drawLine3D(gl, a[9]);
+        a[10] = new Aresta3D(p[5], p[7]);
+        drawLine3D(gl, a[10]);
+        a[11] = new Aresta3D(p[6], p[7]);
+        drawLine3D(gl, a[11]);
         
         arestas = new ArrayList<Aresta3D>();
-        a0 = new Aresta3D(p0, p1);
-        drawLine3D(gl, a0);
-        arestas.add(a0);
-        a1 = new Aresta3D(p0, p2);
-        arestas.add(a1);
-        drawLine3D(gl, a1);
-        a2 = new Aresta3D(p1, p3);
-        arestas.add(a2);
-        drawLine3D(gl, a2);
-        a3 = new Aresta3D(p2, p3);
-        arestas.add(a3);
-        drawLine3D(gl, a3);
-        faces.add(new Face(arestas, new Pontos3D(p0,p1,p2)));
-
+        arestas.add(a[0]);
+        arestas.add(a[1]);
+        arestas.add(a[3]);
+        arestas.add(a[5]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[2])));
+        
+        arestas = new ArrayList<Aresta3D>();
+        arestas.add(a[0]);
+        arestas.add(a[2]);
+        arestas.add(a[4]);
+        arestas.add(a[8]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[4])));
+        
+        arestas = new ArrayList<Aresta3D>();
+        arestas.add(a[1]);
+        arestas.add(a[2]);
+        arestas.add(a[6]);
+        arestas.add(a[9]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[4])));
+        
+        arestas = new ArrayList<Aresta3D>();
+        arestas.add(a[5]);
+        arestas.add(a[6]);
+        arestas.add(a[7]);
+        arestas.add(a[11]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[4])));
+        
+        arestas = new ArrayList<Aresta3D>();
+        arestas.add(a[3]);
+        arestas.add(a[4]);
+        arestas.add(a[7]);
+        arestas.add(a[10]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[4])));
+        
+        arestas = new ArrayList<Aresta3D>();
+        arestas.add(a[8]);
+        arestas.add(a[9]);
+        arestas.add(a[10]);
+        arestas.add(a[11]);
+        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[4])));
         
         return faces;
     }
