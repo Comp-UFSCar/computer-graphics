@@ -37,8 +37,11 @@ public class ET {
     * @param i linha.
     */
     public No getNivel(int i){
-        if(pos.containsKey(i))
-            return pos.get(i);
+        if(pos.containsKey(i)){
+            No n = pos.get(i);
+            pos.remove(i);
+            return n;
+        }
         else
             return null;
     }
@@ -48,7 +51,7 @@ public class ET {
     * @param i linha a ser verificada.
     */
     public boolean isNivelVazio(int i){
-        return pos.containsKey(i);
+        return !pos.containsKey(i);
     }
 
     /**

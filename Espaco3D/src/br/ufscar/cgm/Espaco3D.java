@@ -7,13 +7,10 @@ import br.ufscar.cgm.preenchimento.No;
 import br.ufscar.cgm.utils.Drawer;
 import br.ufscar.cgm.utils.Racional;
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -112,12 +109,8 @@ public class Espaco3D implements GLEventListener {
         // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
         
-        //Drawer.drawLine2D(gl, -1, -1, 0, 0);
-        //Drawer.drawCube(gl, 1, 0, 0, 0);
         novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
-        faces.addAll(novasFaces);
-        
-        //Drawer.drawCube(gl, 3, 0, 0, 0);
+        faces.addAll(novasFaces);        
         
         gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
@@ -152,15 +145,14 @@ public class Espaco3D implements GLEventListener {
             }
         }
         
-        tabelaET.exibe();
     }
     
     public void preenche(GL gl){
         No AET = null;
         
         // TODO implementar min e max de Faces
-        int nivel = -1000;
-        int nivel_max = 1000;
+        int nivel = -Drawer.precision*10;
+        int nivel_max = Drawer.precision*10;
         
         //Inicializa AET
         while(tabelaET.isNivelVazio(nivel) && nivel < nivel_max)
@@ -177,6 +169,9 @@ public class Espaco3D implements GLEventListener {
                 AET = tabelaET.getNivel(nivel);
             else
                 AET.setUltimoProximo(tabelaET.getNivel(nivel));
+            if(AET!=null){
+                System.out.println(nivel + "\n" + AET.toFullString());
+            }
             
             //Remove os nós que ymax = nivel
             //Remove os pontos de ymax no começo da AET
@@ -202,21 +197,24 @@ public class Espaco3D implements GLEventListener {
                 }
             }
             
-            /*
             //ordena AET
             AET = No.ordena(AET);
             
             //preenche figura
             p1 = AET;
-            int x1, x2;
+            int x1, x2, y1, y2;
             while(p1 != null){
                 //Caso especial
-                x1 = p1.getXdoYmin().arredondaParaCima();
-                x2 = p1.getProximo().getXdoYmin().arredondaParaBaixo();
-                if(x1 > x2)
-                    drawLine(gl, x1, nivel, x1, nivel);
+                x1 = p1.getXdoMin().arredondaParaCima();
+                y1 = p1.getYdoMin().arredondaParaCima();
+                x2 = p1.getProximo().getXdoMin().arredondaParaBaixo();
+                y2 = p1.getProximo().getYdoMin().arredondaParaBaixo();
+                Drawer.original_size = true;
+                if(x1 > x2 && y1 > y2)
+                    Drawer.drawLine3D(gl, x1, y1, nivel, x1, y1, nivel);
                 else
-                    drawLine(gl, x1, nivel, x2, nivel);
+                    Drawer.drawLine3D(gl, x1, y1, nivel, x2, y2, nivel);
+                Drawer.original_size = false;
                 
                 p1 = p1.getProximo().getProximo();
             }
@@ -227,9 +225,10 @@ public class Espaco3D implements GLEventListener {
             //Atualiza o valor dos Nós
             p1 = AET;
             while(p1 != null){
-                p1.setXdoYmin(p1.getXdoYmin().soma(p1.getDXDY()));
+                p1.setXdoMin(p1.getXdoMin().soma(p1.getDxDz()));
+                p1.setYdoMin(p1.getYdoMin().soma(p1.getDyDz()));
                 p1 = p1.getProximo();
-            }*/
+            }
                 
         }
     }

@@ -30,8 +30,6 @@ public class No implements Comparable<No> {
         if(a.inicio == null || a.fim == null)
             throw new ExceptionInInitializerError("Aresta não pode ter pontos vazios.");
         
-        int m = Drawer.precision;
-        
         dx = (a.inicio.x - a.fim.x);
         dy = (a.inicio.y - a.fim.y);
         dz = (a.inicio.z - a.fim.z);
@@ -40,13 +38,13 @@ public class No implements Comparable<No> {
         dy_dz = new Racional(0, dy, dz);
         
         if(a.inicio.z <= a.fim.z){
-            x_do_min = new Racional(a.inicio.x*m,0,1);
-            y_do_min = new Racional(a.inicio.y*m,0,1);
-            z_max = a.fim.z*m;
+            x_do_min = new Racional(a.inicio.x*Drawer.precision,0,1);
+            y_do_min = new Racional(a.inicio.y*Drawer.precision,0,1);
+            z_max = a.fim.z*Drawer.precision;
         } else {
-            x_do_min = new Racional(a.fim.x*m,0,1);
-            y_do_min = new Racional(a.fim.y*m,0,1);
-            z_max = a.inicio.z*m;
+            x_do_min = new Racional(a.fim.x*Drawer.precision,0,1);
+            y_do_min = new Racional(a.fim.y*Drawer.precision,0,1);
+            z_max = a.inicio.z*Drawer.precision;
         }
     }
 
@@ -141,6 +139,15 @@ public class No implements Comparable<No> {
         boolean next = false;
         if(proximo != null)
             next = true;
+        return "("+z_max+",("+x_do_min+","+y_do_min+"),"+dx_dz+" "+dy_dz+")"+"->"+next;
+    }
+    
+    public String toFullString(){
+        String next = null;
+        if(proximo != null)
+            next = "\n" + proximo.toFullString();
+        else
+            next = "";
         return "("+z_max+",("+x_do_min+","+y_do_min+"),"+dx_dz+" "+dy_dz+")"+"->"+next;
     }
     
