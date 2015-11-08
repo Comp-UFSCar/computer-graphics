@@ -5,6 +5,7 @@
  */
 package br.ufscar.cgm.utils;
 
+import br.ufscar.cgm.geometria.Pontos3D;
 import br.ufscar.cgm.geometria.Aresta3D;
 import br.ufscar.cgm.geometria.Face;
 import br.ufscar.cgm.geometria.Ponto3D;
@@ -30,7 +31,7 @@ public class Drawer {
     
     public static void drawLine2D(GL gl, int x0, int y0, int x1, int y1) {
 
-        /* Não é mais necessário essa conversão.
+        /* NÃ£o Ã© mais necessÃ¡rio essa conversÃ£o.
         IntBuffer buffer = BufferUtil.newIntBuffer(4);
         gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
         int height = buffer.get(3);
@@ -46,10 +47,10 @@ public class Drawer {
 
         int dx = 0, dy = 0, incE, incNE, d;
         double x, y;
-        // Condição para saber se a inclinação da reta
-        // está entre 0 e 45 ou entre 46 e 90 graus.
+        // CondiÃ§Ã£o para saber se a inclinaÃ§Ã£o da reta
+        // estÃ¡ entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
-        // Usado para saber se a reta é 
+        // Usado para saber se a reta Ã© 
         // crescente ou decrescente
         int dy_signal = 1;
 
@@ -88,15 +89,15 @@ public class Drawer {
             dy = -dy;
         }
 
-        // Se dy é negativo, a reta é decrescente.
+        // Se dy Ã© negativo, a reta Ã© decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao invés de incrementar, y é decrementado (por dy_signal)
+        // Mas ao invÃ©s de incrementar, y Ã© decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
         }
 
-        //Cálculo das variáveis do algoritmo
+        //CÃ¡lculo das variÃ¡veis do algoritmo
         d = 2 * dy - dx;
         incE = 2 * dy;
         incNE = 2 * (dy - dx);
@@ -140,11 +141,11 @@ public class Drawer {
         int incE_y, incNE_y, incE_z, incNE_z; 
         int d_1, d_2;
         double x, y, z;
-        // Condição para saber se a inclinação da reta
-        // está entre 0 e 45 ou entre 46 e 90 graus.
+        // CondiÃ§Ã£o para saber se a inclinaÃ§Ã£o da reta
+        // estÃ¡ entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
         boolean dx_menor_dz = false;
-        // Usado para saber se a reta é 
+        // Usado para saber se a reta Ã© 
         // crescente ou decrescente
         int dy_signal = 1;
         int dz_signal = 1;
@@ -210,9 +211,9 @@ public class Drawer {
             dz = -dz;
         }
 
-        // Se dy é negativo, a reta é decrescente.
+        // Se dy Ã© negativo, a reta Ã© decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao invés de incrementar, y é decrementado (por dy_signal)
+        // Mas ao invÃ©s de incrementar, y Ã© decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
@@ -223,7 +224,7 @@ public class Drawer {
             dz = -dz;
         }
 
-        //Cálculo das variáveis do algoritmo
+        //CÃ¡lculo das variÃ¡veis do algoritmo
         d_1 = 2 * dy - dx_1;
         d_2 = 2 * dz - dx_2;
         incE_y = 2 * dy;
@@ -301,7 +302,7 @@ public class Drawer {
         a3 = new Aresta3D(p2, p3);
         arestas.add(a3);
         drawLine3D(gl, a3);
-        faces.add(new Face(arestas));
+        faces.add(new Face(arestas, new Pontos3D(p0,p1,p2)));
 
         
         return faces;
