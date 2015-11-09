@@ -12,28 +12,33 @@ public class Face {
     public ArrayList<Aresta3D> arestas = new ArrayList<Aresta3D>();
     public Pontos3D ptParaCalcNorma;
     public Ponto3D vetorNormal;
-    public double Intensidade;
     
     public Face(ArrayList<Aresta3D> as, Pontos3D pt){
         arestas = as;
         ptParaCalcNorma = pt;
-        vetorNormal = normalDaFace(pt);   
+        vetorNormal = normalDaFace(pt); 
+        System.out.println(this.toString());
     }
 
     private Ponto3D normalDaFace(Pontos3D arg)
     {
         Ponto3D v = arg.v();
         Ponto3D w = arg.w();
-        Ponto3D normal = new Ponto3D(((v.x * w.z)-(w.y*v.z)), ((-(v.x*w.z))-(w.x*v.z)), ((v.x*w.y)-(w.x*v.y)));
-        System.out.println(normal.x + " " + normal.y + " " + normal.z);
+        Ponto3D normal = new Ponto3D(((v.x * w.z)-(w.y*v.z)), ((-(v.x*w.z))-(w.x*v.z)), ((v.x*w.y)-(w.x*v.y)));     
         
         return normal;
     }
     
-    public void ReflexaoDifusa(int Ip, int Kd, Ponto3D direcao)
+    public float getIntensidade(float Ia, float Ka, float Ip, float Kd, Ponto3D direcao)
     {
         int produtoEscalar = vetorNormal.x * direcao.x + vetorNormal.y * direcao.y + vetorNormal.z * direcao.z;
-	Intensidade =  Ip * Kd * produtoEscalar;
+        float normaDoNormal = (float) Math.sqrt(vetorNormal.x*vetorNormal.x 
+                + vetorNormal.y*vetorNormal.y 
+                + vetorNormal.z*vetorNormal.z);
+        float normaDaDirecao = (float) Math.sqrt(direcao.x*direcao.x 
+                + direcao.y*direcao.y 
+                + direcao.z*direcao.z);
+	return Ia*Ka + (Ip * Kd * produtoEscalar) / (normaDoNormal*normaDaDirecao);
     }
     
     @Override

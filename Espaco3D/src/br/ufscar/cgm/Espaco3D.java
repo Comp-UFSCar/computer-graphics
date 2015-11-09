@@ -11,6 +11,7 @@ import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -31,11 +32,11 @@ public class Espaco3D implements GLEventListener {
     Ponto3D posicaoCamera;
     Ponto3D vetorDirecaoDaCamera;
     
-    Ponto3D vetorDirecaoDaLuz;
-    double intesidadeLuzGlobal;
-    double intersidadeLuzAmbiente;
-    double ka;
-    double kd;
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 1, 0);
+    float intesidadeLuzGlobal = 0.8f;
+    float intersidadeLuzAmbiente = 0.7f;
+    float ka = 0.5f;
+    float kd = 0.3f;
     
     ArrayList<Face> faces;
     ET tabelaET;
@@ -81,7 +82,7 @@ public class Espaco3D implements GLEventListener {
         gl.setSwapInterval(1);
 
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.glShadeModel(GL.GL_FLAT); 
+        //gl.glShadeModel(GL.GL_FLAT); 
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -102,6 +103,7 @@ public class Espaco3D implements GLEventListener {
         glu.gluLookAt(5.0, 6.0, 7.0,
                 0.0, 0.0, 0.0,
                 0.0, 1.0, 0.0);
+        
         posicaoCamera = new Ponto3D(5, 6, 7);
         posicaoFoco = new Ponto3D(0, 0, 0);
         vetorDirecaoDaCamera = new Ponto3D(0, 1, 0);
@@ -124,7 +126,8 @@ public class Espaco3D implements GLEventListener {
         
         novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
         faces.addAll(novasFaces);
-        Drawer.drawLine3D(gl, 0, 0, 0, 2, 2, 2);
+        
+        Drawer.drawLine3D(gl, 0, 0, 0, 2, 0, 0);
         
         //gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
@@ -145,18 +148,24 @@ public class Espaco3D implements GLEventListener {
             return;
         
         No novoNo;
+        int i = 0;
         for(Face f: faces){
+            i++;
             tabelaET = new ET();
-            for (int i = 0; i < f.arestas.size(); i++) {
-                Aresta3D s = f.arestas.get(i);
+            for (Aresta3D a : f.arestas) {
 
                 //se a linha não esta desenhada na horizontal
-                if(s.inicio.z != s.fim.z)
+                if(a.inicio.z != a.fim.z)
                 {
-                    novoNo = new No(s);
-                    tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z));
+                    novoNo = new No(a);
+                    tabelaET.adicionaNo(novoNo, Math.min(a.inicio.z, a.fim.z));
                 }
             }
+            
+            float cor = f.getIntensidade(intersidadeLuzAmbiente, ka, 
+                    intesidadeLuzGlobal, kd, vetorDirecaoDaLuz);
+            System.out.println("Cor = " + cor);
+            gl.glColor3f(cor, 0f, 0f);
             preencheFace(gl);
         }
         

@@ -317,21 +317,22 @@ public class Drawer {
         arestas.add(a[1]);
         arestas.add(a[3]);
         arestas.add(a[5]);
-        faces.add(new Face(arestas, new Pontos3D(p[0],p[1],p[2])));
+        faces.add(new Face(arestas, new Pontos3D(p[2],p[1],p[0])));
         
-        /*arestas = new ArrayList<Aresta3D>();
+        arestas = new ArrayList<Aresta3D>();
         arestas.add(a[0]);
         arestas.add(a[2]);
         arestas.add(a[4]);
         arestas.add(a[8]);
-        faces.add(new Face(arestas, new Pontos3D(p[0], p[1], p[4])));
+        faces.add(new Face(arestas, new Pontos3D(p[4], p[1], p[0])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[1]);
         arestas.add(a[2]);
         arestas.add(a[6]);
         arestas.add(a[9]);
-        faces.add(new Face(arestas, new Pontos3D(p[0],p[2],p[4])));
+        faces.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
+        System.out.println(p[0].toString() + p[2].toString() + p[4].toString());
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[5]);
@@ -352,7 +353,7 @@ public class Drawer {
         arestas.add(a[9]);
         arestas.add(a[10]);
         arestas.add(a[11]);
-        faces.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6])));*/
+        faces.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6])));
         
         return faces;
     }
