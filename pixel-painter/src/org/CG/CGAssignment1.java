@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.drawings.Cube;
+import org.CG.editor.Camera;
 import org.CG.editor.Editor;
 import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
@@ -41,6 +42,7 @@ public class CGAssignment1 implements GLEventListener {
     final static String ICON = "resources/icon.png";
 
     private static Editor editor;
+    private static Camera camera;
 
     /**
      * Opens a new frame for using the CG-Assignment-1 implemented features.
@@ -55,6 +57,9 @@ public class CGAssignment1 implements GLEventListener {
         }
 
         editor = new Editor();
+        camera = new Camera();
+        camera.setPosition(new Point(1, 0, 10));
+        Camera.setMainCamera(camera);
 
         int width = 1366;
         int height = 768;
@@ -139,7 +144,7 @@ public class CGAssignment1 implements GLEventListener {
         
         Cube c = new Cube();
         c.setColor(new ColorFloat(1f, .5f, 0));
-        c.setStart(Point.ORIGIN);
+        c.setStart(new Point(0, 0, 0));
         c.updateLastCoordinate(Point.ORIGIN.move(1, 1, 1));
         editor.getDrawings().add(c);
     }
@@ -241,7 +246,7 @@ public class CGAssignment1 implements GLEventListener {
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        glu.gluPerspective(45, ((double) width) / height, 2.0, 20);
+        glu.gluPerspective(45, ((double) width) / height, 1f, 100f);
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     }
 
@@ -253,19 +258,13 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
-        GLUT glut = new GLUT();
         GLU glu = new GLU();
 
         gl.glMatrixMode(GL.GL_MODELVIEW);
 
         gl.glLoadIdentity();
-
-        glu.gluLookAt(2, 2, 5,
-                0, 0, 0,
-                0, 1, 0);
         
-//        gl.glColor3f(1f, .5f, 0f);
-//        glut.glutWireCube(1.0f);
+        camera.adjustCameraOnScene(glu);
 
         editor.getDrawings().forEach(d -> {
             d.draw(gl);

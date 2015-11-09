@@ -1,5 +1,7 @@
 package org.CG.infrastructure.abstractions;
 
+import org.CG.editor.Camera;
+
 /**
  * Represents an immutable two-dimensional pair of integers
  *
@@ -156,9 +158,20 @@ public class Point {
     }
 
     public Point projectTo2d() {
-        return null;
+        if (z == 0) {
+            return new Point(x, y);
+        }
+
+        Point cameraPosition = Camera.getMainCamera().getPosition();
+        
+        float fz = ((float)z - cameraPosition.getZ())/z;
+
+        return new Point(
+            (int)((x - cameraPosition.getX()) * fz) + cameraPosition.getX(),
+            (int)((y - cameraPosition.getY()) * fz) + cameraPosition.getX()
+        );
     }
-    
+
     /**
      * {@inheritDoc }
      */
