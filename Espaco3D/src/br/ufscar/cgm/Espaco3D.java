@@ -27,7 +27,7 @@ import javax.media.opengl.glu.GLU;
  */
 public class Espaco3D implements GLEventListener {
     
-    ArrayList<Face> faces = new ArrayList<Face>();
+    ArrayList<Face> faces;
     ET tabelaET;
     No AET;
 
@@ -102,6 +102,7 @@ public class Espaco3D implements GLEventListener {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
         GLUT glut = new GLUT();
+        faces = new ArrayList<Face>();
         ArrayList<Face> novasFaces = new ArrayList<Face>();
 
         // Clear the drawing area
@@ -116,8 +117,7 @@ public class Espaco3D implements GLEventListener {
         //glut.glutWireCube(1.0f);
 
         // Flush all drawing operations to the graphics card
-        inicializaET();
-        preenche(gl);
+        preencheEspaco3D(gl);
         gl.glFlush();
     }
 
@@ -125,29 +125,32 @@ public class Espaco3D implements GLEventListener {
     
     }
     
-    public void inicializaET()
+    public void preencheEspaco3D(GL gl)
     {
         //Nada para preencher
         if(faces == null || faces.size() == 0)
             return;
         
-        tabelaET = new ET();
-             
         No novoNo;
-        for (int i = 0; i < faces.get(0).arestas.size(); i++) {
-            Aresta3D s = faces.get(0).arestas.get(i);
-            
-            //se a linha não esta desenhada na horizontal
-            if(s.inicio.z != s.fim.z)
-            {
-                novoNo = new No(s);
-                tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z));
+        for(Face f: faces){
+            tabelaET = new ET();
+            for (int i = 0; i < f.arestas.size(); i++) {
+                Aresta3D s = f.arestas.get(i);
+
+                //se a linha não esta desenhada na horizontal
+                if(s.inicio.z != s.fim.z)
+                {
+                    novoNo = new No(s);
+                    tabelaET.adicionaNo(novoNo, Math.min(s.inicio.z, s.fim.z));
+                }
             }
+            preencheFace(gl);
         }
+        
         
     }
     
-    public void preenche(GL gl){
+    public void preencheFace(GL gl){
         No AET = null;
         
         // TODO implementar min e max de Faces
@@ -169,8 +172,9 @@ public class Espaco3D implements GLEventListener {
                 AET = tabelaET.getNivel(nivel);
             else
                 AET.setUltimoProximo(tabelaET.getNivel(nivel));
+            
             if(AET!=null){
-                System.out.println(nivel + "\n" + AET.toFullString());
+                //System.out.println(nivel + "\n" + AET.toFullString());
             }
             
             //Remove os nós que ymax = nivel
