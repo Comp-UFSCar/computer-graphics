@@ -41,6 +41,21 @@ public class Face {
 	return Ia*Ka + (Ip * Kd * produtoEscalar) / (normaDoNormal*normaDaDirecao);
     }
     
+    public double getMaiorDistanciaAtePonto(Ponto3D camera){
+        ArrayList<Ponto3D> pontos = new ArrayList<Ponto3D>(4);
+        for(Aresta3D a : arestas){
+            if(!pontos.contains(a.inicio))
+                pontos.add(a.inicio);
+            if(!pontos.contains(a.fim))
+                pontos.add(a.fim);
+        }
+        double max = -1;
+        for(Ponto3D p : pontos){
+            max = Math.max(max, p.distanciaAte(camera));
+        }
+        return max;
+    }
+    
     @Override
     public String toString(){
         return ("Normal :" + vetorNormal.toString());

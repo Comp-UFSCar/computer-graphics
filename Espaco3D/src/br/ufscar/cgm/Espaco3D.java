@@ -32,7 +32,7 @@ public class Espaco3D implements GLEventListener {
     Ponto3D posicaoCamera;
     Ponto3D vetorDirecaoDaCamera;
     
-    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 1, 0);
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(1, -1, 1);
     float intesidadeLuzGlobal = 0.8f;
     float intersidadeLuzAmbiente = 0.7f;
     float ka = 0.5f;
@@ -114,25 +114,22 @@ public class Espaco3D implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
-        GLU glu = new GLU();
-        GLUT glut = new GLUT();
         faces = new ArrayList<Face>();
-        ArrayList<Face> novasFaces = new ArrayList<Face>();
 
         // Clear the drawing area
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
         
-        novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
-        faces.addAll(novasFaces);
+        Drawer.drawCube(gl, faces, 2, 0, 0, 0);
         
-        Drawer.drawLine3D(gl, 0, 0, 0, 2, 0, 0);
+        //Drawer.drawLine3D(gl, 0, 0, 0, 2, 0, 0);
         
         //gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
 
         // Flush all drawing operations to the graphics card
+        ordenaFaces();
         preencheEspaco3D(gl);
         gl.glFlush();
     }
@@ -257,6 +254,25 @@ public class Espaco3D implements GLEventListener {
             }
                 
         }
+    }
+
+    private void ordenaFaces() {
+        ArrayList<Face> facesOrdenadas = new ArrayList<Face>(faces.size());
+        int size = 0;
+        int i;
+        double d;
+        for(Face f : faces){
+            d = f.getMaiorDistanciaAtePonto(posicaoCamera);
+            for(i = 0; i < size; i++){
+                if(!(facesOrdenadas.get(i)
+                        .getMaiorDistanciaAtePonto(posicaoCamera) >= d))
+                    break;
+            }
+            facesOrdenadas.add(i, f);
+        }
+        
+        faces = facesOrdenadas;
+        
     }
 
 }

@@ -26,4 +26,11 @@ public class Ponto3D {
         return ("["+String.valueOf(x)+", "+String.valueOf(y)+", "+String.valueOf(z)+"]" );
     }
     
+    public double distanciaAte(Ponto3D p){
+        double x = this.x - p.x;
+        double y = this.y - p.y;
+        double z = this.z - p.z;
+        return Math.sqrt(x*x+y*y+z*z);
+    }
+    
 }

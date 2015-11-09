@@ -267,13 +267,13 @@ public class Drawer {
     }
 
     public static void drawLine3D(GL gl, Aresta3D a) {
-
+        
         Drawer.drawLine3D(gl, a.inicio.x, a.inicio.y, a.inicio.z, a.fim.x, a.fim.y, a.fim.z);
     }
 
-    public static ArrayList<Face> drawCube(GL gl, int r, int x, int y, int z) {
+    public static void drawCube(GL gl, ArrayList<Face> faces, int r, int x, int y, int z) {
         
-        ArrayList<Face> faces = new ArrayList<Face>();
+        ArrayList<Face> fs = new ArrayList<Face>();
         ArrayList<Aresta3D> arestas;
 
         Ponto3D[] p = new Ponto3D[8];
@@ -288,50 +288,50 @@ public class Drawer {
 
         Aresta3D[] a = new Aresta3D[12];
         a[0] = new Aresta3D(p[0], p[1]);
-        drawLine3D(gl, a[0]);
+        //drawLine3D(gl, a[0]);
         a[1] = new Aresta3D(p[0], p[2]);
-        drawLine3D(gl, a[1]);
+        //drawLine3D(gl, a[1]);
         a[2] = new Aresta3D(p[0], p[4]);
-        drawLine3D(gl, a[2]);
+        //drawLine3D(gl, a[2]);
         a[3] = new Aresta3D(p[1], p[3]);
-        drawLine3D(gl, a[3]);
+        //drawLine3D(gl, a[3]);
         a[4] = new Aresta3D(p[1], p[5]);
-        drawLine3D(gl, a[4]);
+        //drawLine3D(gl, a[4]);
         a[5] = new Aresta3D(p[2], p[3]);
-        drawLine3D(gl, a[5]);
+        //drawLine3D(gl, a[5]);
         a[6] = new Aresta3D(p[2], p[6]);
-        drawLine3D(gl, a[6]);
+        //drawLine3D(gl, a[6]);
         a[7] = new Aresta3D(p[3], p[7]);
-        drawLine3D(gl, a[7]);
+        //drawLine3D(gl, a[7]);
         a[8] = new Aresta3D(p[4], p[5]);
-        drawLine3D(gl, a[8]);
+        //drawLine3D(gl, a[8]);
         a[9] = new Aresta3D(p[4], p[6]);
-        drawLine3D(gl, a[9]);
+        //drawLine3D(gl, a[9]);
         a[10] = new Aresta3D(p[5], p[7]);
-        drawLine3D(gl, a[10]);
+        //drawLine3D(gl, a[10]);
         a[11] = new Aresta3D(p[6], p[7]);
-        drawLine3D(gl, a[11]);
+        //drawLine3D(gl, a[11]);
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[0]);
         arestas.add(a[1]);
         arestas.add(a[3]);
         arestas.add(a[5]);
-        faces.add(new Face(arestas, new Pontos3D(p[2],p[1],p[0])));
+        fs.add(new Face(arestas, new Pontos3D(p[2],p[1],p[0])));
         
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[0]);
         arestas.add(a[2]);
         arestas.add(a[4]);
         arestas.add(a[8]);
-        faces.add(new Face(arestas, new Pontos3D(p[4], p[1], p[0])));
+        fs.add(new Face(arestas, new Pontos3D(p[4], p[1], p[0])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[1]);
         arestas.add(a[2]);
         arestas.add(a[6]);
         arestas.add(a[9]);
-        faces.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
+        fs.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
         System.out.println(p[0].toString() + p[2].toString() + p[4].toString());
 
         arestas = new ArrayList<Aresta3D>();
@@ -339,23 +339,24 @@ public class Drawer {
         arestas.add(a[6]);
         arestas.add(a[7]);
         arestas.add(a[11]);
-        faces.add(new Face(arestas, new Pontos3D(p[2],p[3],p[6])));
+        fs.add(new Face(arestas, new Pontos3D(p[2],p[3],p[6])));
         
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[3]);
         arestas.add(a[4]);
         arestas.add(a[7]);
         arestas.add(a[10]);
-        faces.add(new Face(arestas, new Pontos3D(p[1], p[3], p[5])));
+        fs.add(new Face(arestas, new Pontos3D(p[1], p[3], p[5])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[8]);
         arestas.add(a[9]);
         arestas.add(a[10]);
         arestas.add(a[11]);
-        faces.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6])));
+        fs.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6])));
         
-        return faces;
+        if(faces != null)
+            faces.addAll(fs);
     }
 
     /*public static void preencheFaceComJOGL(GL gl, Face f) {
