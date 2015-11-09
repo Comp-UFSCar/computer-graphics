@@ -14,15 +14,19 @@ public class Rectangle extends Drawing {
     protected Point end;
 
     public Rectangle() {
-        super(GL.GL_POLYGON);
+        this(GL.GL_POLYGON);
+    }
+    
+    public Rectangle(int drawingMethod) {
+        super(drawingMethod);
     }
 
     @Override
     public Drawing translate(Point point) {
-        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY());
+        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
 
         start = point;
-        end = point.move(t.getX(), t.getY());
+        end = point.move(t.getX(), t.getY(), t.getZ());
 
         return this;
     }

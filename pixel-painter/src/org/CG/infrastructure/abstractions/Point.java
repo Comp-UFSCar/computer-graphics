@@ -16,6 +16,8 @@ public class Point {
 
     private final int y;
 
+    private final int z;
+
     /**
      * Instantiates a new point in the given coordinates
      *
@@ -23,8 +25,13 @@ public class Point {
      * @param y y-coordinate of the point
      */
     public Point(int x, int y) {
+        this(x, y, 0);
+    }
+
+    public Point(int x, int y, int z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     /**
@@ -46,31 +53,49 @@ public class Point {
     }
 
     /**
-     * Creates a new point by translating this point. This point remains
-     * unaltered
+     * The z-coordinate of the point
+     *
+     * @return the z-coordinate
+     */
+    public int getZ() {
+        return z;
+    }
+
+    /**
+     * Creates a new point by translating this point and ignoring the z coordinate. This point remains unaltered.
      *
      * @param dx The movement performed on x-coordinate
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
     public Point move(int dx, int dy) {
-        return new Point(x + dx, y + dy);
+        return move(dx, dy, 0);
     }
 
     /**
-     * Creates a new point by translating this point. This point remains
-     * unaltered.
+     * Creates a new point by translating this point. This point remains unaltered.
+     *
+     * @param dx The movement performed on x-coordinate
+     * @param dy The movement performed on y-coordinate
+     * @param dz The movement performed on z-coordinate
+     * @return A new point achieved by translating this point by given values
+     */
+    public Point move(int dx, int dy, int dz) {
+        return new Point(x + dx, y + dy, z + dz);
+    }
+
+    /**
+     * Creates a new point by translating this point. This point remains unaltered.
      *
      * @param dp The movement to be performed
      * @return A new point achieved by translating this point
      */
     public Point move(Point dp) {
-        return move(dp.getX(), dp.getY());
+        return move(dp.getX(), dp.getY(), dp.getZ());
     }
 
     /**
-     * Creates a new point by changing the x and y-coordinates This is
-     * effectively translating the octant
+     * Creates a new point by changing the x and y-coordinates This is effectively translating the octant
      *
      * @return A new point achieved by translating this point in octant
      */
@@ -97,11 +122,9 @@ public class Point {
     }
 
     /**
-     * Finds the 8 octant values relative to this point (this one included)
-     * Equivalent to calling all permutations of {@link #invert() invert},
-     * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and
-     * {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis} methods. The points
-     * are in octant order, starting at the first octant.
+     * Finds the 8 octant values relative to this point (this one included) Equivalent to calling all permutations of {@link #invert() invert},
+     * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis}
+     * methods. The points are in octant order, starting at the first octant.
      *
      * @return An array of length 8 with the octant variations of this point
      */
@@ -127,9 +150,15 @@ public class Point {
     public final double euclidianDistance(Point distanceTo) {
         double dx = this.getX() - distanceTo.getX();
         double dy = this.getY() - distanceTo.getY();
-        return Math.sqrt(dx * dx + dy * dy);
+        double dz = this.getZ() - distanceTo.getZ();
+
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
+    public Point projectTo2d() {
+        return null;
+    }
+    
     /**
      * {@inheritDoc }
      */
@@ -138,6 +167,7 @@ public class Point {
         int hash = 7;
         hash = 59 * hash + this.x;
         hash = 59 * hash + this.y;
+        hash = 59 * hash + this.z;
         return hash;
     }
 
@@ -149,17 +179,15 @@ public class Point {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+
         final Point other = (Point) obj;
-        if (this.x != other.x) {
-            return false;
-        }
-        return this.y == other.y;
+
+        return this.x == other.x
+                && this.y == other.y
+                && this.z == other.z;
     }
 
     /**

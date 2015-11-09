@@ -1,5 +1,6 @@
 package org.CG.drawings;
 
+import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.abstractions.Point;
 
@@ -9,6 +10,14 @@ import org.CG.infrastructure.abstractions.Point;
  * @author ldavid
  */
 public class Square extends Rectangle {
+    
+    public Square() {
+        this(GL.GL_POLYGON);
+    }
+    
+    public Square(int drawingMethod) {
+        super(drawingMethod);
+    }
 
     /**
      * Update last coordinate based on point, but maintaining proportion

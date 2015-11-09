@@ -1,6 +1,7 @@
 package org.CG;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.GLUT;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -23,9 +25,12 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.CG.drawings.Cube;
 import org.CG.editor.Editor;
 import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.abstractions.ColorFloat;
+import org.CG.infrastructure.abstractions.Point;
 
 /**
  * Matrix Paint main class.
@@ -40,8 +45,7 @@ public class CGAssignment1 implements GLEventListener {
     /**
      * Opens a new frame for using the CG-Assignment-1 implemented features.
      *
-     * @param args if two integer are given, they will be used as width and
-     * height.
+     * @param args if two integer are given, they will be used as width and height.
      */
     public static void main(String[] args) {
         try {
@@ -122,19 +126,22 @@ public class CGAssignment1 implements GLEventListener {
             }
         });
 
-        // Interface elements definitions.
         JMenuBar mb = createMenuBar();
 
-        // Center frame on the screen.
         frame.setJMenuBar(mb);
         frame.setLocationRelativeTo(null);
-        
-        // Add icon to program.
+
         ImageIcon img = new ImageIcon(ICON);
         frame.setIconImage(img.getImage());
-        
+
         frame.setVisible(true);
         animator.start();
+        
+        Cube c = new Cube();
+        c.setColor(new ColorFloat(1f, .5f, 0));
+        c.setStart(Point.ORIGIN);
+        c.updateLastCoordinate(Point.ORIGIN.move(1, 1, 1));
+        editor.getDrawings().add(c);
     }
 
     private static JButton createSimpleButton(String text) {
@@ -226,15 +233,16 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
+        GLU glu = new GLU();
 
         height = Math.max(height, 1);
 
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glOrtho(0, width, 0, height, -1, 1);
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
+
+        glu.gluPerspective(45, ((double) width) / height, 2.0, 20);
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     }
 
     /**
@@ -245,9 +253,19 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
+        GLUT glut = new GLUT();
+        GLU glu = new GLU();
 
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+
         gl.glLoadIdentity();
+
+        glu.gluLookAt(2, 2, 5,
+                0, 0, 0,
+                0, 1, 0);
+        
+//        gl.glColor3f(1f, .5f, 0f);
+//        glut.glutWireCube(1.0f);
 
         editor.getDrawings().forEach(d -> {
             d.draw(gl);
