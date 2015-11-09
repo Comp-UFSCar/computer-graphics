@@ -19,29 +19,29 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-
 /**
  * Espaco3D.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel) <P>
+ * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel)
+ * <P>
  *
  * This version is equal to Brian Paul's version 1.2 1999/10/21
  */
 public class Espaco3D implements GLEventListener {
-    
+
     Ponto3D posicaoFoco;
     Ponto3D posicaoCamera;
     Ponto3D vetorDirecaoDaCamera;
-    
-    Ponto3D vetorDirecaoDaLuz = new Ponto3D(1, -1, 1);
+
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 1, 1);
     float intesidadeLuzGlobal = 0.8f;
     float intersidadeLuzAmbiente = 0.7f;
     float ka = 0.5f;
     float kd = 0.3f;
-    
+
     ArrayList<Face> faces;
     ET tabelaET;
     No AET;
-    
+
     int[][] buffer;
 
     public static void main(String[] args) {
@@ -90,11 +90,10 @@ public class Espaco3D implements GLEventListener {
         GLU glu = new GLU();
 
         if (height <= 0) { // avoid a divide by zero error!
-        
+
             height = 1;
         }
-        
-        
+
         final float h = (float) width / (float) height;
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -103,11 +102,11 @@ public class Espaco3D implements GLEventListener {
         glu.gluLookAt(5.0, 6.0, 7.0,
                 0.0, 0.0, 0.0,
                 0.0, 1.0, 0.0);
-        
+
         posicaoCamera = new Ponto3D(5, 6, 7);
         posicaoFoco = new Ponto3D(0, 0, 0);
         vetorDirecaoDaCamera = new Ponto3D(0, 1, 0);
-        
+
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -120,14 +119,12 @@ public class Espaco3D implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
-        
-        Drawer.drawCube(gl, faces, 2, 0, 0, 0);
-        
+
+        Drawer.drawCube(gl, faces, 1, 0, 0, 0);
+
         //Drawer.drawLine3D(gl, 0, 0, 0, 2, 0, 0);
-        
         //gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
-
         // Flush all drawing operations to the graphics card
         ordenaFaces();
         preencheEspaco3D(gl);
@@ -135,124 +132,147 @@ public class Espaco3D implements GLEventListener {
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-    
-    }
-    
-    public void preencheEspaco3D(GL gl)
-    {
-        //Nada para preencher
-        if(faces == null || faces.size() == 0)
-            return;
-        
-        No novoNo;
-        int i = 0;
-        for(Face f: faces){
-            i++;
-            tabelaET = new ET();
-            for (Aresta3D a : f.arestas) {
 
+    }
+
+    public void preencheEspaco3D(GL gl) {
+        //Nada para preencher
+        if (faces == null || faces.size() == 0) {
+            return;
+        }
+
+        No novoNo;
+        boolean paraleloAoEixoZ;
+        for (Face f : faces) {
+            tabelaET = new ET();
+            paraleloAoEixoZ = false;
+            novoNo = null;
+
+            for (Aresta3D a : f.arestas) {
                 //se a linha não esta desenhada na horizontal
-                if(a.inicio.z != a.fim.z)
-                {
+                if (a.inicio.z != a.fim.z) {
                     novoNo = new No(a);
                     tabelaET.adicionaNo(novoNo, Math.min(a.inicio.z, a.fim.z));
                 }
             }
-            
-            float cor = f.getIntensidade(intersidadeLuzAmbiente, ka, 
+
+            if (novoNo == null) {
+                for (Aresta3D a : f.arestas) {
+                    if (a.inicio.y != a.fim.y ) {
+                        Ponto3D p1_yz = new Ponto3D(a.inicio.x, a.inicio.z, a.inicio.y);
+                        Ponto3D p2_yz = new Ponto3D(a.fim.x, a.fim.z, a.fim.y);
+                        Aresta3D a_yz = new Aresta3D(p1_yz, p2_yz);
+                        novoNo = new No(a_yz);
+                        tabelaET.adicionaNo(novoNo, Math.min(a.inicio.y, a.fim.y));
+                        paraleloAoEixoZ = true;
+                    }
+                }
+
+            }
+
+            float cor = f.getIntensidade(intersidadeLuzAmbiente, ka,
                     intesidadeLuzGlobal, kd, vetorDirecaoDaLuz);
             System.out.println("Cor = " + cor);
             gl.glColor3f(cor, 0f, 0f);
-            preencheFace(gl);
+            preencheFace(gl, paraleloAoEixoZ);
         }
-        
-        
+
     }
-    
-    public void preencheFace(GL gl){
+
+    public void preencheFace(GL gl, boolean paraleloAoZ) {
         No AET = null;
-        
+
         // TODO implementar min e max de Faces
-        int nivel = -Drawer.precision*10;
-        int nivel_max = Drawer.precision*10;
-        
+        int nivel = -Drawer.precision * 10;
+        int nivel_max = Drawer.precision * 10;
+
         //Inicializa AET
-        while(tabelaET.isNivelVazio(nivel) && nivel < nivel_max)
-                nivel++;
+        while (tabelaET.isNivelVazio(nivel) && nivel < nivel_max) {
+            nivel++;
+        }
         //ET está vazia
-        if(nivel == nivel_max)
+        if (nivel == nivel_max) {
             return;
-        
+        }
+
         boolean AET_esta_vazia = false;
         No p1, p2;
-        while(!AET_esta_vazia && nivel < nivel_max){
+        while (!AET_esta_vazia && nivel < nivel_max) {
             //AET recebe os nós que ymin = nivel
-            if(AET == null)
+            if (AET == null) {
                 AET = tabelaET.getNivel(nivel);
-            else
+            } else {
                 AET.setUltimoProximo(tabelaET.getNivel(nivel));
-            
-            if(AET!=null){
+            }
+
+            if (AET != null) {
                 //System.out.println(nivel + "\n" + AET.toFullString());
             }
-            
+
             //Remove os nós que ymax = nivel
             //Remove os pontos de ymax no começo da AET
-            while(AET != null && AET.getZmax() == nivel){
+            while (AET != null && AET.getZmax() == nivel) {
                 AET = AET.getProximo();
             }
-            if(AET == null){
+            if (AET == null) {
                 AET_esta_vazia = true;
                 continue;
             }
             //Remove os pontos de ymax no meio da AET
             p1 = AET;
             p2 = AET.getProximo();
-            while(p2 != null){
-                if(p2.getZmax() == nivel){
+            while (p2 != null) {
+                if (p2.getZmax() == nivel) {
                     p1.setProximo(p2.getProximo());
                     p2 = p1.getProximo();
-                }
-                else
-                {
+                } else {
                     p1 = p1.getProximo();
                     p2 = p1.getProximo();
                 }
             }
-            
+
             //ordena AET
             AET = No.ordena(AET);
-            
+
             //preenche figura
             p1 = AET;
             int x1, x2, y1, y2;
-            while(p1 != null){
+            while (p1 != null) {
                 //Caso especial
                 x1 = p1.getXdoMin().arredondaParaCima();
                 y1 = p1.getYdoMin().arredondaParaCima();
                 x2 = p1.getProximo().getXdoMin().arredondaParaBaixo();
                 y2 = p1.getProximo().getYdoMin().arredondaParaBaixo();
                 Drawer.original_size = true;
-                if(x1 > x2 && y1 > y2)
-                    Drawer.drawLine3D(gl, x1, y1, nivel, x1, y1, nivel);
-                else
-                    Drawer.drawLine3D(gl, x1, y1, nivel, x2, y2, nivel);
+                if (x1 > x2 && y1 > y2) {
+                    if (!paraleloAoZ) {
+                        Drawer.drawLine3D(gl, x1, y1, nivel, x1, y1, nivel);
+                    } else {
+                        Drawer.drawLine3D(gl, x1, nivel, y1, x1, nivel, y1);
+                    }
+                } else {
+                    if (!paraleloAoZ) {
+                        Drawer.drawLine3D(gl, x1, y1, nivel, x2, y2, nivel);
+                    } else {
+                        Drawer.drawLine3D(gl, x1, nivel, y1, x2, nivel, y2);
+                    }
+                }
                 Drawer.original_size = false;
-                
+
                 p1 = p1.getProximo().getProximo();
             }
-            
+
             //Atualiza o nível
             nivel++;
-            
+
             //Atualiza o valor dos Nós
             p1 = AET;
-            while(p1 != null){
+            while (p1 != null) {
                 p1.setXdoMin(p1.getXdoMin().soma(p1.getDxDz()));
                 p1.setYdoMin(p1.getYdoMin().soma(p1.getDyDz()));
                 p1 = p1.getProximo();
             }
-                
+
         }
     }
 
@@ -261,19 +281,19 @@ public class Espaco3D implements GLEventListener {
         int size = 0;
         int i;
         double d;
-        for(Face f : faces){
+        for (Face f : faces) {
             d = f.getMaiorDistanciaAtePonto(posicaoCamera);
-            for(i = 0; i < size; i++){
-                if(!(facesOrdenadas.get(i)
-                        .getMaiorDistanciaAtePonto(posicaoCamera) >= d))
+            for (i = 0; i < size; i++) {
+                if (!(facesOrdenadas.get(i)
+                        .getMaiorDistanciaAtePonto(posicaoCamera) > d)) {
                     break;
+                }
             }
             facesOrdenadas.add(i, f);
         }
-        
+
         faces = facesOrdenadas;
-        
+
     }
 
 }
-

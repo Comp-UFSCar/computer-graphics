@@ -332,7 +332,6 @@ public class Drawer {
         arestas.add(a[6]);
         arestas.add(a[9]);
         fs.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
-        System.out.println(p[0].toString() + p[2].toString() + p[4].toString());
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[5]);
