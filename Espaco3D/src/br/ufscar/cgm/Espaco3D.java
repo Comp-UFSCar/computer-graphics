@@ -2,10 +2,10 @@ package br.ufscar.cgm;
 
 import br.ufscar.cgm.geometria.Aresta3D;
 import br.ufscar.cgm.geometria.Face;
+import br.ufscar.cgm.geometria.Ponto3D;
 import br.ufscar.cgm.preenchimento.ET;
 import br.ufscar.cgm.preenchimento.No;
 import br.ufscar.cgm.utils.Drawer;
-import br.ufscar.cgm.utils.Racional;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
@@ -27,9 +27,21 @@ import javax.media.opengl.glu.GLU;
  */
 public class Espaco3D implements GLEventListener {
     
+    Ponto3D posicaoFoco;
+    Ponto3D posicaoCamera;
+    Ponto3D vetorDirecaoDaCamera;
+    
+    Ponto3D vetorDirecaoDaLuz;
+    double intesidadeLuzGlobal;
+    double intersidadeLuzAmbiente;
+    double ka;
+    double kd;
+    
     ArrayList<Face> faces;
     ET tabelaET;
     No AET;
+    
+    int[][] buffer;
 
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -62,18 +74,14 @@ public class Espaco3D implements GLEventListener {
     }
 
     public void init(GLAutoDrawable drawable) {
-        // Use debug pipeline
-        // drawable.setGL(new DebugGL(drawable.getGL()));
 
         GL gl = drawable.getGL();
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
-        // Enable VSync
         gl.setSwapInterval(1);
 
-        // Setup the drawing area and shading mode
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.glShadeModel(GL.GL_SMOOTH); // try setting this to GL_FLAT and see what happens.
+        gl.glShadeModel(GL.GL_FLAT); 
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -94,6 +102,10 @@ public class Espaco3D implements GLEventListener {
         glu.gluLookAt(5.0, 6.0, 7.0,
                 0.0, 0.0, 0.0,
                 0.0, 1.0, 0.0);
+        posicaoCamera = new Ponto3D(5, 6, 7);
+        posicaoFoco = new Ponto3D(0, 0, 0);
+        vetorDirecaoDaCamera = new Ponto3D(0, 1, 0);
+        
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -111,9 +123,10 @@ public class Espaco3D implements GLEventListener {
         gl.glLoadIdentity();
         
         novasFaces = Drawer.drawCube(gl, 2, 0, 0, 0);
-        faces.addAll(novasFaces);        
+        faces.addAll(novasFaces);
+        Drawer.drawLine3D(gl, 0, 0, 0, 2, 2, 2);
         
-        gl.glColor3f(1.0f, 0f, 0f);
+        //gl.glColor3f(1.0f, 0f, 0f);
         //glut.glutWireCube(1.0f);
 
         // Flush all drawing operations to the graphics card

@@ -27,7 +27,7 @@ public class Pontos3D {
     
     public Ponto3D w()
     {
-       return new Ponto3D(p3.x - p2.x, p3.y - p2.y, p3.z - p2.z); 
+       return new Ponto3D(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z); 
     }
     
     public Ponto3D getP1()

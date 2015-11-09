@@ -11,31 +11,33 @@ public class Face {
     
     public ArrayList<Aresta3D> arestas = new ArrayList<Aresta3D>();
     public Pontos3D ptParaCalcNorma;
-    public Ponto3D Vnormal;
+    public Ponto3D vetorNormal;
     public double Intensidade;
     
     public Face(ArrayList<Aresta3D> as, Pontos3D pt){
         arestas = as;
         ptParaCalcNorma = pt;
-        Vnormal = normalDaFace(pt);
-        
+        vetorNormal = normalDaFace(pt);   
     }
-    
-    public Ponto3D normalDaFace(Pontos3D arg)
+
+    private Ponto3D normalDaFace(Pontos3D arg)
     {
         Ponto3D v = arg.v();
         Ponto3D w = arg.w();
-        return new Ponto3D(((v.x * w.z)-(w.y*v.z)), ((-(v.x*w.z))-(w.x*v.z)), ((v.x*w.y)-(w.x*v.y)));
+        Ponto3D normal = new Ponto3D(((v.x * w.z)-(w.y*v.z)), ((-(v.x*w.z))-(w.x*v.z)), ((v.x*w.y)-(w.x*v.y)));
+        System.out.println(normal.x + " " + normal.y + " " + normal.z);
+        
+        return normal;
     }
     
     public void ReflexaoDifusa(int Ip, int Kd, Ponto3D direcao)
     {
-        int produtoEscalar = Vnormal.x * direcao.x + Vnormal.y * direcao.y + Vnormal.z * direcao.z;
+        int produtoEscalar = vetorNormal.x * direcao.x + vetorNormal.y * direcao.y + vetorNormal.z * direcao.z;
 	Intensidade =  Ip * Kd * produtoEscalar;
     }
     
     @Override
     public String toString(){
-        return ("Normal :" + Vnormal.toString());
+        return ("Normal :" + vetorNormal.toString());
     }
 }
