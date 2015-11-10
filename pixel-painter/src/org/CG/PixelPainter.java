@@ -29,7 +29,7 @@ import org.CG.editor.Editor;
 import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.abstractions.ColorFloat;
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 
 /**
  * Matrix Paint main class.
@@ -56,7 +56,6 @@ public class PixelPainter implements GLEventListener {
 
         editor = new Editor();
         camera = new Camera();
-        camera.setPosition(new Point(0, 0, -1000));
         Camera.setMainCamera(camera);
 
         int width = 1366;
@@ -142,8 +141,8 @@ public class PixelPainter implements GLEventListener {
         
         Cube c = new Cube();
         c.setColor(new ColorFloat(1f, .5f, 0));
-        c.setStart(new Point(500, 500, 0));
-        c.updateLastCoordinate(new Point(600, 600, 100));
+        c.setStart(new Vector3(500, 500, 0));
+        c.updateLastCoordinate(new Vector3(600, 600, 100));
         editor.getDrawings().add(c);
     }
 

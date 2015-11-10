@@ -23,7 +23,7 @@ public class ScanLineAlgorithm {
      * Instatiates a new solver for the Scanline Algorithm.
      * @param edgePoints list of the edges of the polygon.
      */
-    public ScanLineAlgorithm(List<Pair<Point, Point>> edgePoints) {
+    public ScanLineAlgorithm(List<Pair<Vector3, Vector3>> edgePoints) {
         if (yMin > yMax) {
             throw new IllegalArgumentException(
                 "yMin (" + yMin + ") cannot be greater than yMax (" + yMax + ").");
@@ -37,7 +37,7 @@ public class ScanLineAlgorithm {
         et = new EdgeTable().addEdges(edgePoints);
         aet = new ActiveEdgeTable();
 
-        Pair<Point, Point> first = edgePoints.get(0);
+        Pair<Vector3, Vector3> first = edgePoints.get(0);
 
         // Find the minimum and maximum Y of all set.
         yMin = Math.min(first.getKey().getY(), first.getValue().getY());

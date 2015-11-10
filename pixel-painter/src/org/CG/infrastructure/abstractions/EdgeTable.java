@@ -20,8 +20,8 @@ public class EdgeTable {
 
     /**
      * Get all edges of the polygon that begin at @y.
-     * 
-     * 
+     *
+     *
      *
      * @param y the line being currently scanned.
      * @return the list or null, if not found.
@@ -32,14 +32,13 @@ public class EdgeTable {
 
     /**
      * Add multiple @EdgeNodes to the table based on the edges start and ending.
-     * 
+     *
      * Furthermore, this operation sorts all lists in the table.
      *
-     * @param edges the list of pairs (Point, Point) that describe the edges
-     * that will be inserted.
+     * @param edges the list of pairs (Vector3, Vector3) that describe the edges that will be inserted.
      * @return this.
      */
-    public EdgeTable addEdges(List<Pair<Point, Point>> edges) {
+    public EdgeTable addEdges(List<Pair<Vector3, Vector3>> edges) {
         edges.stream().forEach((edge) -> {
             addEdge(edge.getKey(), edge.getValue());
         });
@@ -63,16 +62,16 @@ public class EdgeTable {
 
     /**
      * Add @EdgeNode to the table based on a edge start and ending.
-     * 
+     *
      * @param start the origin of the edge.
      * @param end the end of the edge.
      * @return this.
      */
-    protected EdgeTable addEdge(Point start, Point end) {
+    protected EdgeTable addEdge(Vector3 start, Vector3 end) {
         // Ignore horizontal lines, as they will cause
         // a exception to be thrown at @Rational class.
         if (start.getY() != end.getY()) {
-            Point minimumYPoint, maximumYPoint;
+            Vector3 minimumYPoint, maximumYPoint;
 
             if (start.getY() <= end.getY()) {
                 minimumYPoint = start;
@@ -86,13 +85,13 @@ public class EdgeTable {
 
             if (edges == null) {
                 edges = new LinkedList<>();
-                lines.put((int)minimumYPoint.getY(), edges);
+                lines.put((int) minimumYPoint.getY(), edges);
             }
 
             edges.add(new EdgeNode(
-                (int)maximumYPoint.getY(),
-                new Rational((int)minimumYPoint.getX()),
-                new Rational((int)(end.getX() - start.getX()), (int)(end.getY() - start.getY()))
+                    (int) maximumYPoint.getY(),
+                    new Rational((int) minimumYPoint.getX()),
+                    new Rational((int) (end.getX() - start.getX()), (int) (end.getY() - start.getY()))
             ));
         }
 

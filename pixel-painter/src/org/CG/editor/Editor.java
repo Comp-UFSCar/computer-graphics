@@ -11,7 +11,7 @@ import org.CG.drawings.Line;
 import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 
 /**
  * Matrix Paint Editor.
@@ -83,7 +83,7 @@ public class Editor {
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
         redos.clear();
 
-        Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
+        Vector3 point = new Vector3(e.getX(), canvas.getHeight() - e.getY());
 
         if (e.isControlDown()) {
             mode = Mode.MOVING;
@@ -116,7 +116,7 @@ public class Editor {
      * @param canvas the GL canvas object.
      */
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        Point point = new Point(e.getX(), canvas.getHeight() - e.getY());
+        Vector3 point = new Vector3(e.getX(), canvas.getHeight() - e.getY());
 
         if (!e.isControlDown() && mode == Mode.MOVING) {
             mode = Mode.IDLE;
@@ -124,7 +124,7 @@ public class Editor {
         } else if (mode == Mode.MOVING) {
             drawings
                     .getLast()
-                    .translate(point);
+                    .moveTo(point);
 
         } else if (mode == Mode.DRAWING) {
             drawings
