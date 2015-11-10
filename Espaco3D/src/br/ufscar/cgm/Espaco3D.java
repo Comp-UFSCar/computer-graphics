@@ -11,6 +11,8 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Scanner;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -30,11 +32,11 @@ public class Espaco3D implements GLEventListener {
     Ponto3D posicaoCamera;
     Ponto3D vetorDirecaoDaCamera;
 
-    Ponto3D vetorDirecaoDaLuz = new Ponto3D(2, 4, 8);
-    float intesidadeLuzGlobal = 0.8f;
-    float intersidadeLuzAmbiente = 0.7f;
-    float ka = 0.7f;
-    float kd = 0.5f;
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 0, 0);
+    float intensidadeLuz = -1f;
+    float intensidadeLuzAmbiente = -1f;
+    float ka = -1f;
+    float kd = -1f;
 
     ArrayList<Face> faces;
     ET tabelaET;
@@ -43,10 +45,70 @@ public class Espaco3D implements GLEventListener {
     int[][] buffer;
 
     public static void main(String[] args) {
+        Espaco3D espaco = new Espaco3D();
+        Scanner keyboard = new Scanner(System.in);
+        keyboard.useLocale(Locale.FRENCH);
+        Boolean ready = false;
+        while(true){
+            try{
+                System.out.print("Digite a coordenada X inteira da direcao da luz: ");
+                espaco.vetorDirecaoDaLuz.x = keyboard.nextInt();
+                System.out.print("Digite a coordenada Y inteira da direcao da luz: ");
+                espaco.vetorDirecaoDaLuz.y = keyboard.nextInt();
+                System.out.print("Digite a coordenada Z inteira da direcao da luz: ");
+                espaco.vetorDirecaoDaLuz.z = keyboard.nextInt();
+                if(espaco.vetorDirecaoDaLuz.x == 0 &&
+                   espaco.vetorDirecaoDaLuz.y == 0 &&
+                   espaco.vetorDirecaoDaLuz.z == 0){
+                    System.out.println("Vetor direção não pode ser nulo. Comece de novo.");
+                    continue;
+                }else 
+                    break;
+            } catch(Exception e){
+                
+                System.out.println("Digite o vetor novamente.");
+                keyboard.next();
+                continue;       
+            }
+        }
+        System.out.println("Utilize virgula para separar casas decimais.");
+        while(espaco.intensidadeLuz < 0 || espaco.intensidadeLuz > 1 )
+            try {
+                System.out.print("Digite um valor entre 0 e 1 da intensidade da luz distante: ");
+                espaco.intensidadeLuz = (float) keyboard.nextDouble();
+            } catch(Exception e){      
+                keyboard.next();
+                continue;       
+            }
+        while(espaco.intensidadeLuzAmbiente < 0 || espaco.intensidadeLuzAmbiente > 1 )
+            try {
+                System.out.print("Digite um valor entre 0 e 1 da intensidade da luz ambiente: ");
+                espaco.intensidadeLuzAmbiente = (float) keyboard.nextDouble();
+            } catch(Exception e){      
+                keyboard.next();
+                continue;       
+            }
+        while(espaco.kd < 0 || espaco.kd > 1 )
+            try {
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflexão da luz difusa: ");
+                espaco.kd = (float) keyboard.nextDouble();
+            } catch(Exception e){      
+                keyboard.next();
+                continue;       
+            }
+        while(espaco.ka < 0 || espaco.ka > 1 )
+            try {
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflexão da luz ambiente: ");
+                espaco.ka = (float) keyboard.nextDouble();
+            } catch(Exception e){      
+                keyboard.next();
+                continue;       
+            }
+        
         Frame frame = new Frame("Simple JOGL Application");
         GLCanvas canvas = new GLCanvas();
 
-        canvas.addGLEventListener(new Espaco3D());
+        canvas.addGLEventListener(espaco);
         frame.add(canvas);
         frame.setSize(640, 480);
         final Animator animator = new Animator(canvas);
@@ -168,8 +230,8 @@ public class Espaco3D implements GLEventListener {
 
             }
 
-            float cor = f.getIntensidade(intersidadeLuzAmbiente, ka,
-                    intesidadeLuzGlobal, kd, vetorDirecaoDaLuz);
+            float cor = f.getIntensidade(intensidadeLuzAmbiente, ka,
+                    intensidadeLuz, kd, vetorDirecaoDaLuz);
             //System.out.println("Cor = " + cor);
             gl.glColor3f(cor, 0f, 0f);
             preencheFace(gl, paraleloAoEixoZ);
