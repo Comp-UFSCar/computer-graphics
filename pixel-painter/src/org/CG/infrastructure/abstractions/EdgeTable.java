@@ -86,13 +86,13 @@ public class EdgeTable {
 
             if (edges == null) {
                 edges = new LinkedList<>();
-                lines.put(minimumYPoint.getY(), edges);
+                lines.put((int)minimumYPoint.getY(), edges);
             }
 
             edges.add(new EdgeNode(
-                maximumYPoint.getY(),
-                new Rational(minimumYPoint.getX()),
-                new Rational(end.getX() - start.getX(), end.getY() - start.getY())
+                (int)maximumYPoint.getY(),
+                new Rational((int)minimumYPoint.getX()),
+                new Rational((int)(end.getX() - start.getX()), (int)(end.getY() - start.getY()))
             ));
         }
 

@@ -14,11 +14,11 @@ public class Point {
      */
     public final static Point ORIGIN = new Point(0, 0);
 
-    private final int x;
+    private final double x;
 
-    private final int y;
+    private final double y;
 
-    private final int z;
+    private final double z;
 
     /**
      * Instantiates a new point in the given coordinates
@@ -26,11 +26,11 @@ public class Point {
      * @param x x-coordinate of the point
      * @param y y-coordinate of the point
      */
-    public Point(int x, int y) {
+    public Point(double x, double y) {
         this(x, y, 0);
     }
 
-    public Point(int x, int y, int z) {
+    public Point(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,7 +41,7 @@ public class Point {
      *
      * @return the x-coordinate
      */
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -50,7 +50,7 @@ public class Point {
      *
      * @return the y-coordinate
      */
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -59,7 +59,7 @@ public class Point {
      *
      * @return the z-coordinate
      */
-    public int getZ() {
+    public double getZ() {
         return z;
     }
 
@@ -70,7 +70,7 @@ public class Point {
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Point move(int dx, int dy) {
+    public Point move(double dx, double dy) {
         return move(dx, dy, 0);
     }
 
@@ -82,7 +82,7 @@ public class Point {
      * @param dz The movement performed on z-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Point move(int dx, int dy, int dz) {
+    public Point move(double dx, double dy, double dz) {
         return new Point(x + dx, y + dy, z + dz);
     }
 
@@ -162,14 +162,9 @@ public class Point {
             return new Point(x, y);
         }
 
-        Point cameraPosition = Camera.getMainCamera().getPosition();
-        
-        float fz = ((float)z - cameraPosition.getZ())/z;
+        double zd = z / (z - Camera.getMainCamera().getPosition().getZ()) + 1;
 
-        return new Point(
-            (int)((x - cameraPosition.getX()) * fz) + cameraPosition.getX(),
-            (int)((y - cameraPosition.getY()) * fz) + cameraPosition.getX()
-        );
+        return new Point(x / zd, y / zd);
     }
 
     /**
@@ -177,11 +172,11 @@ public class Point {
      */
     @Override
     public int hashCode() {
-        int hash = 7;
+        double hash = 7;
         hash = 59 * hash + this.x;
         hash = 59 * hash + this.y;
         hash = 59 * hash + this.z;
-        return hash;
+        return (int) hash;
     }
 
     /**
@@ -208,6 +203,6 @@ public class Point {
      */
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ")";
+        return "(" + x + ", " + y + ", " + z + ")";
     }
 }

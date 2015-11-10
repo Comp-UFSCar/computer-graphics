@@ -62,8 +62,8 @@ public class Pencil extends Drawing {
     @Override
     public void drawShape(GL gl) {
         points.stream().forEach((point) -> {
-            for (int i = point.getX() - 1; i <= point.getX() + 1; i++) {
-                for (int j = point.getY() - 1; j <= point.getY() + 1; j++) {
+            for (int i = (int)point.getX() - 1; i <= (int)point.getX() + 1; i++) {
+                for (int j = (int)point.getY() - 1; j <= (int)point.getY() + 1; j++) {
                     gl.glVertex2i(i, j);
                 }
             }

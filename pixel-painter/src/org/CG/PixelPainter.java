@@ -1,7 +1,6 @@
 package org.CG;
 
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.GLUT;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -15,7 +14,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -36,7 +34,7 @@ import org.CG.infrastructure.abstractions.Point;
 /**
  * Matrix Paint main class.
  */
-public class CGAssignment1 implements GLEventListener {
+public class PixelPainter implements GLEventListener {
 
     final static String TITLE = "Pixelpaint";
     final static String ICON = "resources/icon.png";
@@ -53,12 +51,12 @@ public class CGAssignment1 implements GLEventListener {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(PixelPainter.class.getName()).log(Level.WARNING, null, ex);
         }
 
         editor = new Editor();
         camera = new Camera();
-        camera.setPosition(new Point(1, 0, 10));
+        camera.setPosition(new Point(0, 0, -1000));
         Camera.setMainCamera(camera);
 
         int width = 1366;
@@ -69,14 +67,14 @@ public class CGAssignment1 implements GLEventListener {
                 width = Integer.parseInt(args[0]);
                 height = Integer.parseInt(args[1]);
             } catch (NumberFormatException ex) {
-                Logger.getLogger(CGAssignment1.class.getName()).log(Level.WARNING, null, ex);
+                Logger.getLogger(PixelPainter.class.getName()).log(Level.WARNING, null, ex);
             }
         }
 
         final JFrame frame = new JFrame(TITLE);
         GLCanvas canvas = new GLCanvas();
 
-        canvas.addGLEventListener(new CGAssignment1());
+        canvas.addGLEventListener(new PixelPainter());
         frame.add(canvas);
         frame.setSize(width, height);
         final Animator animator = new Animator(canvas);
@@ -144,8 +142,8 @@ public class CGAssignment1 implements GLEventListener {
         
         Cube c = new Cube();
         c.setColor(new ColorFloat(1f, .5f, 0));
-        c.setStart(new Point(0, 0, 0));
-        c.updateLastCoordinate(Point.ORIGIN.move(1, 1, 1));
+        c.setStart(new Point(500, 500, 0));
+        c.updateLastCoordinate(new Point(600, 600, 100));
         editor.getDrawings().add(c);
     }
 
@@ -238,16 +236,16 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
-        GLU glu = new GLU();
 
         height = Math.max(height, 1);
 
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-
-        glu.gluPerspective(45, ((double) width) / height, 1f, 100f);
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+        
+        gl.glOrtho(0, width, 0, height, -1, 1);
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
     }
 
     /**
@@ -258,14 +256,10 @@ public class CGAssignment1 implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
-        GLU glu = new GLU();
-
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-
+        
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
         
-        camera.adjustCameraOnScene(glu);
-
         editor.getDrawings().forEach(d -> {
             d.draw(gl);
         });

@@ -2,8 +2,10 @@ package org.CG.drawings;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
+import org.CG.infrastructure.abstractions.ColorByte;
 import org.CG.infrastructure.abstractions.Point;
 
 /**
@@ -16,38 +18,37 @@ public class Cube extends Square {
         super(GL.GL_POLYGON);
     }
 
-    protected List<List<Point>> getFaces() {
-        List<List<Point>> faces = new LinkedList<>();
+    protected List<Rectangle> getFaces() {
+        List<Rectangle> faces = new LinkedList<>();
 
-        List<Point> points = new LinkedList<>();
-//        points.add(start);
-//        points.add(new Point(end.getX(), start.getY(), start.getZ()));
-//        points.add(new Point(end.getX(), end.getY(), start.getZ()));
-//        points.add(new Point(start.getX(), end.getY(), start.getZ()));
-//        points.add(start);
-//
-//        faces.add(points);
+        int[] planes = new int[]{0, 1, 2, 0, 1, 2};
+        double[] planePositions = new double[]{end.getX(), end.getY(), end.getZ(), start.getX(), start.getY(), start.getZ()};
 
-        points = new LinkedList<>();
-        points.add(start);
-        points.add(new Point(start.getX(), start.getY(), end.getZ()));
-        points.add(new Point(start.getX(), end.getY(), end.getZ()));
-        points.add(new Point(start.getX(), end.getY(), start.getZ()));
-        points.add(start);
+        int i = 0;
 
-        faces.add(points);
-//
-//        points = new LinkedList<>();
-//        points.add(start);
-//        points.add(new Point(end.getX(), start.getY(), start.getZ()));
-//        points.add(new Point(end.getX(), start.getY(), end.getZ()));
-//        points.add(new Point(start.getX(), start.getY(), end.getZ()));
-//        points.add(start);
-//
-//        faces.add(points);
+        for (double position : planePositions) {
+            Rectangle s = new Rectangle();
+            s.setStart(start);
+            s.updateLastCoordinate(end);
+            s.setPlane(planes[i]);
+            s.setPlanePosition(position);
+            faces.add(s);
 
-        // ...
+            i++;
+        }
+
         return faces;
+    }
+
+    protected ColorByte[] getFacesColors() {
+        return new ColorByte[]{
+            new ColorByte(200, 0, 255),
+            new ColorByte(200, 255, 0),
+            new ColorByte(0, 0, 255),
+            new ColorByte(200, 0, 0),
+            new ColorByte(50, 100, 255),
+            new ColorByte(0, 100, 155)
+        };
     }
 
     /**
@@ -58,8 +59,8 @@ public class Cube extends Square {
      */
     @Override
     public Drawing updateLastCoordinate(Point point) {
-        int dx = point.getX() - start.getX();
-        int dy = point.getY() - start.getY();
+        double dx = point.getX() - start.getX();
+        double dy = point.getY() - start.getY();
 
         end = Math.abs(dx) > Math.abs(dy)
                 ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx), Math.abs(dx))
@@ -69,12 +70,15 @@ public class Cube extends Square {
     }
 
     @Override
-    public void drawShape(GL gl) {
-        getFaces().stream().forEach((face) -> {
-            face.stream().map((point) -> point.projectTo2d()).forEach((point) -> {
-                gl.glVertex2i(point.getX(), point.getY());
-//                gl.glVertex3i(point.getX(), point.getY(), point.getZ());
-            });
-        });
+    protected void drawShape(GL gl) {
+        int i = 0;
+        ColorByte[] colors = getFacesColors();
+
+        for (Rectangle face : getFaces()) {
+            face.setColor(colors[i]);
+            face.draw(gl);
+
+            i++;
+        }
     }
 }

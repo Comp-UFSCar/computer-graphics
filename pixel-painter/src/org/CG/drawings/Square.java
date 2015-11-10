@@ -28,8 +28,8 @@ public class Square extends Rectangle {
      */
     @Override
     public Drawing updateLastCoordinate(Point point) {
-        int dx = point.getX() - start.getX();
-        int dy = point.getY() - start.getY();
+        double dx = point.getX() - start.getX();
+        double dy = point.getY() - start.getY();
 
         end = Math.abs(dx) > Math.abs(dy)
             ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx))

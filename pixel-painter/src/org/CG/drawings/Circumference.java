@@ -72,15 +72,15 @@ public class Circumference extends Drawing {
     }
 
     private void drawCircumferencePoints(GL gl, int x, int y) {
-        int sx = start.getX();
-        int sy = start.getY();
-        gl.glVertex2i(sx + x, sy + y);
-        gl.glVertex2i(sx - x, sy + y);
-        gl.glVertex2i(sx - x, sy - y);
-        gl.glVertex2i(sx + x, sy - y);
-        gl.glVertex2i(sx + y, sy + x);
-        gl.glVertex2i(sx - y, sy + x);
-        gl.glVertex2i(sx - y, sy - x);
-        gl.glVertex2i(sx + y, sy - x);
+        double sx = start.getX();
+        double sy = start.getY();
+        gl.glVertex2d(sx + x, sy + y);
+        gl.glVertex2d(sx - x, sy + y);
+        gl.glVertex2d(sx - x, sy - y);
+        gl.glVertex2d(sx + x, sy - y);
+        gl.glVertex2d(sx + y, sy + x);
+        gl.glVertex2d(sx - y, sy + x);
+        gl.glVertex2d(sx - y, sy - x);
+        gl.glVertex2d(sx + y, sy - x);
     }
 }

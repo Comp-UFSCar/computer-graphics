@@ -16,7 +16,7 @@ public class Camera {
     static Camera mainCamera;
 
     public Camera() {
-        this(new Point(0, 0, 10), new Point(0, 0, 0), new Point(0, 1, 0));
+        this(new Point((double) 0, (double) 0, (double) 10), Point.ORIGIN, new Point((double) 0, (double) 1, (double) 0));
     }
 
     public Camera(Point position, Point lookAt, Point up) {

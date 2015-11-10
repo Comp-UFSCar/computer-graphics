@@ -14,10 +14,10 @@ public class Line extends Drawing {
     private Point end;
     private Point translated_start;
     private Point translated_end;
-    private int incE;
-    private int incNE;
-    private int dx;
-    private int dy;
+    private double incE;
+    private double incNE;
+    private double dx;
+    private double dy;
     private int octant;
 
     /**
@@ -81,12 +81,12 @@ public class Line extends Drawing {
     @Override
     protected void drawShape(GL gl) {
         // Set line color.
-        int x = translated_start.getX();
-        int y = translated_start.getY();
-        int d = 2 * dy - dx;
+        double x = translated_start.getX();
+        double y = translated_start.getY();
+        double d = 2 * dy - dx;
 
         Point point = restoreToOriginalOctant(translated_start);
-        gl.glVertex2i(point.getX(), point.getY());
+        gl.glVertex2d(point.getX(), point.getY());
 
         while (x < translated_end.getX()) {
             if (d <= 0) {
@@ -98,7 +98,7 @@ public class Line extends Drawing {
             x++;
 
             point = restoreToOriginalOctant(new Point(x, y));
-            gl.glVertex2i(point.getX(), point.getY());
+            gl.glVertex2d(point.getX(), point.getY());
         }
     }
 
@@ -109,7 +109,7 @@ public class Line extends Drawing {
      * @param dy The difference between ending-point-y and starting-point-y.
      * @return the octant, in range [0, 7]
      */
-    protected static int findOctant(int dx, int dy) {
+    protected static int findOctant(double dx, double dy) {
         double d = Math.atan(((double) dy) / dx);
         d = (d >= 0) ? d : 2 * Math.PI + d;
 

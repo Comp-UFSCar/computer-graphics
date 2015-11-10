@@ -17,7 +17,7 @@ public class ScanLineAlgorithm {
 
     protected ActiveEdgeTable aet;
     protected EdgeTable et;
-    protected int yMin, yMax;
+    protected double yMin, yMax;
 
     /**
      * Instatiates a new solver for the Scanline Algorithm.
@@ -44,8 +44,8 @@ public class ScanLineAlgorithm {
         yMax = Math.max(first.getKey().getY(), first.getValue().getY());
 
         edgePoints.stream().forEach((p) -> {
-            int localYMin = Math.min(p.getKey().getY(), p.getValue().getY());
-            int localYMax = Math.max(p.getKey().getY(), p.getValue().getY());
+            double localYMin = Math.min(p.getKey().getY(), p.getValue().getY());
+            double localYMax = Math.max(p.getKey().getY(), p.getValue().getY());
 
             if (localYMin < yMin) {
                 yMin = localYMin;
@@ -64,9 +64,9 @@ public class ScanLineAlgorithm {
      * @return self.
      */
     public ScanLineAlgorithm draw(GL gl) {
-        for (int y = yMin; y <= yMax; y++) {
-            aet.removeEdgesWithMaximumYOf(y);
-            aet.addEdges(et.getEdgesAtLine(y));
+        for (double y = yMin; y <= yMax; y++) {
+            aet.removeEdgesWithMaximumYOf((int)y);
+            aet.addEdges(et.getEdgesAtLine((int)y));
 
             Iterator<EdgeNode> i = aet.getEdges().iterator();
             while (i.hasNext()) {
@@ -74,7 +74,7 @@ public class ScanLineAlgorithm {
                 Rational right = i.next().getCurrentX();
 
                 for (Rational x = left; right.gt(x); x = x.add(new Rational(1))) {
-                    gl.glVertex2i(x.getInteger(), y);
+                    gl.glVertex2i(x.getInteger(), (int)y);
                 }
             }
 
