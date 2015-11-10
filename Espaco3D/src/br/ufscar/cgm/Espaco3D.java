@@ -7,11 +7,9 @@ import br.ufscar.cgm.preenchimento.ET;
 import br.ufscar.cgm.preenchimento.No;
 import br.ufscar.cgm.utils.Drawer;
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -32,11 +30,11 @@ public class Espaco3D implements GLEventListener {
     Ponto3D posicaoCamera;
     Ponto3D vetorDirecaoDaCamera;
 
-    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 1, 1);
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(2, 4, 8);
     float intesidadeLuzGlobal = 0.8f;
     float intersidadeLuzAmbiente = 0.7f;
-    float ka = 0.5f;
-    float kd = 0.3f;
+    float ka = 0.7f;
+    float kd = 0.5f;
 
     ArrayList<Face> faces;
     ET tabelaET;
@@ -99,11 +97,11 @@ public class Espaco3D implements GLEventListener {
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
         glu.gluPerspective(45.0f, h, 2.0, 20.0);
-        glu.gluLookAt(5.0, 6.0, 7.0,
+        glu.gluLookAt(-5.0, 6.0, -7.0,
                 0.0, 0.0, 0.0,
                 0.0, 1.0, 0.0);
 
-        posicaoCamera = new Ponto3D(5, 6, 7);
+        posicaoCamera = new Ponto3D(-5, 6, -7);
         posicaoFoco = new Ponto3D(0, 0, 0);
         vetorDirecaoDaCamera = new Ponto3D(0, 1, 0);
 
@@ -120,7 +118,7 @@ public class Espaco3D implements GLEventListener {
         // Reset the current matrix to the "identity"
         gl.glLoadIdentity();
 
-        Drawer.drawCube(gl, faces, 1, 0, 0, 0);
+        Drawer.drawCube(gl, faces, 2, 0, 0, 0);
 
         //Drawer.drawLine3D(gl, 0, 0, 0, 2, 0, 0);
         //gl.glColor3f(1.0f, 0f, 0f);
@@ -158,7 +156,7 @@ public class Espaco3D implements GLEventListener {
 
             if (novoNo == null) {
                 for (Aresta3D a : f.arestas) {
-                    if (a.inicio.y != a.fim.y ) {
+                    if (a.inicio.y != a.fim.y) {
                         Ponto3D p1_yz = new Ponto3D(a.inicio.x, a.inicio.z, a.inicio.y);
                         Ponto3D p2_yz = new Ponto3D(a.fim.x, a.fim.z, a.fim.y);
                         Aresta3D a_yz = new Aresta3D(p1_yz, p2_yz);
@@ -172,7 +170,7 @@ public class Espaco3D implements GLEventListener {
 
             float cor = f.getIntensidade(intersidadeLuzAmbiente, ka,
                     intesidadeLuzGlobal, kd, vetorDirecaoDaLuz);
-            System.out.println("Cor = " + cor);
+            //System.out.println("Cor = " + cor);
             gl.glColor3f(cor, 0f, 0f);
             preencheFace(gl, paraleloAoEixoZ);
         }
@@ -280,16 +278,18 @@ public class Espaco3D implements GLEventListener {
         ArrayList<Face> facesOrdenadas = new ArrayList<Face>(faces.size());
         int size = 0;
         int i;
-        double d;
+        double d, e;
         for (Face f : faces) {
             d = f.getMaiorDistanciaAtePonto(posicaoCamera);
             for (i = 0; i < size; i++) {
-                if (!(facesOrdenadas.get(i)
-                        .getMaiorDistanciaAtePonto(posicaoCamera) > d)) {
+                e = facesOrdenadas.get(i)
+                        .getMaiorDistanciaAtePonto(posicaoCamera);
+                if (!(e >= d)) {
                     break;
                 }
             }
             facesOrdenadas.add(i, f);
+            size++;
         }
 
         faces = facesOrdenadas;

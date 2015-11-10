@@ -17,7 +17,7 @@ public class Face {
         arestas = as;
         ptParaCalcNorma = pt;
         vetorNormal = normalDaFace(pt); 
-        System.out.println(this.toString());
+        //System.out.println(this.toString());
     }
 
     private Ponto3D normalDaFace(Pontos3D arg)
