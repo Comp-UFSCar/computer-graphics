@@ -31,14 +31,14 @@ public class Face {
     
     public float getIntensidade(float Ia, float Ka, float Ip, float Kd, Ponto3D direcao)
     {
-        int produtoEscalar = vetorNormal.x * direcao.x + vetorNormal.y * direcao.y + vetorNormal.z * direcao.z;
+        double produtoEscalar = vetorNormal.x * direcao.x + vetorNormal.y * direcao.y + vetorNormal.z * direcao.z;
         float normaDoNormal = (float) Math.sqrt(vetorNormal.x*vetorNormal.x 
                 + vetorNormal.y*vetorNormal.y 
                 + vetorNormal.z*vetorNormal.z);
         float normaDaDirecao = (float) Math.sqrt(direcao.x*direcao.x 
                 + direcao.y*direcao.y 
                 + direcao.z*direcao.z);
-	return Ia*Ka + (Ip * Kd * produtoEscalar) / (normaDoNormal*normaDaDirecao);
+	return (float) (Ia*Ka + (Ip * Kd * produtoEscalar) / (normaDoNormal*normaDaDirecao));
     }
     
     public double getMaiorDistanciaAtePonto(Ponto3D camera){

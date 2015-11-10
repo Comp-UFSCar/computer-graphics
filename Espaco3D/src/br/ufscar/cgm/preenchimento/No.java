@@ -1,7 +1,5 @@
 package br.ufscar.cgm.preenchimento;
 
-import br.ufscar.cgm.geometria.Aresta3D;
-import br.ufscar.cgm.utils.Drawer;
 import br.ufscar.cgm.utils.Racional;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -19,33 +17,23 @@ import java.util.List;
  */
 public class No implements Comparable<No> {
     
-    No proximo;
+    private No proximo;
+    private int Ymax;
+    private Racional XdoYmin; 
+    private Racional DXDY;
     
-    int z_max;
-    Racional x_do_min, y_do_min;
-    int dx, dy, dz;
-    Racional dx_dz, dy_dz;
-    
-    public No(Aresta3D a){
-        if(a.inicio == null || a.fim == null)
-            throw new ExceptionInInitializerError("Aresta não pode ter pontos vazios.");
-        
-        dx = (a.inicio.x - a.fim.x);
-        dy = (a.inicio.y - a.fim.y);
-        dz = (a.inicio.z - a.fim.z);
-        
-        dx_dz = new Racional(0, dx, dz);
-        dy_dz = new Racional(0, dy, dz);
-        
-        if(a.inicio.z <= a.fim.z){
-            x_do_min = new Racional(a.inicio.x*Drawer.precision,0,1);
-            y_do_min = new Racional(a.inicio.y*Drawer.precision,0,1);
-            z_max = a.fim.z*Drawer.precision;
-        } else {
-            x_do_min = new Racional(a.fim.x*Drawer.precision,0,1);
-            y_do_min = new Racional(a.fim.y*Drawer.precision,0,1);
-            z_max = a.inicio.z*Drawer.precision;
-        }
+    /**
+    * Inicialização da estrutura.
+    * @param Ymax Valor de y para o ponto mais alto da aresta.
+    * @param XdoYmin Valor de x para o ponto mais baixo da aresta.
+    * @param DXDY Inclinação da aresta.
+    */
+    public No(int Ymax, int XdoYmin, Racional DXDY)
+    {
+        this.Ymax = Ymax;
+        this.XdoYmin = new Racional(XdoYmin,0,1);
+        this.DXDY = DXDY;
+        this.proximo =null;
     }
 
     /**
@@ -76,58 +64,42 @@ public class No implements Comparable<No> {
     }
 
     /**
-     * @return Valor de z para o ponto mais alto da aresta.
+     * @return Valor de y para o ponto mais alto da aresta.
      */
-    public int getZmax() {
-        return z_max;
+    public int getYmax() {
+        return Ymax;
     }
 
     /**
      * 
      * @return Valor de x para o ponto mais baixo da aresta.
      */
-    public Racional getXdoMin() {
-        return x_do_min;
-    }
-    
-    public Racional getYdoMin() {
-        return y_do_min;
+    public Racional getXdoYmin() {
+        return XdoYmin;
     }
 
     /**
      * 
      * @return Inclinação da aresta.
      */
-    public Racional getDxDz() {
-        return dx_dz;
-    }
-    
-        public Racional getDyDz() {
-        return dy_dz;
+    public Racional getDXDY() {
+        return DXDY;
     }
 
     /**
      * Insere XdoYmin
      * @param XdoYmin Valor de x para o ponto mais baixo da aresta. 
      */
-    public void setXdoMin(Racional XdoYmin) {
-        this.x_do_min = XdoYmin;
-    }
-    
-    public void setYdoMin(Racional XdoYmin) {
-        this.y_do_min = XdoYmin;
+    public void setXdoYmin(Racional XdoYmin) {
+        this.XdoYmin = XdoYmin;
     }
 
     /**
      * Insere DXDY
      * @param DXDY Inclinação da aresta. 
      */
-    public void setDxDz(Racional d) {
-        this.dx_dz = d;
-    }
-    
-    public void setDyDz(Racional d) {
-        this.dy_dz = d;
+    public void setDXDY(Racional DXDY) {
+        this.DXDY = DXDY;
     }
     
     /**
@@ -139,16 +111,7 @@ public class No implements Comparable<No> {
         boolean next = false;
         if(proximo != null)
             next = true;
-        return "("+z_max+",("+x_do_min+","+y_do_min+"),"+dx_dz+" "+dy_dz+")"+"->"+next;
-    }
-    
-    public String toFullString(){
-        String next = null;
-        if(proximo != null)
-            next = "\n" + proximo.toFullString();
-        else
-            next = "";
-        return "("+z_max+",("+x_do_min+","+y_do_min+"),"+dx_dz+" "+dy_dz+")"+"->"+next;
+        return "("+Ymax+","+XdoYmin+","+DXDY+")"+"->"+next;
     }
     
     /**
@@ -182,12 +145,7 @@ public class No implements Comparable<No> {
      * @return Comparação entre nós.
      */
     public int compareTo(No t) {
-        int xx = this.x_do_min.compareTo(t.getXdoMin());
-        int yy = this.y_do_min.compareTo(t.getYdoMin());
-        if (xx != 0)
-            return xx;
-        else
-            return yy;
+        return this.XdoYmin.compareTo(t.getXdoYmin());
     }
     
   

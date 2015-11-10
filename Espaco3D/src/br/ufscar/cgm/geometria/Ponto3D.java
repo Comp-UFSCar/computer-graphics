@@ -7,9 +7,9 @@ package br.ufscar.cgm.geometria;
 
 public class Ponto3D {
     
-    public int x, y, z;
+    public double x, y, z;
     
-    public Ponto3D(int x, int y, int z){
+    public Ponto3D(double x, double y, double z){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -31,6 +31,17 @@ public class Ponto3D {
         double y = this.y - p.y;
         double z = this.z - p.z;
         return Math.sqrt(x*x+y*y+z*z);
+    }
+    
+    public static Ponto3D projetaPonto(Ponto3D ponto, Ponto3D camera)
+    {
+        double novoX, novoY;
+        double d = Math.abs((double)camera.z);
+        
+        novoX = d*ponto.x/(d+ponto.z);
+        novoY = d*ponto.y/(d+ponto.z);
+        
+        return new Ponto3D(novoX, novoY, 0);
     }
     
 }

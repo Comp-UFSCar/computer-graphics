@@ -1,9 +1,5 @@
 package br.ufscar.cgm.preenchimento;
 
-import br.ufscar.cgm.utils.Drawer;
-import java.util.HashMap;
-import java.util.Set;
-
 /**
  * Classe que representa a estrutura da tabela de arestas e que também possui a
  * lógica para adicionar e exibir nós. <br><br>
@@ -13,22 +9,29 @@ import java.util.Set;
  * @author Camilo Moreira RA:35964
  */
 public class ET {
+    private No posicoes[];
     
-    private HashMap<Integer,No> pos;
-    
-    public ET()
+    /**
+    * Inicializa uma estrutura de nós com no máximo de entradas igual à altura
+    * da tela
+    * @param alturaTela altura da tela.
+    */
+    public ET(int alturaTela)
     {
-        pos = new HashMap<Integer, No>();
+        this.posicoes = new No[alturaTela+1];
     }
     
-
+    /**
+    * Adiciona um novo nó na linha especificada.
+    * @param nocriado Novo nó.
+    * @param posicao linha.
+    */
     public void adicionaNo(No nocriado, int posicao)
     {
-        posicao = posicao*Drawer.precision;
-        if(pos.containsKey(posicao))
-            pos.get(posicao).setUltimoProximo(nocriado);
+        if(posicoes[posicao] == null)
+            posicoes[posicao] = nocriado;
         else
-            pos.put(posicao, nocriado);
+            posicoes[posicao].setUltimoProximo(nocriado);
 
     }
     
@@ -37,13 +40,7 @@ public class ET {
     * @param i linha.
     */
     public No getNivel(int i){
-        if(pos.containsKey(i)){
-            No n = pos.get(i);
-            pos.remove(i);
-            return n;
-        }
-        else
-            return null;
+        return posicoes[i];
     }
     
     /**
@@ -51,22 +48,29 @@ public class ET {
     * @param i linha a ser verificada.
     */
     public boolean isNivelVazio(int i){
-        return !pos.containsKey(i);
+        return (posicoes[i] == null);
+    }
+    
+    /**
+    * @return A quantidade de posições em ET.
+    */
+    public int getTamanho(){
+        return posicoes.length;
     }
 
     /**
     * Rotina responsável por mostrar uma visualização da ET no output para Debug.
     */
     public void exibe(){
-        Set<Integer> s = pos.keySet();
-        for(Integer ss: s){
-            pos.get(ss);
-            System.out.println("z="+ss);
-            No n = pos.get(ss);
-            System.out.println(n.toString());
-            while(n.getProximo() != null){
-                n = n.getProximo();
-                System.out.println(n.toString());
+        for(int i=0; i < posicoes.length; i++){
+            if(posicoes[i] != null){
+                System.out.println("y="+i);
+                No tmp = posicoes[i];
+                while(tmp != null){
+                    System.out.print(tmp.toString() + " ");
+                    tmp = tmp.getProximo();
+                }
+                System.out.println();
             }
         }
     }
