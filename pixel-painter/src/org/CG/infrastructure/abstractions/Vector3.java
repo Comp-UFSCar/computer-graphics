@@ -3,22 +3,22 @@ package org.CG.infrastructure.abstractions;
 import org.CG.editor.Camera;
 
 /**
- * Represents an immutable two-dimensional pair of integers
+ * Represents a vector in the 3-dimensional space.
  *
  * @author Diorge-Mephy
  */
-public class Point {
+public class Vector3 {
 
     /**
      * The origin (0, 0) point
      */
-    public final static Point ORIGIN = new Point(0, 0);
+    public final static Vector3 ORIGIN = new Vector3(0, 0);
 
-    private final double x;
+    private final int x;
 
-    private final double y;
+    private final int y;
 
-    private final double z;
+    private final int z;
 
     /**
      * Instantiates a new point in the given coordinates
@@ -26,11 +26,11 @@ public class Point {
      * @param x x-coordinate of the point
      * @param y y-coordinate of the point
      */
-    public Point(double x, double y) {
+    public Vector3(int x, int y) {
         this(x, y, 0);
     }
 
-    public Point(double x, double y, double z) {
+    public Vector3(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,7 +41,7 @@ public class Point {
      *
      * @return the x-coordinate
      */
-    public double getX() {
+    public int getX() {
         return x;
     }
 
@@ -50,7 +50,7 @@ public class Point {
      *
      * @return the y-coordinate
      */
-    public double getY() {
+    public int getY() {
         return y;
     }
 
@@ -59,7 +59,7 @@ public class Point {
      *
      * @return the z-coordinate
      */
-    public double getZ() {
+    public int getZ() {
         return z;
     }
 
@@ -70,7 +70,7 @@ public class Point {
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Point move(double dx, double dy) {
+    public Vector3 move(int dx, int dy) {
         return move(dx, dy, 0);
     }
 
@@ -82,27 +82,46 @@ public class Point {
      * @param dz The movement performed on z-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Point move(double dx, double dy, double dz) {
-        return new Point(x + dx, y + dy, z + dz);
+    public Vector3 move(int dx, int dy, int dz) {
+        return new Vector3(x + dx, y + dy, z + dz);
     }
 
     /**
      * Creates a new point by translating this point. This point remains unaltered.
      *
-     * @param dp The movement to be performed
-     * @return A new point achieved by translating this point
+     * @param v The movement to be performed.
+     * @return A new point achieved by translating this point.
      */
-    public Point move(Point dp) {
-        return move(dp.getX(), dp.getY(), dp.getZ());
+    public Vector3 move(Vector3 v) {
+        return move(v.getX(), v.getY(), v.getZ());
     }
 
+    /**
+     * Reflect the vector.
+     *
+     * @return the new vector which represents this one reflected.
+     */
+    public Vector3 reflected() {
+        return new Vector3(-x, -y, -z);
+    }
+    
+    /**
+     * Delta difference of vector {@code v} and this.
+     *
+     * @param v the other vector.
+     * @return the new vector that represents the difference between {@code v} and this.
+     */
+    public Vector3 delta(Vector3 v) {
+        return move(v.reflected());
+    }
+    
     /**
      * Creates a new point by changing the x and y-coordinates This is effectively translating the octant
      *
      * @return A new point achieved by translating this point in octant
      */
-    public Point invert() {
-        return new Point(y, x);
+    public Vector3 invertAxises() {
+        return new Vector3(y, x, z);
     }
 
     /**
@@ -110,8 +129,8 @@ public class Point {
      *
      * @return A new point achieved by mirroring the point upon the X-axis
      */
-    public Point mirrorOnHorizontalAxis() {
-        return new Point(x, -y);
+    public Vector3 mirrorOnHorizontalAxis() {
+        return new Vector3(x, -y);
     }
 
     /**
@@ -119,26 +138,26 @@ public class Point {
      *
      * @return A new point achieved by mirroring the point upon the Y-axis
      */
-    public Point mirrorOnVerticalAxis() {
-        return new Point(-x, y);
+    public Vector3 mirrorOnVerticalAxis() {
+        return new Vector3(-x, y);
     }
 
     /**
-     * Finds the 8 octant values relative to this point (this one included) Equivalent to calling all permutations of {@link #invert() invert},
+     * Finds the 8 octant values relative to this point (this one included) Equivalent to calling all permutations of {@link #invertAxises() invertAxises},
      * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis}
      * methods. The points are in octant order, starting at the first octant.
      *
      * @return An array of length 8 with the octant variations of this point
      */
-    public Point[] allOctants() {
-        return new Point[]{
+    public Vector3[] allOctants() {
+        return new Vector3[]{
             this,
-            invert(),
-            invert().mirrorOnVerticalAxis(),
+            invertAxises(),
+            invertAxises().mirrorOnVerticalAxis(),
             mirrorOnVerticalAxis(),
             mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
-            invert().mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
-            invert().mirrorOnHorizontalAxis(),
+            invertAxises().mirrorOnHorizontalAxis().mirrorOnVerticalAxis(),
+            invertAxises().mirrorOnHorizontalAxis(),
             mirrorOnHorizontalAxis()
         };
     }
@@ -149,22 +168,22 @@ public class Point {
      * @param distanceTo point to calculate distance
      * @return the distance between this point and the given point
      */
-    public final double euclidianDistance(Point distanceTo) {
-        double dx = this.getX() - distanceTo.getX();
-        double dy = this.getY() - distanceTo.getY();
-        double dz = this.getZ() - distanceTo.getZ();
+    public final int euclidianDistance(Vector3 distanceTo) {
+        int dx = this.getX() - distanceTo.getX();
+        int dy = this.getY() - distanceTo.getY();
+        int dz = this.getZ() - distanceTo.getZ();
 
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+        return (int) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    public Point projectTo2d() {
+    public Vector3 projectTo2d() {
         if (z == 0) {
-            return new Point(x, y);
+            return new Vector3(x, y);
         }
 
-        double zd = z / (z - Camera.getMainCamera().getPosition().getZ()) + 1;
+        float zd = (float) z / (z - Camera.getMainCamera().getPosition().getZ()) + 1;
 
-        return new Point(x / zd, y / zd);
+        return new Vector3((int) (x / zd), (int) (y / zd));
     }
 
     /**
@@ -172,7 +191,7 @@ public class Point {
      */
     @Override
     public int hashCode() {
-        double hash = 7;
+        int hash = 7;
         hash = 59 * hash + this.x;
         hash = 59 * hash + this.y;
         hash = 59 * hash + this.z;
@@ -191,7 +210,7 @@ public class Point {
             return false;
         }
 
-        final Point other = (Point) obj;
+        final Vector3 other = (Vector3) obj;
 
         return this.x == other.x
                 && this.y == other.y
