@@ -3,7 +3,7 @@ package org.CG.drawings;
 import java.util.LinkedList;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 
 /**
  * Polygon drawing using list of lines.
@@ -12,7 +12,7 @@ import org.CG.infrastructure.abstractions.Point;
  */
 public class Polygon extends Drawing {
 
-    protected Point lastPoint;
+    protected Vector3 lastPoint;
     protected final LinkedList<Line> lines;
 
     public Polygon() {
@@ -23,7 +23,7 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing setStart(Point start) {
+    public Drawing setStart(Vector3 start) {
         super.setStart(start);
         lastPoint = start;
 
@@ -31,11 +31,11 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing translate(Point point) {
-        Point lastTranslation = point;
+    public Drawing moveTo(Vector3 point) {
+        Vector3 lastTranslation = point;
         
         for (Line edge : lines) {
-            edge.translate(lastTranslation);
+            edge.moveTo(lastTranslation);
             lastTranslation = edge.getEnd();
         }
         
@@ -45,7 +45,7 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing updateLastCoordinate(Point point) {
+    public Drawing updateLastCoordinate(Vector3 point) {
         lastPoint = point;
         lines.getLast().updateLastCoordinate(point);
 
@@ -53,7 +53,7 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing setNextCoordinate(Point point) {
+    public Drawing setNextCoordinate(Vector3 point) {
         super.setNextCoordinate(point);
 
         lines.add((Line) new Line()

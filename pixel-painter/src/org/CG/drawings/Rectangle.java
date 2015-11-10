@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 
 /**
  * Rectangle drawing using two points.
@@ -13,9 +13,9 @@ import org.CG.infrastructure.abstractions.Point;
  */
 public class Rectangle extends Drawing {
 
-    protected Point end;
+    protected Vector3 end;
     protected byte plane;
-    protected double planePosition;
+    protected int planePosition;
 
     public Rectangle() {
         this(GL.GL_POLYGON);
@@ -29,8 +29,8 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing translate(Point point) {
-        Point t = new Point(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
+    public Drawing moveTo(Vector3 point) {
+        Vector3 t = new Vector3(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
 
         start = point;
         end = point.move(t.getX(), t.getY(), t.getZ());
@@ -39,35 +39,35 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing updateLastCoordinate(Point point) {
+    public Drawing updateLastCoordinate(Vector3 point) {
         end = point;
         return this;
     }
 
     @Override
     protected void drawShape(GL gl) {
-        List<Point> points = new LinkedList<>();
+        List<Vector3> points = new LinkedList<>();
 
         switch (plane) {
             case 0:
-                points.add(new Point(planePosition, start.getY(), start.getZ()));
-                points.add(new Point(planePosition, start.getY(), end.getZ()));
-                points.add(new Point(planePosition, end.getY(), end.getZ()));
-                points.add(new Point(planePosition, end.getY(), start.getZ()));
+                points.add(new Vector3(planePosition, start.getY(), start.getZ()));
+                points.add(new Vector3(planePosition, start.getY(), end.getZ()));
+                points.add(new Vector3(planePosition, end.getY(), end.getZ()));
+                points.add(new Vector3(planePosition, end.getY(), start.getZ()));
                 break;
 
             case 1:
-                points.add(new Point(start.getX(), planePosition, start.getZ()));
-                points.add(new Point(end.getX(), planePosition, start.getZ()));
-                points.add(new Point(end.getX(), planePosition, end.getZ()));
-                points.add(new Point(start.getX(), planePosition, end.getZ()));
+                points.add(new Vector3(start.getX(), planePosition, start.getZ()));
+                points.add(new Vector3(end.getX(), planePosition, start.getZ()));
+                points.add(new Vector3(end.getX(), planePosition, end.getZ()));
+                points.add(new Vector3(start.getX(), planePosition, end.getZ()));
                 break;
 
             case 2:
-                points.add(new Point(start.getX(), start.getY(), planePosition));
-                points.add(new Point(start.getX(), end.getY(), planePosition));
-                points.add(new Point(end.getX(), end.getY(), planePosition));
-                points.add(new Point(end.getX(), start.getY(), planePosition));
+                points.add(new Vector3(start.getX(), start.getY(), planePosition));
+                points.add(new Vector3(start.getX(), end.getY(), planePosition));
+                points.add(new Vector3(end.getX(), end.getY(), planePosition));
+                points.add(new Vector3(end.getX(), start.getY(), planePosition));
                 break;
         }
 
@@ -77,7 +77,7 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing setStart(Point start) {
+    public Drawing setStart(Vector3 start) {
         super.setStart(start);
         end = start;
 
@@ -98,7 +98,7 @@ public class Rectangle extends Drawing {
         return plane;
     }
 
-    public Drawing setPlanePosition(double planePosition) {
+    public Drawing setPlanePosition(int planePosition) {
         this.planePosition = planePosition;
 
         return this;

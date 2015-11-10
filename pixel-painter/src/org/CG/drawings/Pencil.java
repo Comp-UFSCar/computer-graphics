@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.CG.infrastructure.Drawing;
 import java.util.List;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 
 /**
  * Pencil drawing using list of points.
@@ -13,7 +13,7 @@ import org.CG.infrastructure.abstractions.Point;
  */
 public class Pencil extends Drawing {
 
-    private final List<Point> points;
+    private final List<Vector3> points;
 
     /**
      * Instantiates a new Pencil with an empty list of points.
@@ -30,7 +30,7 @@ public class Pencil extends Drawing {
      * @return this
      */
     @Override
-    public Drawing translate(Point point) {
+    public Drawing moveTo(Vector3 point) {
         point = point.move(-start.getX(), -start.getY());
         start = start.move(point.getX(), point.getY());
 
@@ -48,7 +48,7 @@ public class Pencil extends Drawing {
      * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Point point) {
+    public Drawing updateLastCoordinate(Vector3 point) {
         points.add(point);
         return this;
     }
