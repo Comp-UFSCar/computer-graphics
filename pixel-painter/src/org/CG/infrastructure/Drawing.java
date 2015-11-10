@@ -1,6 +1,6 @@
 package org.CG.infrastructure;
 
-import org.CG.infrastructure.abstractions.Point;
+import org.CG.infrastructure.abstractions.Vector3;
 import org.CG.infrastructure.abstractions.ColorFloat;
 import org.CG.infrastructure.abstractions.ColorByte;
 import javax.media.opengl.GL;
@@ -10,23 +10,23 @@ import javax.media.opengl.GL;
  *
  * @author ldavid
  */
-public abstract class Drawing {
+public abstract class Drawing implements Interactive {
 
-    protected Point start;
+    protected Vector3 start;
     protected ColorByte color;
     protected boolean finished;
     protected final int glDrawingType;
 
     /**
-     * Instantiates a finished drawing using GL_POINTS as the drawing
-     * method.
+     * Instantiates a finished drawing using GL_POINTS as the drawing method.
      */
     public Drawing() {
         this(GL.GL_POINTS);
     }
-    
+
     /**
      * Instantiates a finished drawing with a given drawing method.
+     *
      * @param drawingMethod the drawing method used
      */
     public Drawing(int drawingMethod) {
@@ -42,7 +42,7 @@ public abstract class Drawing {
      * @param point the new last coordinate.
      * @return this
      */
-    abstract public Drawing updateLastCoordinate(Point point);
+    abstract public Drawing updateLastCoordinate(Vector3 point);
 
     /**
      * Sets the next coordinate of the shape.
@@ -50,7 +50,7 @@ public abstract class Drawing {
      * @param point the new coordinate.
      * @return this
      */
-    public Drawing setNextCoordinate(Point point) {
+    public Drawing setNextCoordinate(Vector3 point) {
         if (finished) {
             throw new RuntimeException(
                     "Cannot set next coordinate if drawing is already finished.");
@@ -74,22 +74,34 @@ public abstract class Drawing {
     }
 
     /**
-     * Implementation of the draw method. The methods glColor(), glBegin() and
-     * glEnd() are already called.
+     * Implementation of the draw method. The methods glColor(), glBegin() and glEnd() are already called.
      *
      * @param gl JOGL object used to draw
      */
     abstract protected void drawShape(GL gl);
 
     /**
-     * Translates the shape.
+     * Move the shape to a specific point in space.
      *
-     * @param point translation point
+     * @param v point to which the shape should move.
      * @return this
      */
-    public Drawing translate(Point point) {
-        setStart(point);
+    @Override
+    public Drawing moveTo(Vector3 v) {
+        setStart(v);
         return this;
+    }
+
+    /**
+     * Move the shape according to a translation {@code v}. .
+     *
+     *
+     * @param v vector describing the translation that the shape should do.
+     * @return this
+     */
+    @Override
+    public Drawing move(Vector3 v) {
+        return moveTo(start.move(v));
     }
 
     /**
@@ -98,9 +110,13 @@ public abstract class Drawing {
      * @param start new starting point
      * @return this
      */
-    public Drawing setStart(Point start) {
+    public Drawing setStart(Vector3 start) {
         this.start = start;
         return this;
+    }
+
+    public Vector3 getStart() {
+        return start;
     }
 
     /**
@@ -143,9 +159,5 @@ public abstract class Drawing {
      */
     public boolean isFinished() {
         return finished;
-    }
-
-    public Point getStart() {
-        return start;
     }
 }
