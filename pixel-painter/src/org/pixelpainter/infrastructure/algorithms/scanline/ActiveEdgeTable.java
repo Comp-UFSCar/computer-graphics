@@ -58,7 +58,7 @@ public class ActiveEdgeTable {
      * @param y coordinate used for comparison during the removal process.
      * @return true, if any element was removed. False, otherwise.
      */
-    public boolean removeEdgesWithMaximumYOf(int y) {
+    public boolean removeEdgesWithMaximumYOf(float y) {
         boolean anyRemoved = false;
         
         Iterator<EdgeNode> i = edges.iterator();

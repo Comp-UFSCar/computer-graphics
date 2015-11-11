@@ -83,7 +83,7 @@ public class EdgeTable {
                 maximumYPoint = start;
             }
 
-            List<EdgeNode> edges = lines.get(minimumYPoint.getY());
+            List<EdgeNode> edges = lines.get((int) minimumYPoint.getY());
 
             if (edges == null) {
                 edges = new LinkedList<>();
