@@ -1,4 +1,4 @@
-package org.CG;
+package org.pixelpainter;
 
 import com.sun.opengl.util.Animator;
 import java.awt.event.ActionEvent;
@@ -22,12 +22,12 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.CG.drawings.Cube;
-import org.CG.infrastructure.Camera;
-import org.CG.editor.Editor;
-import org.CG.infrastructure.abstractions.Color;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawings.shapes.Cube;
+import org.pixelpainter.infrastructure.Camera;
+import org.pixelpainter.editor.Editor;
+import org.pixelpainter.infrastructure.representations.Color;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Matrix Paint main class.

@@ -1,17 +1,17 @@
-package org.CG.infrastructure.algorithms.scanline;
+package org.pixelpainter.infrastructure.algorithms.scanline;
 
 import java.util.Iterator;
 import java.util.List;
 import javafx.util.Pair;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.algorithms.scanline.ActiveEdgeTable;
-import org.CG.infrastructure.algorithms.scanline.ActiveEdgeTable;
-import org.CG.infrastructure.algorithms.scanline.EdgeNode;
-import org.CG.infrastructure.algorithms.scanline.EdgeNode;
-import org.CG.infrastructure.algorithms.scanline.EdgeTable;
-import org.CG.infrastructure.algorithms.scanline.EdgeTable;
-import org.CG.infrastructure.abstractions.Rational;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.infrastructure.algorithms.scanline.ActiveEdgeTable;
+import org.pixelpainter.infrastructure.algorithms.scanline.ActiveEdgeTable;
+import org.pixelpainter.infrastructure.algorithms.scanline.EdgeNode;
+import org.pixelpainter.infrastructure.algorithms.scanline.EdgeNode;
+import org.pixelpainter.infrastructure.algorithms.scanline.EdgeTable;
+import org.pixelpainter.infrastructure.algorithms.scanline.EdgeTable;
+import org.pixelpainter.infrastructure.representations.Rational;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Performs the Scan-Line Algorithm to fill a polygon.

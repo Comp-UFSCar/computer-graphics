@@ -1,6 +1,6 @@
-package org.CG.infrastructure.algorithms.scanline;
+package org.pixelpainter.infrastructure.algorithms.scanline;
 
-import org.CG.infrastructure.abstractions.Rational;
+import org.pixelpainter.infrastructure.representations.Rational;
 
 /**
  * Node for the Edge Table and Alive Edge Table data structures.

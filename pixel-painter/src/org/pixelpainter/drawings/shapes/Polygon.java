@@ -1,9 +1,9 @@
-package org.CG.drawings;
+package org.pixelpainter.drawings.shapes;
 
 import java.util.LinkedList;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Polygon drawing using list of lines.

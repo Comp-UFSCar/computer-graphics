@@ -1,4 +1,4 @@
-package org.CG.editor;
+package org.pixelpainter.editor;
 
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -7,11 +7,11 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
-import org.CG.drawings.Line;
-import org.CG.infrastructure.abstractions.Color;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.DrawingsLoader;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawings.shapes.Line;
+import org.pixelpainter.infrastructure.representations.Color;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.drawing.DrawingsLoader;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Matrix Paint Editor.

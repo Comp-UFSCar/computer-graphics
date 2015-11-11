@@ -1,4 +1,4 @@
-package org.CG.infrastructure;
+package org.pixelpainter.drawing;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,13 +20,13 @@ import sun.net.www.protocol.file.FileURLConnection;
  * Loader for drawings.
  * 
  * Automatically loads drawings that are placed inside
- * the org.CG.drawings package.
+ * the org.pixelpainter.drawings package.
  *
  * @author ldavid
  */
 public class DrawingsLoader {
 
-    static final String drawingPackages = "org.CG.drawings";
+    static final String drawingPackages = "org.pixelpainter.drawing.shapes";
 
     /**
      * Private helper method

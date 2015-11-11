@@ -1,6 +1,6 @@
-package org.CG.infrastructure.abstractions;
+package org.pixelpainter.infrastructure.representations;
 
-import org.CG.infrastructure.helpers.MathHelper;
+import org.pixelpainter.infrastructure.helpers.MathHelper;
 
 /**
  * Represents an immutable Rational number (fraction) of form

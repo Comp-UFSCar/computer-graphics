@@ -1,4 +1,4 @@
-package org.CG.infrastructure.algorithms.scanline;
+package org.pixelpainter.infrastructure.algorithms.scanline;
 
 import java.util.Iterator;
 import java.util.LinkedList;

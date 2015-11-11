@@ -1,6 +1,6 @@
-package org.CG.infrastructure;
+package org.pixelpainter.infrastructure;
 
-import org.CG.infrastructure.abstractions.Rational;
+import org.pixelpainter.infrastructure.representations.Rational;
 import junit.framework.TestCase;
 import org.junit.Test;
 

@@ -1,8 +1,9 @@
-package org.CG.infrastructure;
+package org.pixelpainter.drawing;
 
-import org.CG.infrastructure.abstractions.Vector;
-import org.CG.infrastructure.abstractions.Color;
+import org.pixelpainter.infrastructure.representations.Vector;
+import org.pixelpainter.infrastructure.representations.Color;
 import javax.media.opengl.GL;
+import org.pixelpainter.infrastructure.Interactive;
 
 /**
  * Represents an object/shape that can be drawn on screen.

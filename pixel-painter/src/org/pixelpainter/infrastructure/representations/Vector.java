@@ -1,6 +1,6 @@
-package org.CG.infrastructure.abstractions;
+package org.pixelpainter.infrastructure.representations;
 
-import org.CG.infrastructure.Camera;
+import org.pixelpainter.infrastructure.Camera;
 
 /**
  * Represents a vector in the 3-dimensional space.

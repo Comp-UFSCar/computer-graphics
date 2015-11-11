@@ -1,7 +1,7 @@
-package org.CG.infrastructure;
+package org.pixelpainter.infrastructure;
 
 import javax.media.opengl.glu.GLU;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  *

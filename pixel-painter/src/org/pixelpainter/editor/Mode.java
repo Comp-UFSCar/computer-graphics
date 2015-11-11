@@ -1,4 +1,4 @@
-package org.CG.editor;
+package org.pixelpainter.editor;
 
 /**
  * Operating modes that Editor may assume.

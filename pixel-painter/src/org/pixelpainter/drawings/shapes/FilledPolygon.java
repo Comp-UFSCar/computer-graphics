@@ -1,11 +1,11 @@
-package org.CG.drawings;
+package org.pixelpainter.drawings.shapes;
 
 import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.abstractions.Vector;
-import org.CG.infrastructure.algorithms.scanline.ScanLineAlgorithm;
+import org.pixelpainter.infrastructure.representations.Vector;
+import org.pixelpainter.infrastructure.algorithms.scanline.ScanLineAlgorithm;
 
 /**
  * Filled Polygon drawing using Polygon and ScanLineAlgorithm.

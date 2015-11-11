@@ -1,4 +1,4 @@
-package org.CG.infrastructure.abstractions;
+package org.pixelpainter.infrastructure.representations;
 
 /**
  * Represents a basic lighting model (flat).

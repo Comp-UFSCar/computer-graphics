@@ -1,4 +1,4 @@
-package org.CG.infrastructure.helpers;
+package org.pixelpainter.infrastructure.helpers;
 
 /**
  * Useful math functions for computational graphics

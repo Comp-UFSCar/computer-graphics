@@ -1,4 +1,4 @@
-package org.CG.drawings;
+package org.pixelpainter.drawings.shapes;
 
 import javax.media.opengl.GL;
 

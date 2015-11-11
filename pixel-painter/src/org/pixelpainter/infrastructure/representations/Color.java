@@ -1,7 +1,7 @@
-package org.CG.infrastructure.abstractions;
+package org.pixelpainter.infrastructure.representations;
 
 import java.util.Random;
-import org.CG.infrastructure.helpers.MathHelper;
+import org.pixelpainter.infrastructure.helpers.MathHelper;
 
 /**
  * Represents an immutable RGBA color on the [0, 255] discrete spectrum.

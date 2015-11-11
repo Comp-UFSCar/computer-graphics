@@ -1,4 +1,4 @@
-package org.CG.infrastructure.helpers;
+package org.pixelpainter.infrastructure.helpers;
 
 import junit.framework.TestCase;
 import org.junit.Test;

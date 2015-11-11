@@ -1,6 +1,7 @@
-package org.CG.infrastructure;
+package org.pixelpainter.infrastructure;
 
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  *

@@ -1,5 +1,6 @@
-package org.CG.infrastructure.abstractions;
+package org.pixelpainter.infrastructure.abstractions;
 
+import org.pixelpainter.infrastructure.representations.Vector;
 import junit.framework.TestCase;
 
 /**

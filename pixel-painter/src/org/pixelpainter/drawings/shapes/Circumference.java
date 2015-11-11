@@ -1,8 +1,8 @@
-package org.CG.drawings;
+package org.pixelpainter.drawings.shapes;
 
 import javax.media.opengl.GL;
-import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Circumference drawing with Bresenham's algorithm.

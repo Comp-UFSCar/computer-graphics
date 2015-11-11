@@ -1,11 +1,11 @@
-package org.CG.infrastructure.algorithms.scanline;
+package org.pixelpainter.infrastructure.algorithms.scanline;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
-import org.CG.infrastructure.abstractions.Rational;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.infrastructure.representations.Rational;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Edge Table (ET) for the Scan-Line Algorithm.

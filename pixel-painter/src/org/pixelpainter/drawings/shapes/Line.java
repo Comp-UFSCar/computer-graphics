@@ -1,8 +1,8 @@
-package org.CG.drawings;
+package org.pixelpainter.drawings.shapes;
 
-import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.abstractions.Vector;
+import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Drawing of a line on the screen. Uses the Bresenham's mid-point algorithm.
