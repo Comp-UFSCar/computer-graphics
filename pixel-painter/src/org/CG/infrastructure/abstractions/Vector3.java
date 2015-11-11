@@ -125,13 +125,21 @@ public class Vector3 {
         return x * v.x + y * v.y + z * v.z;
     }
 
+    public Vector3 cross(Vector3 v) {
+        return new Vector3(
+                y * v.z - z * v.y,
+                z * v.x - x * v.z,
+                x * v.y - y * v.x
+        );
+    }
+
     /**
-     * Multiplies a vector by a scalar.
+     * Scale vector by a constant {@code scalar}.
      *
      * @param scalar scalar element.
      * @return component-wise multiplication by the scalar.
      */
-    public Vector3 mult(float scalar) {
+    public Vector3 scale(float scalar) {
         return new Vector3((int) (scalar * x), (int) (scalar * y), (int) (scalar * z));
     }
 
@@ -150,7 +158,7 @@ public class Vector3 {
      * @return
      */
     public Vector3 normalize() {
-        return mult(1 / length());
+        return scale(1 / length());
     }
 
     /**
@@ -201,25 +209,27 @@ public class Vector3 {
     }
 
     /**
-     * Calculates the Euclidian distance between two points
+     * Calculates the Euclidian distance induced by the L2-norm between two points.
      *
-     * @param distanceTo point to calculate distance
-     * @return the distance between this point and the given point
+     * @param v point to calculate distance.
+     * @return the distance between this point and the given point.
      */
-    public final int euclidianDistance(Vector3 distanceTo) {
-        int dx = this.getX() - distanceTo.getX();
-        int dy = this.getY() - distanceTo.getY();
-        int dz = this.getZ() - distanceTo.getZ();
-
-        return (int) Math.sqrt(dx * dx + dy * dy + dz * dz);
+    public float l2Distance(Vector3 v) {
+        return delta(v).length();
     }
 
+    /**
+     * Project Vector3 to the 2-dimensional space.
+     *
+     * This projection takes the origin and the camera as basis. It needs, obviously, a main camera to be set in the
+     * scene. If it is not, the z-coordinate is simply ignored.
+     *
+     * @return a new vector which is the projection of this onto the plane (x, y, 0).
+     */
     public Vector3 projectTo2d() {
-        if (z == 0) {
-            return new Vector3(x, y);
-        }
-
-        float zd = (float) z / (z - Camera.getMainCamera().getPosition().getZ()) + 1;
+        float zd = (z != 0 && Camera.getMainCamera() != null)
+                ? (float) z / (z - Camera.getMainCamera().getPosition().getZ()) + 1
+                : 1;
 
         return new Vector3((int) (x / zd), (int) (y / zd));
     }

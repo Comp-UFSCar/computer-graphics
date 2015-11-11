@@ -39,7 +39,7 @@ public class Circumference extends Drawing {
      */
     @Override
     public Drawing updateLastCoordinate(Vector3 point) {
-        radius = (int) start.euclidianDistance(point);
+        radius = (int) start.l2Distance(point);
         return this;
     }
 
