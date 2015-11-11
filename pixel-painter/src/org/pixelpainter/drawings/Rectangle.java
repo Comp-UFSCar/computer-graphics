@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Rectangle drawing using two points.
@@ -13,7 +13,7 @@ import org.CG.infrastructure.abstractions.Vector3;
  */
 public class Rectangle extends Drawing {
 
-    protected Vector3 end;
+    protected Vector end;
     protected byte plane;
     protected int planePosition;
 
@@ -29,7 +29,7 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing moveTo(Vector3 v) {
+    public Drawing moveTo(Vector v) {
         end = v.move(end.delta(start));
         start = v;
 
@@ -37,35 +37,35 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing updateLastCoordinate(Vector3 point) {
+    public Drawing updateLastCoordinate(Vector point) {
         end = point;
         return this;
     }
 
     @Override
     protected void drawShape(GL gl) {
-        List<Vector3> points = new LinkedList<>();
+        List<Vector> points = new LinkedList<>();
 
         switch (plane) {
             case 0:
-                points.add(new Vector3(planePosition, start.getY(), start.getZ()));
-                points.add(new Vector3(planePosition, start.getY(), end.getZ()));
-                points.add(new Vector3(planePosition, end.getY(), end.getZ()));
-                points.add(new Vector3(planePosition, end.getY(), start.getZ()));
+                points.add(new Vector(planePosition, start.getY(), start.getZ()));
+                points.add(new Vector(planePosition, start.getY(), end.getZ()));
+                points.add(new Vector(planePosition, end.getY(), end.getZ()));
+                points.add(new Vector(planePosition, end.getY(), start.getZ()));
                 break;
 
             case 1:
-                points.add(new Vector3(start.getX(), planePosition, start.getZ()));
-                points.add(new Vector3(end.getX(), planePosition, start.getZ()));
-                points.add(new Vector3(end.getX(), planePosition, end.getZ()));
-                points.add(new Vector3(start.getX(), planePosition, end.getZ()));
+                points.add(new Vector(start.getX(), planePosition, start.getZ()));
+                points.add(new Vector(end.getX(), planePosition, start.getZ()));
+                points.add(new Vector(end.getX(), planePosition, end.getZ()));
+                points.add(new Vector(start.getX(), planePosition, end.getZ()));
                 break;
 
             case 2:
-                points.add(new Vector3(start.getX(), start.getY(), planePosition));
-                points.add(new Vector3(start.getX(), end.getY(), planePosition));
-                points.add(new Vector3(end.getX(), end.getY(), planePosition));
-                points.add(new Vector3(end.getX(), start.getY(), planePosition));
+                points.add(new Vector(start.getX(), start.getY(), planePosition));
+                points.add(new Vector(start.getX(), end.getY(), planePosition));
+                points.add(new Vector(end.getX(), end.getY(), planePosition));
+                points.add(new Vector(end.getX(), start.getY(), planePosition));
                 break;
         }
 
@@ -75,7 +75,7 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing setStart(Vector3 start) {
+    public Drawing setStart(Vector start) {
         super.setStart(start);
         end = start;
 

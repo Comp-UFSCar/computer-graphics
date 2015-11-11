@@ -1,7 +1,6 @@
 package org.CG;
 
 import com.sun.opengl.util.Animator;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,12 +23,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.CG.drawings.Cube;
-import org.CG.editor.Camera;
+import org.CG.infrastructure.Camera;
 import org.CG.editor.Editor;
-import org.CG.infrastructure.abstractions.ColorByte;
+import org.CG.infrastructure.abstractions.Color;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.ColorFloat;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Matrix Paint main class.
@@ -138,11 +136,11 @@ public class PixelPainter implements GLEventListener {
 
         frame.setVisible(true);
         animator.start();
-        
+
         Cube c = new Cube();
-        c.setColor(new ColorFloat(1f, .5f, 0));
-        c.setStart(new Vector3(500, 500, 0));
-        c.updateLastCoordinate(new Vector3(600, 600, 100));
+        c.setColor(new Color(1f, .5f, 0));
+        c.setStart(new Vector(500, 500, 0));
+        c.updateLastCoordinate(new Vector(600, 600, 100));
         editor.getDrawings().add(c);
     }
 
@@ -192,11 +190,11 @@ public class PixelPainter implements GLEventListener {
         m.add(b);
         b = createSimpleButton("Pick");
         b.addActionListener((ActionEvent e) -> {
-            Color c = JColorChooser.showDialog(null, "Choose the color", Color.yellow);
+            java.awt.Color c = JColorChooser.showDialog(null, "Choose the color", java.awt.Color.yellow);
             if (c != null) {
-                editor.setSelectedColor(new ColorByte(
-                        c.getRed(), c.getGreen(),
-                        c.getBlue(), c.getAlpha()
+                editor.setSelectedColor(new Color(
+                        (byte) c.getRed(), (byte) c.getGreen(),
+                        (byte) c.getBlue(), (byte) c.getAlpha()
                 ));
             }
         });
@@ -241,7 +239,7 @@ public class PixelPainter implements GLEventListener {
         gl.glViewport(0, 0, width, height);
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        
+
         gl.glOrtho(0, width, 0, height, -1, 1);
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -255,10 +253,10 @@ public class PixelPainter implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
-        
+
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        
+
         editor.getDrawings().forEach(d -> {
             d.draw(gl);
         });

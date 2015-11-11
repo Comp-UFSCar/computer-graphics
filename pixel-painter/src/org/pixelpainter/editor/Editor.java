@@ -8,10 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
 import org.CG.drawings.Line;
-import org.CG.infrastructure.abstractions.ColorByte;
+import org.CG.infrastructure.abstractions.Color;
 import org.CG.infrastructure.Drawing;
 import org.CG.infrastructure.DrawingsLoader;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Matrix Paint Editor.
@@ -29,7 +29,7 @@ public class Editor {
     private Mode mode;
 
     private final Random rand;
-    private ColorByte selectedColor;
+    private Color selectedColor;
 
     /**
      * Instantiates a new editor, without drawings and in Drawing mode.
@@ -45,8 +45,7 @@ public class Editor {
     }
 
     /**
-     * Undo the last action. Must be at least one undo-able action and less than
-     * 100 undo-ed actions.
+     * Undo the last action. Must be at least one undo-able action and less than 100 undo-ed actions.
      */
     public void undo() {
         if (drawings.size() > 0 && redos.size() < 100) {
@@ -74,8 +73,7 @@ public class Editor {
     }
 
     /**
-     * Listens to mouse presses on the canvas, potentially drawing or starting
-     * to draw new shapes.
+     * Listens to mouse presses on the canvas, potentially drawing or starting to draw new shapes.
      *
      * @param e the action performed by the mouse.
      * @param canvas the GL canvas object.
@@ -83,7 +81,7 @@ public class Editor {
     public void onMousePressedOnCanvas(MouseEvent e, GLCanvas canvas) {
         redos.clear();
 
-        Vector3 point = new Vector3(e.getX(), canvas.getHeight() - e.getY());
+        Vector point = new Vector(e.getX(), canvas.getHeight() - e.getY());
 
         if (e.isControlDown()) {
             mode = Mode.MOVING;
@@ -97,7 +95,7 @@ public class Editor {
             return;
         }
 
-        ColorByte color = this.getDrawingColor();
+        Color color = this.getDrawingColor();
 
         try {
             drawings.add(currentDrawing.newInstance()
@@ -116,7 +114,7 @@ public class Editor {
      * @param canvas the GL canvas object.
      */
     public void onMouseDraggedOnCanvas(MouseEvent e, GLCanvas canvas) {
-        Vector3 point = new Vector3(e.getX(), canvas.getHeight() - e.getY());
+        Vector point = new Vector(e.getX(), canvas.getHeight() - e.getY());
 
         if (!e.isControlDown() && mode == Mode.MOVING) {
             mode = Mode.IDLE;
@@ -174,7 +172,7 @@ public class Editor {
      *
      * @param color the selected color, or null for random.
      */
-    public void setSelectedColor(ColorByte color) {
+    public void setSelectedColor(Color color) {
         this.selectedColor = color;
     }
 
@@ -190,10 +188,10 @@ public class Editor {
      *
      * @return the color the next shape should be drawn.
      */
-    protected ColorByte getDrawingColor() {
+    protected Color getDrawingColor() {
         if (selectedColor != null) {
             return selectedColor;
         }
-        return ColorByte.random(rand).adjustBrightness(100);
+        return Color.random(rand).adjustBrightness(100);
     }
 }

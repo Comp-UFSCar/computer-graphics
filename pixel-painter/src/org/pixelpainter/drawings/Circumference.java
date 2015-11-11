@@ -2,7 +2,7 @@ package org.CG.drawings;
 
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Circumference drawing with Bresenham's algorithm.
@@ -38,7 +38,7 @@ public class Circumference extends Drawing {
      * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Vector3 point) {
+    public Drawing updateLastCoordinate(Vector point) {
         radius = (int) start.l2Distance(point);
         return this;
     }

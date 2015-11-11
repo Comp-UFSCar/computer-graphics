@@ -1,12 +1,17 @@
-package org.CG.infrastructure.abstractions;
+package org.CG.infrastructure.algorithms.scanline;
 
 import java.util.Iterator;
 import java.util.List;
 import javafx.util.Pair;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.abstractions.ActiveEdgeTable;
-import org.CG.infrastructure.abstractions.EdgeNode;
-import org.CG.infrastructure.abstractions.EdgeTable;
+import org.CG.infrastructure.algorithms.scanline.ActiveEdgeTable;
+import org.CG.infrastructure.algorithms.scanline.ActiveEdgeTable;
+import org.CG.infrastructure.algorithms.scanline.EdgeNode;
+import org.CG.infrastructure.algorithms.scanline.EdgeNode;
+import org.CG.infrastructure.algorithms.scanline.EdgeTable;
+import org.CG.infrastructure.algorithms.scanline.EdgeTable;
+import org.CG.infrastructure.abstractions.Rational;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Performs the Scan-Line Algorithm to fill a polygon.
@@ -23,7 +28,7 @@ public class ScanLineAlgorithm {
      * Instatiates a new solver for the Scanline Algorithm.
      * @param edgePoints list of the edges of the polygon.
      */
-    public ScanLineAlgorithm(List<Pair<Vector3, Vector3>> edgePoints) {
+    public ScanLineAlgorithm(List<Pair<Vector, Vector>> edgePoints) {
         if (yMin > yMax) {
             throw new IllegalArgumentException(
                 "yMin (" + yMin + ") cannot be greater than yMax (" + yMax + ").");
@@ -37,7 +42,7 @@ public class ScanLineAlgorithm {
         et = new EdgeTable().addEdges(edgePoints);
         aet = new ActiveEdgeTable();
 
-        Pair<Vector3, Vector3> first = edgePoints.get(0);
+        Pair<Vector, Vector> first = edgePoints.get(0);
 
         // Find the minimum and maximum Y of all set.
         yMin = Math.min(first.getKey().getY(), first.getValue().getY());

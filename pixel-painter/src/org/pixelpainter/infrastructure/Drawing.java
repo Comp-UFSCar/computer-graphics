@@ -1,8 +1,7 @@
 package org.CG.infrastructure;
 
-import org.CG.infrastructure.abstractions.Vector3;
-import org.CG.infrastructure.abstractions.ColorFloat;
-import org.CG.infrastructure.abstractions.ColorByte;
+import org.CG.infrastructure.abstractions.Vector;
+import org.CG.infrastructure.abstractions.Color;
 import javax.media.opengl.GL;
 
 /**
@@ -12,8 +11,8 @@ import javax.media.opengl.GL;
  */
 public abstract class Drawing implements Interactive {
 
-    protected Vector3 start;
-    protected ColorByte color;
+    protected Vector start;
+    protected Color color;
     protected boolean finished;
     protected final int glDrawingType;
 
@@ -42,7 +41,7 @@ public abstract class Drawing implements Interactive {
      * @param point the new last coordinate.
      * @return this
      */
-    abstract public Drawing updateLastCoordinate(Vector3 point);
+    abstract public Drawing updateLastCoordinate(Vector point);
 
     /**
      * Sets the next coordinate of the shape.
@@ -50,7 +49,7 @@ public abstract class Drawing implements Interactive {
      * @param point the new coordinate.
      * @return this
      */
-    public Drawing setNextCoordinate(Vector3 point) {
+    public Drawing setNextCoordinate(Vector point) {
         if (finished) {
             throw new RuntimeException(
                     "Cannot set next coordinate if drawing is already finished.");
@@ -87,7 +86,7 @@ public abstract class Drawing implements Interactive {
      * @return this
      */
     @Override
-    public Drawing moveTo(Vector3 v) {
+    public Drawing moveTo(Vector v) {
         setStart(v);
         return this;
     }
@@ -100,7 +99,7 @@ public abstract class Drawing implements Interactive {
      * @return this
      */
     @Override
-    public Drawing move(Vector3 v) {
+    public Drawing move(Vector v) {
         return moveTo(start.move(v));
     }
 
@@ -110,12 +109,12 @@ public abstract class Drawing implements Interactive {
      * @param start new starting point
      * @return this
      */
-    public Drawing setStart(Vector3 start) {
+    public Drawing setStart(Vector start) {
         this.start = start;
         return this;
     }
 
-    public Vector3 getStart() {
+    public Vector getStart() {
         return start;
     }
 
@@ -125,19 +124,8 @@ public abstract class Drawing implements Interactive {
      * @param color color of the shape
      * @return this
      */
-    public Drawing setColor(ColorByte color) {
+    public Drawing setColor(Color color) {
         this.color = color;
-        return this;
-    }
-
-    /**
-     * Sets the color of the shape
-     *
-     * @param color color of the shape
-     * @return this
-     */
-    public Drawing setColor(ColorFloat color) {
-        setColor(color.toColorByte());
         return this;
     }
 

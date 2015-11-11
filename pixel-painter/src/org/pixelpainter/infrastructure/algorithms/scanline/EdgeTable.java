@@ -1,9 +1,11 @@
-package org.CG.infrastructure.abstractions;
+package org.CG.infrastructure.algorithms.scanline;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.util.Pair;
+import org.CG.infrastructure.abstractions.Rational;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Edge Table (ET) for the Scan-Line Algorithm.
@@ -35,10 +37,10 @@ public class EdgeTable {
      *
      * Furthermore, this operation sorts all lists in the table.
      *
-     * @param edges the list of pairs (Vector3, Vector3) that describe the edges that will be inserted.
+     * @param edges the list of pairs (Vector, Vector) that describe the edges that will be inserted.
      * @return this.
      */
-    public EdgeTable addEdges(List<Pair<Vector3, Vector3>> edges) {
+    public EdgeTable addEdges(List<Pair<Vector, Vector>> edges) {
         edges.stream().forEach((edge) -> {
             addEdge(edge.getKey(), edge.getValue());
         });
@@ -67,11 +69,11 @@ public class EdgeTable {
      * @param end the end of the edge.
      * @return this.
      */
-    protected EdgeTable addEdge(Vector3 start, Vector3 end) {
+    protected EdgeTable addEdge(Vector start, Vector end) {
         // Ignore horizontal lines, as they will cause
         // a exception to be thrown at @Rational class.
         if (start.getY() != end.getY()) {
-            Vector3 minimumYPoint, maximumYPoint;
+            Vector minimumYPoint, maximumYPoint;
 
             if (start.getY() <= end.getY()) {
                 minimumYPoint = start;

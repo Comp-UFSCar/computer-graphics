@@ -2,7 +2,7 @@ package org.CG.drawings;
 
 import org.CG.infrastructure.Drawing;
 import javax.media.opengl.GL;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Drawing of a line on the screen. Uses the Bresenham's mid-point algorithm.
@@ -11,9 +11,9 @@ import org.CG.infrastructure.abstractions.Vector3;
  */
 public class Line extends Drawing {
 
-    private Vector3 end;
-    private Vector3 translated_start;
-    private Vector3 translated_end;
+    private Vector end;
+    private Vector translated_start;
+    private Vector translated_end;
     private int incE;
     private int incNE;
     private int dx;
@@ -24,7 +24,7 @@ public class Line extends Drawing {
      * {@inheritDoc }
      */
     @Override
-    public Drawing setStart(Vector3 start) {
+    public Drawing setStart(Vector start) {
         super.setStart(start);
         return updateLastCoordinate(start);
     }
@@ -33,8 +33,8 @@ public class Line extends Drawing {
      * {@inheritDoc }
      */
     @Override
-    public Drawing moveTo(Vector3 point) {
-        Vector3 t = new Vector3(point.getX() - start.getX(), point.getY() - start.getY());
+    public Drawing moveTo(Vector point) {
+        Vector t = new Vector(point.getX() - start.getX(), point.getY() - start.getY());
         start = point;
 
         return updateLastCoordinate(end.move(t));
@@ -48,7 +48,7 @@ public class Line extends Drawing {
      * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Vector3 last) {
+    public Drawing updateLastCoordinate(Vector last) {
         end = last;
         dx = end.getX() - start.getX();
         dy = end.getY() - start.getY();
@@ -59,7 +59,7 @@ public class Line extends Drawing {
         translated_end = translateToFirstOctant(end);
 
         if (translated_start.getX() > translated_end.getX()) {
-            Vector3 tmp = translated_start;
+            Vector tmp = translated_start;
             translated_start = translated_end;
             translated_end = tmp;
         }
@@ -85,7 +85,7 @@ public class Line extends Drawing {
         int y = translated_start.getY();
         int d = 2 * dy - dx;
 
-        Vector3 point = restoreToOriginalOctant(translated_start);
+        Vector point = restoreToOriginalOctant(translated_start);
         gl.glVertex2d(point.getX(), point.getY());
 
         while (x < translated_end.getX()) {
@@ -97,7 +97,7 @@ public class Line extends Drawing {
             }
             x++;
 
-            point = restoreToOriginalOctant(new Vector3(x, y));
+            point = restoreToOriginalOctant(new Vector(x, y));
             gl.glVertex2d(point.getX(), point.getY());
         }
     }
@@ -124,7 +124,7 @@ public class Line extends Drawing {
      * @return a point that represents the translation of (x,y) to the first
      * octant.
      */
-    protected Vector3 translateToFirstOctant(Vector3 pt) {
+    protected Vector translateToFirstOctant(Vector pt) {
         return pt.allOctants()[octant];
     }
 
@@ -135,7 +135,7 @@ public class Line extends Drawing {
      * @return a point that represents the restored point to its original
      * octant.
      */
-    protected Vector3 restoreToOriginalOctant(Vector3 pt) {
+    protected Vector restoreToOriginalOctant(Vector pt) {
         int oct = octant;
         // handles edge case for the secondary diagonal
         if (oct == 2) {
@@ -146,7 +146,7 @@ public class Line extends Drawing {
         return pt.allOctants()[oct];
     }
 
-    public Vector3 getEnd() {
+    public Vector getEnd() {
         return end;
     }
 }

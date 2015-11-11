@@ -1,18 +1,20 @@
 package org.CG.infrastructure.abstractions;
 
-import org.CG.editor.Camera;
+import org.CG.infrastructure.Camera;
 
 /**
  * Represents a vector in the 3-dimensional space.
  *
  * @author Diorge-Mephy
  */
-public class Vector3 {
+public class Vector {
 
     /**
      * The origin (0, 0) point
      */
-    public final static Vector3 ORIGIN = new Vector3(0, 0);
+    public final static Vector ORIGIN = new Vector(0, 0, 0);
+    public final static Vector UP = new Vector(0, 1, 0);
+    public final static Vector DOWN = new Vector(0, -1, 0);
 
     private final int x;
 
@@ -26,11 +28,11 @@ public class Vector3 {
      * @param x x-coordinate of the point
      * @param y y-coordinate of the point
      */
-    public Vector3(int x, int y) {
+    public Vector(int x, int y) {
         this(x, y, 0);
     }
 
-    public Vector3(int x, int y, int z) {
+    public Vector(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -70,7 +72,7 @@ public class Vector3 {
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Vector3 move(int dx, int dy) {
+    public Vector move(int dx, int dy) {
         return move(dx, dy, 0);
     }
 
@@ -82,8 +84,8 @@ public class Vector3 {
      * @param dz The movement performed on z-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Vector3 move(int dx, int dy, int dz) {
-        return new Vector3(x + dx, y + dy, z + dz);
+    public Vector move(int dx, int dy, int dz) {
+        return new Vector(x + dx, y + dy, z + dz);
     }
 
     /**
@@ -92,7 +94,7 @@ public class Vector3 {
      * @param v The movement to be performed.
      * @return A new point achieved by translating this point.
      */
-    public Vector3 move(Vector3 v) {
+    public Vector move(Vector v) {
         return move(v.getX(), v.getY(), v.getZ());
     }
 
@@ -101,8 +103,8 @@ public class Vector3 {
      *
      * @return the new vector which represents this one reflected.
      */
-    public Vector3 reflected() {
-        return new Vector3(-x, -y, -z);
+    public Vector reflected() {
+        return new Vector(-x, -y, -z);
     }
 
     /**
@@ -111,7 +113,7 @@ public class Vector3 {
      * @param v the other vector.
      * @return the new vector that represents the difference between {@code v} and this.
      */
-    public Vector3 delta(Vector3 v) {
+    public Vector delta(Vector v) {
         return move(v.reflected());
     }
 
@@ -121,12 +123,12 @@ public class Vector3 {
      * @param v
      * @return
      */
-    public int dot(Vector3 v) {
+    public int dot(Vector v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
-    public Vector3 cross(Vector3 v) {
-        return new Vector3(
+    public Vector cross(Vector v) {
+        return new Vector(
                 y * v.z - z * v.y,
                 z * v.x - x * v.z,
                 x * v.y - y * v.x
@@ -139,8 +141,8 @@ public class Vector3 {
      * @param scalar scalar element.
      * @return component-wise multiplication by the scalar.
      */
-    public Vector3 scale(float scalar) {
-        return new Vector3((int) (scalar * x), (int) (scalar * y), (int) (scalar * z));
+    public Vector scale(float scalar) {
+        return new Vector((int) (scalar * x), (int) (scalar * y), (int) (scalar * z));
     }
 
     /**
@@ -157,7 +159,7 @@ public class Vector3 {
      *
      * @return
      */
-    public Vector3 normalize() {
+    public Vector normalize() {
         return scale(1 / length());
     }
 
@@ -166,8 +168,8 @@ public class Vector3 {
      *
      * @return A new point achieved by translating this point in octant
      */
-    public Vector3 invertAxises() {
-        return new Vector3(y, x, z);
+    public Vector invertAxises() {
+        return new Vector(y, x, z);
     }
 
     /**
@@ -175,8 +177,8 @@ public class Vector3 {
      *
      * @return A new point achieved by mirroring the point upon the X-axis
      */
-    public Vector3 mirrorOnHorizontalAxis() {
-        return new Vector3(x, -y);
+    public Vector mirrorOnHorizontalAxis() {
+        return new Vector(x, -y);
     }
 
     /**
@@ -184,8 +186,8 @@ public class Vector3 {
      *
      * @return A new point achieved by mirroring the point upon the Y-axis
      */
-    public Vector3 mirrorOnVerticalAxis() {
-        return new Vector3(-x, y);
+    public Vector mirrorOnVerticalAxis() {
+        return new Vector(-x, y);
     }
 
     /**
@@ -195,8 +197,8 @@ public class Vector3 {
      *
      * @return An array of length 8 with the octant variations of this point
      */
-    public Vector3[] allOctants() {
-        return new Vector3[]{
+    public Vector[] allOctants() {
+        return new Vector[]{
             this,
             invertAxises(),
             invertAxises().mirrorOnVerticalAxis(),
@@ -214,24 +216,24 @@ public class Vector3 {
      * @param v point to calculate distance.
      * @return the distance between this point and the given point.
      */
-    public float l2Distance(Vector3 v) {
+    public float l2Distance(Vector v) {
         return delta(v).length();
     }
 
     /**
-     * Project Vector3 to the 2-dimensional space.
+     * Project Vector to the 2-dimensional space.
      *
      * This projection takes the origin and the camera as basis. It needs, obviously, a main camera to be set in the
      * scene. If it is not, the z-coordinate is simply ignored.
      *
      * @return a new vector which is the projection of this onto the plane (x, y, 0).
      */
-    public Vector3 projectTo2d() {
+    public Vector projectTo2d() {
         float zd = (z != 0 && Camera.getMainCamera() != null)
                 ? (float) z / (z - Camera.getMainCamera().getPosition().getZ()) + 1
                 : 1;
 
-        return new Vector3((int) (x / zd), (int) (y / zd));
+        return new Vector((int) (x / zd), (int) (y / zd));
     }
 
     /**
@@ -258,7 +260,7 @@ public class Vector3 {
             return false;
         }
 
-        final Vector3 other = (Vector3) obj;
+        final Vector other = (Vector) obj;
 
         return this.x == other.x
                 && this.y == other.y

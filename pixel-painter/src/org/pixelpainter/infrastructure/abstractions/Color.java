@@ -8,7 +8,7 @@ import org.CG.infrastructure.helpers.MathHelper;
  *
  * @author Diorge-Mephy
  */
-public class ColorByte {
+public class Color {
 
     private final byte red;
 
@@ -19,27 +19,39 @@ public class ColorByte {
     private final byte alpha;
 
     /**
-     * Instantiates a new Color with given parameters and alpha 255. Clamps the
-     * values to the valid spectrum.
+     * Instantiates a new Color with given parameters and alpha 255.
+     *
+     * @param red red component varying in the interval [0, 1].
+     * @param green green component varying in the interval [0, 1].
+     * @param blue blue component varying in the interval [0, 1].
+     */
+    public Color(float red, float green, float blue) {
+        this(
+                (byte) (MathHelper.clamp(0, 1, red) * 255),
+                (byte) (MathHelper.clamp(0, 1, green) * 255),
+                (byte) (MathHelper.clamp(0, 1, blue) * 255));
+    }
+
+    /**
+     * Instantiates a new Color with given parameters and alpha 255.
      *
      * @param red red component
      * @param green green component
      * @param blue blue component
      */
-    public ColorByte(int red, int green, int blue) {
-        this(red, green, blue, 255);
+    public Color(byte red, byte green, byte blue) {
+        this(red, green, blue, (byte) 255);
     }
 
     /**
-     * Instantiates a new Color with given parameters. Clamps the values to the
-     * valid spectrum.
+     * Instantiates a new Color with given parameters. Clamps the values to the valid spectrum.
      *
      * @param red red component
      * @param green green component
      * @param blue blue component
      * @param alpha alpha component (opacity)
      */
-    public ColorByte(int red, int green, int blue, int alpha) {
+    public Color(byte red, byte green, byte blue, byte alpha) {
         this.red = (byte) MathHelper.clamp(0, 255, red);
         this.green = (byte) MathHelper.clamp(0, 255, green);
         this.blue = (byte) MathHelper.clamp(0, 255, blue);
@@ -83,33 +95,29 @@ public class ColorByte {
     }
 
     /**
-     * Instantiates a new color by adjusting the brightness of this color. This
-     * is done by simply adding the given value to the three color components.
+     * Instantiates a new color by adjusting the brightness of this color. This is done by simply adding the given value
+     * to the three color components.
      *
      * @param value added to red, green and blue components
      * @return A new color with adjusted brightness
      */
-    public ColorByte adjustBrightness(int value) {
-        return new ColorByte(
-                getRed() + value,
-                getGreen() + value,
-                getBlue() + value,
-                getAlpha()
+    public Color adjustBrightness(int value) {
+        return new Color(
+                (byte) (red + value),
+                (byte) (green + value),
+                (byte) (blue + value),
+                alpha
         );
     }
 
     /**
-     * Converts the color to the [0, 1] spectrum.
+     * Applies an intensity tone to the color.
      *
-     * @return a new ColorByte equivalent to this one
+     * @param tone Tone intensity.
+     * @return the multiplication of each color component by the tone.
      */
-    public ColorFloat toColorFloat() {
-        return new ColorFloat(
-                (int) MathHelper.normalize(0, 255, red),
-                (int) MathHelper.normalize(0, 255, green),
-                (int) MathHelper.normalize(0, 255, blue),
-                (int) MathHelper.normalize(0, 255, alpha)
-        );
+    public Color applyTone(double tone) {
+        return new Color((byte) (tone * red), (byte) (tone * green), (byte) (tone * blue));
     }
 
     /**
@@ -118,10 +126,10 @@ public class ColorByte {
      * @param randGen random generator to be used
      * @return A new color with random red, green and blue values, and alpha 255
      */
-    public static ColorByte random(Random randGen) {
+    public static Color random(Random randGen) {
         byte[] values = new byte[3];
         randGen.nextBytes(values);
-        return new ColorByte(values[0], values[1], values[2]);
+        return new Color(values[0], values[1], values[2]);
     }
 
 }

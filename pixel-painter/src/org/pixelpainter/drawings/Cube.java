@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.ColorByte;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Color;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  *
@@ -15,17 +15,17 @@ import org.CG.infrastructure.abstractions.Vector3;
 public class Cube extends Square {
 
     List<Rectangle> faces;
-    ColorByte[] colors;
+    Color[] colors;
 
     public Cube() {
         super(GL.GL_POLYGON);
         faces = new LinkedList<>();
-        colors = new ColorByte[6];
+        colors = new Color[6];
 
         Random r = new Random();
 
         for (int i = 0; i < 6; i++) {
-            colors[i] = ColorByte.random(r);
+            colors[i] = Color.random(r);
         }
     }
 
@@ -59,7 +59,7 @@ public class Cube extends Square {
     }
 
     @Override
-    public Drawing moveTo(Vector3 v) {
+    public Drawing moveTo(Vector v) {
         super.moveTo(v);
 
         updateFaces();
@@ -73,7 +73,7 @@ public class Cube extends Square {
      * @return this.
      */
     @Override
-    public Drawing updateLastCoordinate(Vector3 point) {
+    public Drawing updateLastCoordinate(Vector point) {
         int dx = point.getX() - start.getX();
         int dy = point.getY() - start.getY();
 

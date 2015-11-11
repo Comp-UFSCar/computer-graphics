@@ -1,7 +1,7 @@
-package org.CG.editor;
+package org.CG.infrastructure;
 
 import javax.media.opengl.glu.GLU;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  *
@@ -9,17 +9,17 @@ import org.CG.infrastructure.abstractions.Vector3;
  */
 public class Camera {
 
-    Vector3 position;
-    Vector3 lookAt;
-    Vector3 up;
+    Vector position;
+    Vector lookAt;
+    Vector up;
 
     static Camera mainCamera;
 
     public Camera() {
-        this(new Vector3(0, 0, -1000), Vector3.ORIGIN, new Vector3(0, 1, 0));
+        this(new Vector(0, 0, -1000), Vector.ORIGIN, new Vector(0, 1, 0));
     }
 
-    public Camera(Vector3 position, Vector3 lookAt, Vector3 up) {
+    public Camera(Vector position, Vector lookAt, Vector up) {
         this.position = position;
         this.lookAt = lookAt;
         this.up = up;
@@ -33,27 +33,27 @@ public class Camera {
         Camera.mainCamera = mainCamera;
     }
 
-    public Vector3 getPosition() {
+    public Vector getPosition() {
         return this.position;
     }
 
-    public void setPosition(Vector3 position) {
+    public void setPosition(Vector position) {
         this.position = position;
     }
 
-    public Vector3 getLookAt() {
+    public Vector getLookAt() {
         return this.lookAt;
     }
 
-    public void setLookAt(Vector3 lookAt) {
+    public void setLookAt(Vector lookAt) {
         this.lookAt = lookAt;
     }
 
-    public Vector3 getUp() {
+    public Vector getUp() {
         return this.up;
     }
 
-    public void setUp(Vector3 up) {
+    public void setUp(Vector up) {
         this.up = up;
     }
 

@@ -2,7 +2,7 @@ package org.CG.drawings;
 
 import javax.media.opengl.GL;
 import org.CG.infrastructure.Drawing;
-import org.CG.infrastructure.abstractions.Vector3;
+import org.CG.infrastructure.abstractions.Vector;
 
 /**
  * Square drawing using a restrictive rectangle.
@@ -27,7 +27,7 @@ public class Square extends Rectangle {
      * @return this.
      */
     @Override
-    public Drawing updateLastCoordinate(Vector3 point) {
+    public Drawing updateLastCoordinate(Vector point) {
         int dx = point.getX() - start.getX();
         int dy = point.getY() - start.getY();
 
