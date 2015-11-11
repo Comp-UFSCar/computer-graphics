@@ -1,4 +1,4 @@
-package org.pixelpainter.drawings.shapes;
+package org.pixelpainter.drawing.shapes;
 
 import java.util.LinkedList;
 import javax.media.opengl.GL;

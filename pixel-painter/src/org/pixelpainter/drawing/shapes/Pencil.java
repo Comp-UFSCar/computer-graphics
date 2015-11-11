@@ -1,4 +1,4 @@
-package org.pixelpainter.drawings.shapes;
+package org.pixelpainter.drawing.shapes;
 
 import java.util.ArrayList;
 import java.util.List;

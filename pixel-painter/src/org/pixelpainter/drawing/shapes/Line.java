@@ -1,4 +1,4 @@
-package org.pixelpainter.drawings.shapes;
+package org.pixelpainter.drawing.shapes;
 
 import javax.media.opengl.GL;
 import org.pixelpainter.drawing.Drawing;
@@ -33,16 +33,16 @@ public class Line extends Drawing {
      * {@inheritDoc }
      */
     @Override
-    public Drawing moveTo(Vector point) {
-        Vector t = new Vector(point.getX() - start.getX(), point.getY() - start.getY());
-        start = point;
+    public Drawing moveTo(Vector v) {
+        Vector d = v.delta(start);
+        start = v;
 
-        return updateLastCoordinate(end.move(t));
+        return updateLastCoordinate(end.move(d));
     }
 
     /**
-     * Refresh LineInPixel fields based on the last coordinated inputted by the
-     * user. This refresh override re-calculates the midpoint line algorithm.
+     * Refresh LineInPixel fields based on the last coordinated inputted by the user. This refresh override
+     * re-calculates the midpoint line algorithm.
      *
      * @param last the last coordinate
      * @return this
@@ -50,8 +50,8 @@ public class Line extends Drawing {
     @Override
     public Drawing updateLastCoordinate(Vector last) {
         end = last;
-        dx = end.getX() - start.getX();
-        dy = end.getY() - start.getY();
+        dx = (int) (end.getX() - start.getX());
+        dy = (int) (end.getY() - start.getY());
 
         octant = findOctant(dx, dy);
 
@@ -64,8 +64,8 @@ public class Line extends Drawing {
             translated_end = tmp;
         }
 
-        dx = translated_end.getX() - translated_start.getX();
-        dy = translated_end.getY() - translated_start.getY();
+        dx = (int) (translated_end.getX() - translated_start.getX());
+        dy = (int) (translated_end.getY() - translated_start.getY());
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
@@ -81,8 +81,8 @@ public class Line extends Drawing {
     @Override
     protected void drawShape(GL gl) {
         // Set line color.
-        int x = translated_start.getX();
-        int y = translated_start.getY();
+        int x = (int) translated_start.getX();
+        int y = (int) translated_start.getY();
         int d = 2 * dy - dx;
 
         Vector point = restoreToOriginalOctant(translated_start);
@@ -117,12 +117,11 @@ public class Line extends Drawing {
     }
 
     /**
-     * Based on its original {@link #octant octant}, find the representative
-     * coordinate of the point in the first octant.
+     * Based on its original {@link #octant octant}, find the representative coordinate of the point in the first
+     * octant.
      *
      * @param pt point to be translated
-     * @return a point that represents the translation of (x,y) to the first
-     * octant.
+     * @return a point that represents the translation of (x,y) to the first octant.
      */
     protected Vector translateToFirstOctant(Vector pt) {
         return pt.allOctants()[octant];
@@ -132,8 +131,7 @@ public class Line extends Drawing {
      * Restore a point from the first octant to its original octant.
      *
      * @param pt point to be restored
-     * @return a point that represents the restored point to its original
-     * octant.
+     * @return a point that represents the restored point to its original octant.
      */
     protected Vector restoreToOriginalOctant(Vector pt) {
         int oct = octant;

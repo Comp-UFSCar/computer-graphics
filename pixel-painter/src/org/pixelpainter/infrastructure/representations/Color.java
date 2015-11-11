@@ -10,52 +10,40 @@ import org.pixelpainter.infrastructure.helpers.MathHelper;
  */
 public class Color {
 
-    private final byte red;
+    private final float red;
 
-    private final byte green;
+    private final float green;
 
-    private final byte blue;
+    private final float blue;
 
-    private final byte alpha;
+    private final float alpha;
 
     /**
      * Instantiates a new Color with given parameters and alpha 255.
      *
-     * @param red red component varying in the interval [0, 1].
-     * @param green green component varying in the interval [0, 1].
-     * @param blue blue component varying in the interval [0, 1].
+     * @param red red component.
+     * @param green green component.
+     * @param blue blue component.
      */
     public Color(float red, float green, float blue) {
-        this(
-                (byte) (MathHelper.clamp(0, 1, red) * 255),
-                (byte) (MathHelper.clamp(0, 1, green) * 255),
-                (byte) (MathHelper.clamp(0, 1, blue) * 255));
+        this(red, green, blue, 255f);
     }
 
     /**
-     * Instantiates a new Color with given parameters and alpha 255.
+     * Instantiates a new Color with given parameters.
      *
-     * @param red red component
-     * @param green green component
-     * @param blue blue component
-     */
-    public Color(byte red, byte green, byte blue) {
-        this(red, green, blue, (byte) 255);
-    }
-
-    /**
-     * Instantiates a new Color with given parameters. Clamps the values to the valid spectrum.
+     * Clamps the values to the valid spectrum.
      *
      * @param red red component
      * @param green green component
      * @param blue blue component
      * @param alpha alpha component (opacity)
      */
-    public Color(byte red, byte green, byte blue, byte alpha) {
-        this.red = (byte) MathHelper.clamp(0, 255, red);
-        this.green = (byte) MathHelper.clamp(0, 255, green);
-        this.blue = (byte) MathHelper.clamp(0, 255, blue);
-        this.alpha = (byte) MathHelper.clamp(0, 255, alpha);
+    public Color(float red, float green, float blue, float alpha) {
+        this.red = MathHelper.clamp(0, 1, red);
+        this.green = MathHelper.clamp(0, 1, green);
+        this.blue = MathHelper.clamp(0, 1, blue);
+        this.alpha = MathHelper.clamp(0, 1, alpha);
     }
 
     /**
@@ -63,7 +51,7 @@ public class Color {
      *
      * @return value of red component
      */
-    public byte getRed() {
+    public float getRed() {
         return red;
     }
 
@@ -72,7 +60,7 @@ public class Color {
      *
      * @return value of green component
      */
-    public byte getGreen() {
+    public float getGreen() {
         return green;
     }
 
@@ -81,7 +69,7 @@ public class Color {
      *
      * @return value of blue component
      */
-    public byte getBlue() {
+    public float getBlue() {
         return blue;
     }
 
@@ -90,7 +78,7 @@ public class Color {
      *
      * @return value of alpha component
      */
-    public byte getAlpha() {
+    public float getAlpha() {
         return alpha;
     }
 
@@ -101,13 +89,8 @@ public class Color {
      * @param value added to red, green and blue components
      * @return A new color with adjusted brightness
      */
-    public Color adjustBrightness(int value) {
-        return new Color(
-                (byte) (red + value),
-                (byte) (green + value),
-                (byte) (blue + value),
-                alpha
-        );
+    public Color adjustBrightness(float value) {
+        return new Color(red + value, green + value, blue + value, alpha);
     }
 
     /**
@@ -116,20 +99,23 @@ public class Color {
      * @param tone Tone intensity.
      * @return the multiplication of each color component by the tone.
      */
-    public Color applyTone(double tone) {
-        return new Color((byte) (tone * red), (byte) (tone * green), (byte) (tone * blue));
+    public Color applyTone(float tone) {
+        return new Color(tone * red, tone * green, tone * blue);
     }
 
     /**
      * Instantiates a new random color.
      *
-     * @param randGen random generator to be used
-     * @return A new color with random red, green and blue values, and alpha 255
+     * @param r random generator to be used.
+     * @return the new random color.
      */
-    public static Color random(Random randGen) {
-        byte[] values = new byte[3];
-        randGen.nextBytes(values);
-        return new Color(values[0], values[1], values[2]);
+    public static Color random(Random r) {
+        return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%.2f, %.2f, %.2f, %.2f)", red, green, blue, alpha);
     }
 
 }

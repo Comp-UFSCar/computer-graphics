@@ -9,20 +9,20 @@ public class Lighting {
 
     private Vector direction;
 
-    private double intensity;
+    private float intensity;
 
-    private double ambientIntensity;
+    private float ambientIntensity;
 
-    private double ambientReflection;
+    private float ambientReflection;
 
-    private double diffuseReflection;
+    private float diffuseReflection;
 
     /**
      * Creates a new flat lighting model.
      *
      */
     public Lighting() {
-        this(Vector.DOWN, 1, 1, 1, 1);
+        this(new Vector(1, 1, 0), .4f, .8f, .8f, .8f);
     }
 
     /**
@@ -34,7 +34,7 @@ public class Lighting {
      * @param ambientReflection ambient reflection of the material.
      * @param diffuseReflection diffuse reflection of the material.
      */
-    public Lighting(Vector direction, double intensity, double ambientIntensity, double ambientReflection, double diffuseReflection) {
+    public Lighting(Vector direction, float intensity, float ambientIntensity, float ambientReflection, float diffuseReflection) {
         this.direction = direction.normalize();
         this.intensity = intensity;
         this.ambientIntensity = ambientIntensity;
@@ -50,35 +50,35 @@ public class Lighting {
         this.direction = direction.normalize();
     }
 
-    public double getIntensity() {
+    public float getIntensity() {
         return intensity;
     }
 
-    public void setIntensity(double intensity) {
+    public void setIntensity(float intensity) {
         this.intensity = intensity;
     }
 
-    public double getAmbientIntensity() {
+    public float getAmbientIntensity() {
         return ambientIntensity;
     }
 
-    public void setAmbientIntensity(double ambientIntensity) {
+    public void setAmbientIntensity(float ambientIntensity) {
         this.ambientIntensity = ambientIntensity;
     }
 
-    public double getAmbientReflection() {
+    public float getAmbientReflection() {
         return ambientReflection;
     }
 
-    public void setAmbientReflection(double ambientReflection) {
+    public void setAmbientReflection(float ambientReflection) {
         this.ambientReflection = ambientReflection;
     }
 
-    public double getDiffuseReflection() {
+    public float getDiffuseReflection() {
         return diffuseReflection;
     }
 
-    public void setDiffuseReflection(double diffuseReflection) {
+    public void setDiffuseReflection(float diffuseReflection) {
         this.diffuseReflection = diffuseReflection;
     }
 
@@ -88,10 +88,10 @@ public class Lighting {
      * @param normal normal vector of the face.
      * @return the tone that should be used to fine the new color.
      */
-    public double calculateLightingIntensity(Vector normal) {
-        double cos = normal.normalize().dot(getDirection());
-        return getAmbientIntensity() * getAmbientReflection()
-                + getIntensity() * getDiffuseReflection() * cos;
+    public float calculateLightingIntensity(Vector normal) {
+        float cos = normal.normalize().dot(direction);
+
+        return ambientIntensity * ambientReflection + intensity * diffuseReflection * cos;
     }
 
 }

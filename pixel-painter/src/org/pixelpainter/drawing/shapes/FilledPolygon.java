@@ -1,4 +1,4 @@
-package org.pixelpainter.drawings.shapes;
+package org.pixelpainter.drawing.shapes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,9 +22,9 @@ public class FilledPolygon extends Polygon {
             edgePoints.add(new Pair<>(line.getStart(), line.getEnd()));
             line.draw(gl);
         });
-;
+
         if (finished) {
-            gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
+            gl.glColor3f(color.getRed(), color.getGreen(), color.getBlue());
             gl.glBegin(glDrawingType);
 
             new ScanLineAlgorithm(edgePoints).draw(gl);

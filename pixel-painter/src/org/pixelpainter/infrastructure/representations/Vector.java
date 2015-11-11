@@ -1,6 +1,7 @@
 package org.pixelpainter.infrastructure.representations;
 
 import org.pixelpainter.infrastructure.Camera;
+import org.pixelpainter.infrastructure.Environment;
 
 /**
  * Represents a vector in the 3-dimensional space.
@@ -16,11 +17,11 @@ public class Vector {
     public final static Vector UP = new Vector(0, 1, 0);
     public final static Vector DOWN = new Vector(0, -1, 0);
 
-    private final int x;
+    private final float x;
 
-    private final int y;
+    private final float y;
 
-    private final int z;
+    private final float z;
 
     /**
      * Instantiates a new point in the given coordinates
@@ -28,11 +29,11 @@ public class Vector {
      * @param x x-coordinate of the point
      * @param y y-coordinate of the point
      */
-    public Vector(int x, int y) {
+    public Vector(float x, float y) {
         this(x, y, 0);
     }
 
-    public Vector(int x, int y, int z) {
+    public Vector(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -43,7 +44,7 @@ public class Vector {
      *
      * @return the x-coordinate
      */
-    public int getX() {
+    public float getX() {
         return x;
     }
 
@@ -52,7 +53,7 @@ public class Vector {
      *
      * @return the y-coordinate
      */
-    public int getY() {
+    public float getY() {
         return y;
     }
 
@@ -61,7 +62,7 @@ public class Vector {
      *
      * @return the z-coordinate
      */
-    public int getZ() {
+    public float getZ() {
         return z;
     }
 
@@ -72,7 +73,7 @@ public class Vector {
      * @param dy The movement performed on y-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Vector move(int dx, int dy) {
+    public Vector move(float dx, float dy) {
         return move(dx, dy, 0);
     }
 
@@ -84,7 +85,7 @@ public class Vector {
      * @param dz The movement performed on z-coordinate
      * @return A new point achieved by translating this point by given values
      */
-    public Vector move(int dx, int dy, int dz) {
+    public Vector move(float dx, float dy, float dz) {
         return new Vector(x + dx, y + dy, z + dz);
     }
 
@@ -123,7 +124,7 @@ public class Vector {
      * @param v
      * @return
      */
-    public int dot(Vector v) {
+    public float dot(Vector v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
@@ -142,7 +143,7 @@ public class Vector {
      * @return component-wise multiplication by the scalar.
      */
     public Vector scale(float scalar) {
-        return new Vector((int) (scalar * x), (int) (scalar * y), (int) (scalar * z));
+        return new Vector((float) (scalar * x), (float) (scalar * y), (float) (scalar * z));
     }
 
     /**
@@ -229,11 +230,15 @@ public class Vector {
      * @return a new vector which is the projection of this onto the plane (x, y, 0).
      */
     public Vector projectTo2d() {
-        float zd = (z != 0 && Camera.getMainCamera() != null)
-                ? (float) z / (z - Camera.getMainCamera().getPosition().getZ()) + 1
+        float zd = (z != 0)
+                ? (float) z / (z - Environment.getEnvironment().getCamera().getPosition().getZ()) + 1
                 : 1;
 
-        return new Vector((int) (x / zd), (int) (y / zd));
+        return new Vector(x / zd, y / zd);
+    }
+
+    public Vector truncate() {
+        return new Vector((int) x, (int) y, (int) z);
     }
 
     /**
@@ -241,7 +246,7 @@ public class Vector {
      */
     @Override
     public int hashCode() {
-        int hash = 7;
+        float hash = 7;
         hash = 59 * hash + this.x;
         hash = 59 * hash + this.y;
         hash = 59 * hash + this.z;
