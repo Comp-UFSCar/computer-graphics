@@ -30,10 +30,10 @@ public class VectorTest extends TestCase {
     public void testGetX() {
         System.out.println("getX");
 
-        int expected = -10;
+        float expected = -10;
         Vector instance = new Vector(expected, 10, 20);
 
-        int actual = instance.getX();
+        float actual = instance.getX();
         assertEquals(expected, actual);
     }
 
@@ -43,10 +43,10 @@ public class VectorTest extends TestCase {
     public void testGetY() {
         System.out.println("getX");
 
-        int expected = 10;
+        float expected = 10;
         Vector instance = new Vector(-10, expected, 20);
 
-        int actual = instance.getY();
+        float actual = instance.getY();
         assertEquals(expected, actual);
     }
 
@@ -56,10 +56,10 @@ public class VectorTest extends TestCase {
     public void testGetZ() {
         System.out.println("getX");
 
-        int expected = 20;
+        float expected = 20;
         Vector instance = new Vector(-10, 10, expected);
 
-        int actual = instance.getZ();
+        float actual = instance.getZ();
         assertEquals(expected, actual);
     }
 
@@ -134,8 +134,8 @@ public class VectorTest extends TestCase {
     public void testDot() {
         System.out.println("dot");
 
-        int expected = 10;
-        int actual = new Vector(10, 2, 0).dot(new Vector(0, 5, 1));
+        float expected = 10;
+        float actual = new Vector(10, 2, 0).dot(new Vector(0, 5, 1));
 
         assertEquals(expected, actual);
     }
