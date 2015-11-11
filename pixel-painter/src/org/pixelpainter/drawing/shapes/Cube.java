@@ -8,7 +8,6 @@ import javax.media.opengl.GL;
 import org.pixelpainter.drawing.Drawing;
 import org.pixelpainter.infrastructure.Environment;
 import org.pixelpainter.infrastructure.algorithms.scanline.ScanLineAlgorithm;
-import org.pixelpainter.infrastructure.representations.Lighting;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
@@ -26,7 +25,8 @@ public class Cube extends Square {
         faces = new LinkedList<>();
     }
 
-    protected List<Rectangle> update() {
+    @Override
+    public Drawing update() {
         faces = new LinkedList<>();
 
         int[] planes = new int[]{0, 1, 2, 0, 1, 2};
@@ -43,15 +43,13 @@ public class Cube extends Square {
             s
                     .setPlane(planes[i])
                     .setPlanePosition((int) position)
-                    .setColor(color.applyTone(Environment.getEnvironment().getMainLight().calculateLightingIntensity(s.getNormal())));
+                    .setColor(color.applyTone(Environment.getEnvironment().getLight().calculateLightingIntensity(s.getNormal())));
 
             faces.add(s);
             i++;
         }
 
-        System.out.println();
-
-        return faces;
+        return this;
     }
 
     public List<Rectangle> getFaces() {
@@ -95,6 +93,9 @@ public class Cube extends Square {
     protected void drawShape(GL gl) {
 
         faces.stream().forEach((face) -> {
+            // Set color to face color (this is precomputed in the update() method).
+            gl.glColor3f(face.getColor().getRed(), face.getColor().getGreen(), face.getColor().getBlue());
+
             face.draw(gl);
 
             List<Pair<Vector, Vector>> edges = new LinkedList<>();
@@ -113,7 +114,6 @@ public class Cube extends Square {
             edges.add(new Pair(current.projectTo2d().truncate(), first.projectTo2d().truncate()));
 
             if (finished) {
-                gl.glColor3f(face.getColor().getRed(), face.getColor().getGreen(), face.getColor().getBlue());
                 gl.glBegin(GL.GL_POINTS);
 
                 new ScanLineAlgorithm(edges).draw(gl);

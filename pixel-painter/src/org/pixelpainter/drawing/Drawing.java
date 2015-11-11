@@ -105,6 +105,18 @@ public abstract class Drawing implements Interactive {
     }
 
     /**
+     * Updates shape properties.
+     * 
+     * Changes such as lightning and camera positioning will likely affect shapes displaying.
+     * When this happens, the environment will take care to call this method.
+     *
+     * @return this.
+     */
+    public Drawing update() {
+        return this;
+    }
+
+    /**
      * Sets the starting point of the shape.
      *
      * @param start new starting point
@@ -133,7 +145,7 @@ public abstract class Drawing implements Interactive {
     public Color getColor() {
         return color;
     }
-    
+
     /**
      * Sets the drawing as finished or not.
      *

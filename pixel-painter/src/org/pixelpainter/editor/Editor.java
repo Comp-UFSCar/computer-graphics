@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
-import org.pixelpainter.drawing.shapes.Line;
 import org.pixelpainter.infrastructure.representations.Color;
 import org.pixelpainter.drawing.Drawing;
 import org.pixelpainter.drawing.DrawingsLoader;
@@ -26,7 +25,7 @@ public class Editor {
     private final LinkedList<Drawing> drawings;
     private final LinkedList<Drawing> redos;
 
-    private Class<? extends Drawing> currentDrawing = Line.class;
+    private Class<? extends Drawing> currentDrawing = Cube.class;
     private Mode mode;
 
     private final Random rand;
@@ -194,5 +193,9 @@ public class Editor {
             return selectedColor;
         }
         return Color.random(rand);
+    }
+
+    public void update() {
+        drawings.stream().forEach((e) -> e.update());
     }
 }

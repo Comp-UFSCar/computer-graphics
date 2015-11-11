@@ -1,4 +1,6 @@
-package org.pixelpainter.infrastructure.representations;
+package org.pixelpainter.infrastructure;
+
+import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
  * Represents a basic lighting model (flat).
@@ -47,7 +49,14 @@ public class Lighting {
     }
 
     public void setDirection(Vector direction) {
-        this.direction = direction.normalize();
+        direction = direction.normalize();
+
+        if (!direction.equals(this.direction)) {
+            System.out.println(String.format("%s -> %s", this.direction, direction));
+            
+            this.direction = direction;
+            Environment.getEnvironment().update();
+        }
     }
 
     public float getIntensity() {
@@ -55,7 +64,10 @@ public class Lighting {
     }
 
     public void setIntensity(float intensity) {
-        this.intensity = intensity;
+        if (this.intensity != intensity) {
+            this.intensity = intensity;
+            Environment.getEnvironment().update();
+        }
     }
 
     public float getAmbientIntensity() {
@@ -63,7 +75,10 @@ public class Lighting {
     }
 
     public void setAmbientIntensity(float ambientIntensity) {
-        this.ambientIntensity = ambientIntensity;
+        if (this.ambientIntensity != ambientIntensity) {
+            this.ambientIntensity = ambientIntensity;
+            Environment.getEnvironment().update();
+        }
     }
 
     public float getAmbientReflection() {
@@ -71,7 +86,10 @@ public class Lighting {
     }
 
     public void setAmbientReflection(float ambientReflection) {
-        this.ambientReflection = ambientReflection;
+        if (this.ambientReflection != ambientReflection) {
+            this.ambientReflection = ambientReflection;
+            Environment.getEnvironment().update();
+        }
     }
 
     public float getDiffuseReflection() {
@@ -79,7 +97,10 @@ public class Lighting {
     }
 
     public void setDiffuseReflection(float diffuseReflection) {
-        this.diffuseReflection = diffuseReflection;
+        if (this.diffuseReflection != diffuseReflection) {
+            this.diffuseReflection = diffuseReflection;
+            Environment.getEnvironment().update();
+        }
     }
 
     /**

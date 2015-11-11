@@ -1,9 +1,9 @@
 package org.pixelpainter.infrastructure;
 
 import org.pixelpainter.editor.Editor;
-import org.pixelpainter.infrastructure.representations.Lighting;
 
 /**
+ * Environment singleton for Pixel Painter management.
  *
  * @author ldavid
  */
@@ -11,13 +11,13 @@ public class Environment {
 
     protected static Environment env;
 
-    protected Camera mainCamera;
-    protected Lighting mainLight;
+    protected Camera camera;
+    protected Lighting light;
     protected Editor editor;
 
     protected Environment() {
-        mainCamera = new Camera();
-        mainLight = new Lighting();
+        camera = new Camera();
+        light = new Lighting();
         editor = new Editor();
     }
 
@@ -29,12 +29,25 @@ public class Environment {
         return env;
     }
 
-    public Camera getCamera() {
-        return mainCamera;
+    /**
+     * Updates all components.
+     * 
+     * Should be called when environmental changes happen, such as lighting or camera movement.
+     *
+     * @return this.
+     */
+    public Environment update() {
+        editor.update();
+        
+        return this;
     }
 
-    public Lighting getMainLight() {
-        return mainLight;
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public Lighting getLight() {
+        return light;
     }
 
     public Editor getEditor() {

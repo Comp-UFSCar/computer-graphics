@@ -1,4 +1,4 @@
-package org.pixelpainter;
+package org.pixelpainter.views;
 
 import com.sun.opengl.util.Animator;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -14,22 +16,26 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
 import org.pixelpainter.infrastructure.representations.Color;
 import org.pixelpainter.drawing.Drawing;
-import org.pixelpainter.drawing.shapes.Cube;
 import org.pixelpainter.infrastructure.Environment;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
- * Matrix Paint main class.
+ * Matrix Paint runner.
+ *
  */
 public class PixelPainter implements GLEventListener {
 
@@ -44,25 +50,20 @@ public class PixelPainter implements GLEventListener {
      * @param args if two integer are given, they will be used as width and height.
      */
     public static void main(String[] args) {
+        env = Environment.getEnvironment();
+
+        initGraphicComponents();
+    }
+
+    private static void initGraphicComponents() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(PixelPainter.class.getName()).log(Level.WARNING, null, ex);
         }
 
-        env = Environment.getEnvironment();
-
         int width = 1366;
         int height = 768;
-
-        if (args.length == 2) {
-            try {
-                width = Integer.parseInt(args[0]);
-                height = Integer.parseInt(args[1]);
-            } catch (NumberFormatException ex) {
-                Logger.getLogger(PixelPainter.class.getName()).log(Level.WARNING, null, ex);
-            }
-        }
 
         final JFrame frame = new JFrame(TITLE);
         GLCanvas canvas = new GLCanvas();
@@ -122,9 +123,7 @@ public class PixelPainter implements GLEventListener {
             }
         });
 
-        JMenuBar mb = createMenuBar();
-
-        frame.setJMenuBar(mb);
+        frame.setJMenuBar(createMenuBar());
         frame.setLocationRelativeTo(null);
 
         ImageIcon img = new ImageIcon(ICON);
@@ -132,60 +131,44 @@ public class PixelPainter implements GLEventListener {
 
         frame.setVisible(true);
         animator.start();
-
-        env.getEditor().getDrawings()
-                .add(new Cube()
-                        .setColor(new Color(1, 0, 0))
-                        .setStart(new Vector(500, 500, 0))
-                        .updateLastCoordinate(new Vector(600, 600, 100)));
-    }
-
-    private static JButton createSimpleButton(String text) {
-        JButton b = new JButton(text);
-        b.setBorderPainted(false);
-        b.setFocusPainted(false);
-        b.setContentAreaFilled(false);
-        return b;
     }
 
     private static JMenuBar createMenuBar() {
-        JButton b;
-        JMenuBar mb = new JMenuBar();
-        JMenu m = new JMenu("Draw mode");
+        JMenuBar bar = new JMenuBar();
+        JMenu menu;
+        JMenuItem item;
 
+        // Drawings.
+        menu = new JMenu("Draw mode");
         for (Class<? extends Drawing> d : env.getEditor().getAvailableDrawings()) {
             String name = d.getSimpleName();
-            b = createSimpleButton(name);
-
-            b.addActionListener((ActionEvent e) -> {
-                env.getEditor().setCurrentDrawing(d);
-            });
-            m.add(b);
+            item = new JMenuItem(name);
+            item.addActionListener((ActionEvent e) -> env.getEditor().setCurrentDrawing(d));
+            menu.add(item);
         }
+        bar.add(menu);
 
-        mb.add(m);
+        // Edit.
+        menu = new JMenu("Edit");
+        item = new JMenuItem("Undo");
+        item.addActionListener((ActionEvent e) -> env.getEditor().undo());
+        menu.add(item);
 
-        b = createSimpleButton("Undo");
-        b.addActionListener((ActionEvent e) -> {
-            env.getEditor().undo();
-        });
-        mb.add("Undo", b);
+        item = new JMenuItem("Redo");
+        item.addActionListener((ActionEvent e) -> env.getEditor().redo());
+        menu.add(item);
 
-        b = createSimpleButton("Redo");
-        b.addActionListener((ActionEvent e) -> {
-            env.getEditor().redo();
-        });
-        mb.add("Redo", b);
+        bar.add(menu);
 
-        // color picker
-        m = new JMenu("Color");
-        b = createSimpleButton("Random");
-        b.addActionListener((ActionEvent e) -> {
+        // Color.
+        menu = new JMenu("Color");
+        item = new JMenuItem("Random");
+        item.addActionListener((ActionEvent e) -> {
             env.getEditor().useRandomColor();
         });
-        m.add(b);
-        b = createSimpleButton("Pick");
-        b.addActionListener((ActionEvent e) -> {
+        menu.add(item);
+        item = new JMenuItem("Pick");
+        item.addActionListener((ActionEvent e) -> {
             java.awt.Color c = JColorChooser.showDialog(null, "Choose the color", java.awt.Color.yellow);
             if (c != null) {
                 env.getEditor().setSelectedColor(new Color(
@@ -194,10 +177,74 @@ public class PixelPainter implements GLEventListener {
                 ));
             }
         });
-        m.add(b);
-        mb.add(m);
+        menu.add(item);
+        bar.add(menu);
 
-        return mb;
+        // Lighting.
+        menu = new JMenu("Lighting");
+
+        menu.add(new JLabel("Intensity"));
+        JSlider s = new JSlider();
+        s.setValue((int) (100 * env.getLight().getIntensity()));
+        s.addChangeListener((ChangeEvent e) -> env.getLight().setIntensity(((JSlider) e.getSource()).getValue() / 100f));
+        menu.add(s);
+        menu.addSeparator();
+
+        menu.add(new JLabel("Ambient Intensity"));
+        s = new JSlider();
+        s.setValue((int) (100 * env.getLight().getAmbientIntensity()));
+        s.addChangeListener((ChangeEvent e) -> env.getLight().setAmbientIntensity(((JSlider) e.getSource()).getValue() / 100f));
+        menu.add(s);
+        menu.addSeparator();
+
+        menu.add(new JLabel("Ambient Reflection"));
+        s = new JSlider();
+        s.setValue((int) (100 * env.getLight().getAmbientReflection()));
+        s.addChangeListener((ChangeEvent e) -> env.getLight().setAmbientReflection(((JSlider) e.getSource()).getValue() / 100f));
+        menu.add(s);
+        menu.addSeparator();
+
+        menu.add(new JLabel("Diffuse Reflection"));
+        s = new JSlider();
+        s.setValue((int) (100 * env.getLight().getDiffuseReflection()));
+        s.addChangeListener((ChangeEvent e) -> env.getLight().setDiffuseReflection(((JSlider) e.getSource()).getValue() / 100f));
+        menu.add(s);
+        menu.addSeparator();
+
+        menu.add(new JLabel("Light direction"));
+
+        Vector direction = env.getLight().getDirection();
+        DecimalFormat df = new DecimalFormat("####.##");
+
+        JFormattedTextField t = new JFormattedTextField(df);
+        t.setValue(direction.getX());
+        t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
+            Vector d = env.getLight().getDirection();
+            env.getLight().setDirection(d.move(((Number) evt.getNewValue()).floatValue() - d.getX(), 0, 0));
+        });
+        menu.add(new JLabel("x"));
+        menu.add(t);
+
+        t = new JFormattedTextField(df);
+        t.setValue(direction.getY());
+        t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
+            Vector d = env.getLight().getDirection();
+            env.getLight().setDirection(d.move(0, ((Number) evt.getNewValue()).floatValue() - d.getY(), 0));
+        });
+        menu.add(new JLabel("y"));
+        menu.add(t);
+
+        t = new JFormattedTextField(df);
+        t.setValue(direction.getZ());
+        t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
+            Vector d = env.getLight().getDirection();
+            env.getLight().setDirection(d.move(0, 0, ((Number) evt.getNewValue()).floatValue() - d.getZ()));
+        });
+        menu.add(new JLabel("z"));
+        menu.add(t);
+
+        bar.add(menu);
+        return bar;
     }
 
     /**
