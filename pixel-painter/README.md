@@ -58,6 +58,10 @@ from the two vectors `(x, 0)` and `(0, y)`.
 `Squares` can be drawn similarly to rectangles, except that only one of the vectors `(x, 0)` and `(0, y)`
 is considered for its size increase/decrease (the one with greater norm).
 
+#### Cube
+
+Cubes are an extension of squares and they can be drawn in the exact same way.
+
 #### Pencil
 
 Move the mouse and `left click` onto the canvas wherever you want to brush it. Of course, you can simply
