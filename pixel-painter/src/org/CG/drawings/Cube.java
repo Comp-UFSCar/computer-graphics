@@ -13,32 +13,39 @@ import org.CG.infrastructure.abstractions.Vector3;
  * @author ldavid
  */
 public class Cube extends Square {
-    
+
     List<Rectangle> faces;
+    ColorByte[] colors;
 
     public Cube() {
         super(GL.GL_POLYGON);
         faces = new LinkedList<>();
+        colors = new ColorByte[6];
+
+        Random r = new Random();
+
+        for (int i = 0; i < 6; i++) {
+            colors[i] = ColorByte.random(r);
+        }
     }
 
     protected List<Rectangle> updateFaces() {
         faces = new LinkedList<>();
 
         int[] planes = new int[]{0, 1, 2, 0, 1, 2};
-        int[] planePositions = new int[]{end.getX(), end.getY(), end.getZ(), start.getX(), start.getY(), start.getZ()};
-
         int i = 0;
-        Random r = new Random();
 
-        for (int position : planePositions) {
+        for (int position : new int[]{end.getX(), end.getY(), end.getZ(), start.getX(), start.getY(), start.getZ()}) {
             Rectangle s = new Rectangle();
-            s.setColor(ColorByte.random(r));
-            s.setStart(start);
-            s.updateLastCoordinate(end);
-            
+
+            s
+                    .setStart(start)
+                    .setColor(colors[i])
+                    .updateLastCoordinate(end);
+
             s.setPlane(planes[i]);
             s.setPlanePosition(position);
-            
+
             faces.add(s);
 
             i++;
@@ -52,14 +59,13 @@ public class Cube extends Square {
     }
 
     @Override
-    public Drawing moveTo(Vector3 point) {
-        super.moveTo(point);
-        faces.get(0).moveTo(point);
+    public Drawing moveTo(Vector3 v) {
+        super.moveTo(v);
+
         updateFaces();
-        
         return this;
     }
-    
+
     /**
      * Update last coordinate based on point, but maintaining proportion of 1.0 for sides.
      *
@@ -74,7 +80,7 @@ public class Cube extends Square {
         end = Math.abs(dx) > Math.abs(dy)
                 ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx), Math.abs(dx))
                 : start.move((int) Math.signum(dx) * Math.abs(dy), dy, Math.abs(dy));
-        
+
         updateFaces();
 
         return this;

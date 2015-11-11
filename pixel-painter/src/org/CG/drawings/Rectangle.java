@@ -29,11 +29,9 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing moveTo(Vector3 point) {
-        Vector3 t = new Vector3(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
-
-        start = point;
-        end = point.move(t.getX(), t.getY(), t.getZ());
+    public Drawing moveTo(Vector3 v) {
+        end = v.move(end.delta(start));
+        start = v;
 
         return this;
     }
