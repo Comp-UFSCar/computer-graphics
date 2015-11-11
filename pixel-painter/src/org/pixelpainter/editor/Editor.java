@@ -7,10 +7,11 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GLCanvas;
-import org.pixelpainter.drawings.shapes.Line;
+import org.pixelpainter.drawing.shapes.Line;
 import org.pixelpainter.infrastructure.representations.Color;
 import org.pixelpainter.drawing.Drawing;
 import org.pixelpainter.drawing.DrawingsLoader;
+import org.pixelpainter.drawing.shapes.Cube;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
@@ -192,6 +193,6 @@ public class Editor {
         if (selectedColor != null) {
             return selectedColor;
         }
-        return Color.random(rand).adjustBrightness(100);
+        return Color.random(rand);
     }
 }

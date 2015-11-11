@@ -22,11 +22,10 @@ import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.pixelpainter.drawings.shapes.Cube;
-import org.pixelpainter.infrastructure.Camera;
-import org.pixelpainter.editor.Editor;
 import org.pixelpainter.infrastructure.representations.Color;
 import org.pixelpainter.drawing.Drawing;
+import org.pixelpainter.drawing.shapes.Cube;
+import org.pixelpainter.infrastructure.Environment;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
@@ -37,8 +36,7 @@ public class PixelPainter implements GLEventListener {
     final static String TITLE = "Pixelpaint";
     final static String ICON = "resources/icon.png";
 
-    private static Editor editor;
-    private static Camera camera;
+    private static Environment env;
 
     /**
      * Opens a new frame for using the CG-Assignment-1 implemented features.
@@ -52,9 +50,7 @@ public class PixelPainter implements GLEventListener {
             Logger.getLogger(PixelPainter.class.getName()).log(Level.WARNING, null, ex);
         }
 
-        editor = new Editor();
-        camera = new Camera();
-        Camera.setMainCamera(camera);
+        env = Environment.getEnvironment();
 
         int width = 1366;
         int height = 768;
@@ -91,16 +87,16 @@ public class PixelPainter implements GLEventListener {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    editor.onMousePressedOnCanvas(e, canvas);
+                    env.getEditor().onMousePressedOnCanvas(e, canvas);
                 } else if (SwingUtilities.isRightMouseButton(e)) {
-                    editor.finishLastDrawing();
+                    env.getEditor().finishLastDrawing();
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    editor.onMouseReleasedOnCanvas(e, canvas);
+                    env.getEditor().onMouseReleasedOnCanvas(e, canvas);
                 }
             }
         });
@@ -109,7 +105,7 @@ public class PixelPainter implements GLEventListener {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    editor.onMouseDraggedOnCanvas(e, canvas);
+                    env.getEditor().onMouseDraggedOnCanvas(e, canvas);
                 }
             }
         });
@@ -119,9 +115,9 @@ public class PixelPainter implements GLEventListener {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getWheelRotation() > 0) {
-                    editor.undo();
+                    env.getEditor().undo();
                 } else {
-                    editor.redo();
+                    env.getEditor().redo();
                 }
             }
         });
@@ -137,11 +133,11 @@ public class PixelPainter implements GLEventListener {
         frame.setVisible(true);
         animator.start();
 
-        Cube c = new Cube();
-        c.setColor(new Color(1f, .5f, 0));
-        c.setStart(new Vector(500, 500, 0));
-        c.updateLastCoordinate(new Vector(600, 600, 100));
-        editor.getDrawings().add(c);
+        env.getEditor().getDrawings()
+                .add(new Cube()
+                        .setColor(new Color(1, 0, 0))
+                        .setStart(new Vector(500, 500, 0))
+                        .updateLastCoordinate(new Vector(600, 600, 100)));
     }
 
     private static JButton createSimpleButton(String text) {
@@ -157,12 +153,12 @@ public class PixelPainter implements GLEventListener {
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Draw mode");
 
-        for (Class<? extends Drawing> d : editor.getAvailableDrawings()) {
+        for (Class<? extends Drawing> d : env.getEditor().getAvailableDrawings()) {
             String name = d.getSimpleName();
             b = createSimpleButton(name);
 
             b.addActionListener((ActionEvent e) -> {
-                editor.setCurrentDrawing(d);
+                env.getEditor().setCurrentDrawing(d);
             });
             m.add(b);
         }
@@ -171,13 +167,13 @@ public class PixelPainter implements GLEventListener {
 
         b = createSimpleButton("Undo");
         b.addActionListener((ActionEvent e) -> {
-            editor.undo();
+            env.getEditor().undo();
         });
         mb.add("Undo", b);
 
         b = createSimpleButton("Redo");
         b.addActionListener((ActionEvent e) -> {
-            editor.redo();
+            env.getEditor().redo();
         });
         mb.add("Redo", b);
 
@@ -185,14 +181,14 @@ public class PixelPainter implements GLEventListener {
         m = new JMenu("Color");
         b = createSimpleButton("Random");
         b.addActionListener((ActionEvent e) -> {
-            editor.useRandomColor();
+            env.getEditor().useRandomColor();
         });
         m.add(b);
         b = createSimpleButton("Pick");
         b.addActionListener((ActionEvent e) -> {
             java.awt.Color c = JColorChooser.showDialog(null, "Choose the color", java.awt.Color.yellow);
             if (c != null) {
-                editor.setSelectedColor(new Color(
+                env.getEditor().setSelectedColor(new Color(
                         (byte) c.getRed(), (byte) c.getGreen(),
                         (byte) c.getBlue(), (byte) c.getAlpha()
                 ));
@@ -257,7 +253,7 @@ public class PixelPainter implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        editor.getDrawings().forEach(d -> {
+        env.getEditor().getDrawings().forEach(d -> {
             d.draw(gl);
         });
 

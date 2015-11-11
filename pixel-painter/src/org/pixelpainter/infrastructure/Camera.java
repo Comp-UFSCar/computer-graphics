@@ -13,8 +13,6 @@ public class Camera {
     Vector lookAt;
     Vector up;
 
-    static Camera mainCamera;
-
     public Camera() {
         this(new Vector(0, 0, -1000), Vector.ORIGIN, new Vector(0, 1, 0));
     }
@@ -23,14 +21,6 @@ public class Camera {
         this.position = position;
         this.lookAt = lookAt;
         this.up = up;
-    }
-
-    public static Camera getMainCamera() {
-        return mainCamera;
-    }
-
-    public static void setMainCamera(Camera mainCamera) {
-        Camera.mainCamera = mainCamera;
     }
 
     public Vector getPosition() {
