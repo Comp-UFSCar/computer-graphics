@@ -9,6 +9,14 @@ package br.ufscar.cgm.geometria;
  *
  * @author Breno
  */
+/**
+ * Classe que representa 3 pontos 3D de uma face. Ela possui métodos para determinar dois vetores a partir desses
+ * 3 pontos 3D, vetor v e w. <br>
+ *
+ * @author João Paulo RA:408034
+ * @author Breno Silveira RA:551481
+ * @author Camilo Moreira RA:359645
+ */
 public class Pontos3D {
     
     Ponto3D p1, p2, p3;
