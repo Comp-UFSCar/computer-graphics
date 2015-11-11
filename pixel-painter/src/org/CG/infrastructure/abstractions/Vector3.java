@@ -104,7 +104,7 @@ public class Vector3 {
     public Vector3 reflected() {
         return new Vector3(-x, -y, -z);
     }
-    
+
     /**
      * Delta difference of vector {@code v} and this.
      *
@@ -114,7 +114,45 @@ public class Vector3 {
     public Vector3 delta(Vector3 v) {
         return move(v.reflected());
     }
-    
+
+    /**
+     * Dot-product between two vectors.
+     *
+     * @param v
+     * @return
+     */
+    public int dot(Vector3 v) {
+        return x * v.x + y * v.y + z * v.z;
+    }
+
+    /**
+     * Multiplies a vector by a scalar.
+     *
+     * @param scalar scalar element.
+     * @return component-wise multiplication by the scalar.
+     */
+    public Vector3 mult(float scalar) {
+        return new Vector3((int) (scalar * x), (int) (scalar * y), (int) (scalar * z));
+    }
+
+    /**
+     * Length of the vector. Calculated by the square root of X² + Y² + Z².
+     *
+     * @return
+     */
+    public float length() {
+        return (float) Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+    }
+
+    /**
+     * Normalizes the vector. Divides each component by the length of the vector.
+     *
+     * @return
+     */
+    public Vector3 normalize() {
+        return mult(1 / length());
+    }
+
     /**
      * Creates a new point by changing the x and y-coordinates This is effectively translating the octant
      *
