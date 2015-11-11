@@ -26,7 +26,7 @@ import sun.net.www.protocol.file.FileURLConnection;
  */
 public class DrawingsLoader {
 
-    static final String drawingPackages = "org.pixelpainter.drawing.shapes";
+    public static final String SHAPES_PACKAGE = "org.pixelpainter.drawing.shapes";
 
     /**
      * Private helper method
@@ -165,7 +165,7 @@ public class DrawingsLoader {
         List<Class<? extends Drawing>> drawings = new LinkedList<>();
         
         try {
-            getClassesForPackage(drawingPackages).forEach(c -> {
+            getClassesForPackage(SHAPES_PACKAGE).forEach(c -> {
                 drawings.add(c.asSubclass(Drawing.class));
             });
         } catch (ClassNotFoundException ex) {

@@ -65,7 +65,7 @@ public abstract class Drawing implements Interactive {
      * @param gl JOGL object used to draw
      */
     public void draw(GL gl) {
-        gl.glColor3ub(color.getRed(), color.getGreen(), color.getBlue());
+        gl.glColor3f(color.getRed(), color.getGreen(), color.getBlue());
         gl.glBegin(glDrawingType);
 
         drawShape(gl);
@@ -130,6 +130,10 @@ public abstract class Drawing implements Interactive {
         return this;
     }
 
+    public Color getColor() {
+        return color;
+    }
+    
     /**
      * Sets the drawing as finished or not.
      *
