@@ -127,7 +127,7 @@ public class Editor {
         } else if (mode == Mode.DRAWING) {
             drawings
                     .getLast()
-                    .updateLastCoordinate(point);
+                    .reshape(point);
         }
     }
 

@@ -30,15 +30,13 @@ public class Pencil extends Drawing {
      * @return this
      */
     @Override
-    public Drawing moveTo(Vector point) {
+    public void moveTo(Vector point) {
         point = point.move(-start.getX(), -start.getY());
         start = start.move(point.getX(), point.getY());
 
         for (int i = 0; i < points.size(); i++) {
             points.set(i, points.get(i).move(point.getX(), point.getY()));
         }
-
-        return this;
     }
 
     /**
@@ -48,9 +46,8 @@ public class Pencil extends Drawing {
      * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Vector point) {
+    public void reshape(Vector point) {
         points.add(point);
-        return this;
     }
 
     /**

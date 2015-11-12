@@ -13,8 +13,21 @@ import org.pixelpainter.infrastructure.representations.Vector;
  */
 public class Rectangle extends Drawing {
 
+    /**
+     * The end-point of the rectangle.
+     */
     protected Vector end;
+
+    /**
+     * Plane which contains this rectangle.
+     * 
+     * Plane is always contained in {@code i in [0, 3)}.
+     */
     protected byte plane;
+
+    /**
+     * Position assumed by the rectangle in plane {@code plane}.
+     */
     protected int planePosition;
 
     public Rectangle() {
@@ -29,17 +42,14 @@ public class Rectangle extends Drawing {
     }
 
     @Override
-    public Drawing moveTo(Vector v) {
+    public void moveTo(Vector v) {
         end = v.move(end.delta(start));
         start = v;
-
-        return this;
     }
 
     @Override
-    public Drawing updateLastCoordinate(Vector point) {
+    public void reshape(Vector point) {
         end = point;
-        return this;
     }
 
     @Override
@@ -119,6 +129,11 @@ public class Rectangle extends Drawing {
         return points;
     }
 
+    /**
+     * Returns the vector which is perpendicular to this rectangle.
+     * 
+     * @return Vector.
+     */
     Vector getNormal() {
         Vector a, b, d = end.delta(start);
 

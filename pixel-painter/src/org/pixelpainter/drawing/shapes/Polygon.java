@@ -31,36 +31,33 @@ public class Polygon extends Drawing {
     }
 
     @Override
-    public Drawing moveTo(Vector point) {
+    public void moveTo(Vector point) {
         Vector lastTranslation = point;
-        
+
         for (Line edge : lines) {
             edge.moveTo(lastTranslation);
             lastTranslation = edge.getEnd();
         }
-        
-        lastPoint = lastTranslation;
 
-        return this;
+        lastPoint = lastTranslation;
     }
 
     @Override
-    public Drawing updateLastCoordinate(Vector point) {
+    public void reshape(Vector point) {
         lastPoint = point;
-        lines.getLast().updateLastCoordinate(point);
-
-        return this;
+        lines.getLast().reshape(point);
     }
 
     @Override
     public Drawing setNextCoordinate(Vector point) {
         super.setNextCoordinate(point);
 
-        lines.add((Line) new Line()
+        lines.add(new Line());
+        lines.getLast()
                 .setColor(color)
                 .setStart(lastPoint)
-                .updateLastCoordinate(point));
-
+                .reshape(point);
+        
         lastPoint = point;
         return this;
     }

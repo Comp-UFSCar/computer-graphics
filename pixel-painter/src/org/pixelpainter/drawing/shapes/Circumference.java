@@ -35,12 +35,10 @@ public class Circumference extends Drawing {
      * Adjusts the radius of the circumference
      *
      * @param point one of the points at the edge of the circumference
-     * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Vector point) {
+    public void reshape(Vector point) {
         radius = (int) start.l2Distance(point);
-        return this;
     }
 
     /**

@@ -3,14 +3,15 @@ package org.pixelpainter.drawing;
 import org.pixelpainter.infrastructure.representations.Vector;
 import org.pixelpainter.infrastructure.representations.Color;
 import javax.media.opengl.GL;
-import org.pixelpainter.infrastructure.Interactive;
+import org.pixelpainter.infrastructure.interfaces.Interactive;
+import org.pixelpainter.infrastructure.interfaces.Reshapable;
 
 /**
  * Represents an object/shape that can be drawn on screen.
  *
  * @author ldavid
  */
-public abstract class Drawing implements Interactive {
+public abstract class Drawing implements Interactive, Reshapable {
 
     protected Vector start;
     protected Color color;
@@ -35,14 +36,6 @@ public abstract class Drawing implements Interactive {
         finished = true;
         this.glDrawingType = drawingMethod;
     }
-
-    /**
-     * Updates the last coordinate in the shape.
-     *
-     * @param point the new last coordinate.
-     * @return this
-     */
-    abstract public Drawing updateLastCoordinate(Vector point);
 
     /**
      * Sets the next coordinate of the shape.
@@ -84,12 +77,10 @@ public abstract class Drawing implements Interactive {
      * Move the shape to a specific point in space.
      *
      * @param v point to which the shape should move.
-     * @return this
      */
     @Override
-    public Drawing moveTo(Vector v) {
+    public void moveTo(Vector v) {
         setStart(v);
-        return this;
     }
 
     /**
@@ -97,11 +88,10 @@ public abstract class Drawing implements Interactive {
      *
      *
      * @param v vector describing the translation that the shape should do.
-     * @return this
      */
     @Override
-    public Drawing move(Vector v) {
-        return moveTo(start.move(v));
+    public void move(Vector v) {
+        moveTo(start.move(v));
     }
 
     /**

@@ -4,6 +4,9 @@ import javax.media.opengl.glu.GLU;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
+ * Camera in the environment.
+ * 
+ * Class used by Environment to calculate projections.
  *
  * @author ldavid
  */

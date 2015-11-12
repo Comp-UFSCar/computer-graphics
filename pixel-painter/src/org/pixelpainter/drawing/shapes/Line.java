@@ -26,18 +26,20 @@ public class Line extends Drawing {
     @Override
     public Drawing setStart(Vector start) {
         super.setStart(start);
-        return updateLastCoordinate(start);
+        reshape(start);
+        
+        return this;
     }
 
     /**
      * {@inheritDoc }
      */
     @Override
-    public Drawing moveTo(Vector v) {
+    public void moveTo(Vector v) {
         Vector d = v.delta(start);
         start = v;
 
-        return updateLastCoordinate(end.move(d));
+        reshape(end.move(d));
     }
 
     /**
@@ -45,10 +47,9 @@ public class Line extends Drawing {
      * re-calculates the midpoint line algorithm.
      *
      * @param last the last coordinate
-     * @return this
      */
     @Override
-    public Drawing updateLastCoordinate(Vector last) {
+    public void reshape(Vector last) {
         end = last;
         dx = (int) (end.getX() - start.getX());
         dy = (int) (end.getY() - start.getY());
@@ -69,8 +70,6 @@ public class Line extends Drawing {
 
         incE = 2 * (dy - dx);
         incNE = 2 * dy;
-
-        return this;
     }
 
     /**
