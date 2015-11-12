@@ -23,9 +23,9 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 /**
- * Classe principal, contando com as incializaÁıes e as chamadas dos mÈtodos auxiliares em outras classes.
+ * Classe principal, contando com as incializa√ß√µes e as chamadas dos m√©todos auxiliares em outras classes.
  * 
- * @author Jo„o Paulo RA:408034
+ * @author Jo√£o Paulo RA:408034
  * @author Breno Silveira RA:551481
  * @author Camilo Moreira RA:359645
  */
@@ -37,10 +37,10 @@ public class Espaco3D implements GLEventListener {
     final double distanciaCamera = -3;
 
     Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 0, 1);
-    float intensidadeLuz = 0.7f;
-    float intensidadeLuzAmbiente = 0.7f;
-    float ka = 0.7f;
-    float kd = 0.7f;
+    float intensidadeLuz = -1f;
+    float intensidadeLuzAmbiente = -1f;
+    float ka = -1f;
+    float kd = -1f;
 
     ArrayList<Face> faces;
     ET tabelaET;
@@ -53,7 +53,7 @@ public class Espaco3D implements GLEventListener {
         Scanner keyboard = new Scanner(System.in);
         keyboard.useLocale(Locale.FRENCH);
         Boolean ready = false;
-        /*while(true){
+        while(true){
             try{
                 System.out.print("Digite a coordenada X inteira da direcao da luz: ");
                 espaco.vetorDirecaoDaLuz.x = keyboard.nextInt();
@@ -64,7 +64,7 @@ public class Espaco3D implements GLEventListener {
                 if(espaco.vetorDirecaoDaLuz.x == 0 &&
                    espaco.vetorDirecaoDaLuz.y == 0 &&
                    espaco.vetorDirecaoDaLuz.z == 0){
-                    System.out.println("Vetor dire√ß√£o n√£o pode ser nulo. Comece de novo.");
+                    System.out.println("Vetor dire√É¬ß√É¬£o n√É¬£o pode ser nulo. Comece de novo.");
                     continue;
                 }else 
                     break;
@@ -94,7 +94,7 @@ public class Espaco3D implements GLEventListener {
             }
         while(espaco.kd < 0 || espaco.kd > 1 )
             try {
-                System.out.print("Digite um valor entre 0 e 1 da constante de reflex√£o da luz difusa: ");
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflex√É¬£o da luz difusa: ");
                 espaco.kd = (float) keyboard.nextDouble();
             } catch(Exception e){      
                 keyboard.next();
@@ -102,12 +102,12 @@ public class Espaco3D implements GLEventListener {
             }
         while(espaco.ka < 0 || espaco.ka > 1 )
             try {
-                System.out.print("Digite um valor entre 0 e 1 da constante de reflex√£o da luz ambiente: ");
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflex√É¬£o da luz ambiente: ");
                 espaco.ka = (float) keyboard.nextDouble();
             } catch(Exception e){      
                 keyboard.next();
                 continue;       
-            }*/
+            }
         
         Frame frame = new Frame("Simple JOGL Application");
         GLCanvas canvas = new GLCanvas();
@@ -150,7 +150,7 @@ public class Espaco3D implements GLEventListener {
     }
 
     /**
-     * No mÈtodo reshape o vetor com a posiÁ„o da camera, do foco de luz e da direÁ„o da c‚mera s„o definidos.
+     * No m√©todo reshape o vetor com a posi√ß√£o da camera, do foco de luz e da dire√ß√£o da c√¢mera s√£o definidos.
      * @param drawable
      * @param x
      * @param y
@@ -179,9 +179,9 @@ public class Espaco3D implements GLEventListener {
     }
 
     /**
-     * No mÈtodo display, È chamado o mÈtodo drawcube da classe Drawer. Logo apÛs, as faces que foram definidas
-     * por esse mÈtodo s„o ordenadas atravÈs do mÈtodo ordenaFaces e logo apÛs s„o preenchidas, de forma que a
-     * face mais ao fundo È desenhada primeiro.
+     * No m√©todo display, √© chamado o m√©todo drawcube da classe Drawer. Logo ap√≥s, as faces que foram definidas
+     * por esse m√©todo s√£o ordenadas atrav√©s do m√©todo ordenaFaces e logo ap√≥s s√£o preenchidas, de forma que a
+     * face mais ao fundo √© desenhada primeiro.
      * @param drawable 
      */
     public void display(GLAutoDrawable drawable) {
@@ -210,14 +210,14 @@ public class Espaco3D implements GLEventListener {
     }
 
     /**
-     * MÈtodo de preenchimento. Lembrando que o cubo contÈm 6 faces, ent„o, cada uma delas È necessita ter sua
-     * tabela ET incializada, e, logo apÛs, ter o algoritmo aplicado. Cada ponto da face È projetado atravÈs do
-     * mÈtodo projetaPonto. O ponto resultante, que consistir· de coordenadas x ey, com z igual a 0, deve ser 
-     * convertido, pois no espaÁo 3D, os pontos s„o considerados indo de -1 a 1 no plano cartesiano, enquanto que 
-     * no espaÁo 2D, considera-se os valores dos pixeis da tela. Isso È feito atravÈs do mÈtodo normaliza, e para 
-     * cada aresta em cada face do cubo, a tabela ET È inicializada. Depois de feita a inicializaÁ„o da ET a intensidade
-     * da cor È calculada, lembrando que essa intensidade considera as informaÁıes que foram lidas do usu·rio e È calculada
-     * de acordo com a normal da face do cubo. ApÛs isso, as faces s„o preenchidas (considerando a intensidade).
+     * M√©todo de preenchimento. Lembrando que o cubo cont√©m 6 faces, ent√£o, cada uma delas √© necessita ter sua
+     * tabela ET incializada, e, logo ap√≥s, ter o algoritmo aplicado. Cada ponto da face √© projetado atrav√©s do
+     * m√©todo projetaPonto. O ponto resultante, que consistir√° de coordenadas x ey, com z igual a 0, deve ser 
+     * convertido, pois no espa√ßo 3D, os pontos s√£o considerados indo de -1 a 1 no plano cartesiano, enquanto que 
+     * no espa√ßo 2D, considera-se os valores dos pixeis da tela. Isso √© feito atrav√©s do m√©todo normaliza, e para 
+     * cada aresta em cada face do cubo, a tabela ET √© inicializada. Depois de feita a inicializa√ß√£o da ET a intensidade
+     * da cor √© calculada, lembrando que essa intensidade considera as informa√ß√µes que foram lidas do usu√°rio e √© calculada
+     * de acordo com a normal da face do cubo. Ap√≥s isso, as faces s√£o preenchidas (considerando a intensidade).
      * @param gl 
      */
     public void preencheEspaco3D(GL gl) {
@@ -243,7 +243,7 @@ public class Espaco3D implements GLEventListener {
                 int inicio_y = normaliza(inicio.y, height);
                 int fim_x = normaliza(fim.x,width);
                 int fim_y = normaliza(fim.y, height);
-                //se a linha n√£o esta desenhada na horizontal
+                //se a linha n√É¬£o esta desenhada na horizontal
                 if(inicio_y!=fim_y)
                 {
                     if(inicio_y > fim_y)
@@ -282,21 +282,21 @@ public class Espaco3D implements GLEventListener {
         //Inicializa AET
         while(tabelaET.isNivelVazio(nivel) && nivel < nivel_max)
                 nivel++;
-        //ET est√° vazia
+        //ET est√É¬° vazia
         if(nivel == nivel_max)
             return;
         
         boolean AET_esta_vazia = false;
         No p1, p2;
         while(!AET_esta_vazia && nivel < nivel_max){
-            //AET recebe os n√≥s que ymin = nivel
+            //AET recebe os n√É¬≥s que ymin = nivel
             if(AET == null)
                 AET = tabelaET.getNivel(nivel);
             else
                 AET.setUltimoProximo(tabelaET.getNivel(nivel));
             
-            //Remove os n√≥s que ymax = nivel
-            //Remove os pontos de ymax no come√ßo da AET
+            //Remove os n√É¬≥s que ymax = nivel
+            //Remove os pontos de ymax no come√É¬ßo da AET
             while(AET != null && AET.getYmax() == nivel){
                 AET = AET.getProximo();
             }
@@ -337,10 +337,10 @@ public class Espaco3D implements GLEventListener {
                 p1 = p1.getProximo().getProximo();
             }
             
-            //Atualiza o n√≠vel
+            //Atualiza o n√É¬≠vel
             nivel++;
             
-            //Atualiza o valor dos N√≥s
+            //Atualiza o valor dos N√É¬≥s
             p1 = AET;
             while(p1 != null){
                 p1.setXdoYmin(p1.getXdoYmin().soma(p1.getDXDY()));
@@ -351,8 +351,8 @@ public class Espaco3D implements GLEventListener {
     }
 
     /**
-     * MÈtodo de ordenaÁ„o das faces, que percorre todas as faces do cubo e determina a maior dist‚ncia da face
-     * atÈ a posiÁ„o da c‚mere atravÈs do mÈtodo getMaiorDistanciaAtePonto da classe Face. 
+     * M√©todo de ordena√ß√£o das faces, que percorre todas as faces do cubo e determina a maior dist√¢ncia da face
+     * at√© a posi√ß√£o da c√¢mere atrav√©s do m√©todo getMaiorDistanciaAtePonto da classe Face. 
      */
     public void ordenaFaces() {
         ArrayList<Face> facesOrdenadas = new ArrayList<Face>(faces.size());
@@ -377,15 +377,15 @@ public class Espaco3D implements GLEventListener {
     }
     
     /**
-     * Considerando que no EspaÁo 3D, os pontos s„o definidos variando x e y de -1 a 1, e que no espaÁo 2D
-     * se considera os valores dos pixeis da janela, o mÈtodo normaliza tem intenÁ„o de converter do espaÁo
-     * de coordenadas 3D pro 2D. Desse modo, primeiramente È verificado se o ponto projetado n„o ultrapassa os limites
-     * de -1 e 1, se isso ocorrer, ent„o o valor -1 ou 1 (dependendo de que lado o ponto ultrapassa) È atribuÌdo pra
+     * Considerando que no Espa√ßo 3D, os pontos s√£o definidos variando x e y de -1 a 1, e que no espa√ßo 2D
+     * se considera os valores dos pixeis da janela, o m√©todo normaliza tem inten√ß√£o de converter do espa√ßo
+     * de coordenadas 3D pro 2D. Desse modo, primeiramente √© verificado se o ponto projetado n√£o ultrapassa os limites
+     * de -1 e 1, se isso ocorrer, ent√£o o valor -1 ou 1 (dependendo de que lado o ponto ultrapassa) √© atribu√≠do pra
      * coordenada do ponto.
-     * A convers„o ent„o È feita somando base/2 (base se refere a altura ou largura da tela)
-     * ao valor da multiplicaÁ„o de base/2 pelo valor da coordenada. Isso se deve ao fato de que podem existir valores negativos
-     * que seriam convertidos para pixeis com valores de x ou y menores, desse modo, como metade da janela È positiva, esse
-     * valor È somado, enquanto que a outra metade È multiplicada.
+     * A convers√£o ent√£o √© feita somando base/2 (base se refere a altura ou largura da tela)
+     * ao valor da multiplica√ß√£o de base/2 pelo valor da coordenada. Isso se deve ao fato de que podem existir valores negativos
+     * que seriam convertidos para pixeis com valores de x ou y menores, desse modo, como metade da janela √© positiva, esse
+     * valor √© somado, enquanto que a outra metade √© multiplicada.
      * @param var o valor da coordenada x ou y do ponto projetado
      * @param base valor utilizado para converter, refere-se a largura ou altura da tela.
      * @return 
