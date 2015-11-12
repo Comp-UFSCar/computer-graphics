@@ -15,7 +15,7 @@ In special, 2D lines using the [Midpoint Line Algorithm](http://www.mat.univie.a
 polygons (which are dealt here as, essentially, collections of lines) and circles using
 [Bresenham's Circle Algorithm](http://web.engr.oregonstate.edu/~sllu/bcircle.pdf).
 
-Additionally, forms are being filled with the [Scan-line Algorithm](src/org/CG/infrastructure/abstractions/ScanLineAlgorithm.java).
+Additionally, forms are being filled with the [Scan-line Algorithm](src/org/pixelpainter/infrastructure/algorithms/ScanLineAlgorithm.java).
 
 The [screenshots](screenshots) folder contains some illustrations of the executing program.
 
@@ -82,6 +82,5 @@ to the random color behavior, click `Color` in the main menu bar, and then click
 
 ### Implementing new drawings
 
-Classes inside the package `org.CG.drawings` are automatically scanned and loaded for usage.
-To implement new drawings, simply declare a new class in the package,
-extend `Drawing` and implement its abstract methods.
+Classes inside the package `org.pixelpainter.drawing.shapes` are automatically scanned and loaded for usage.
+To implement new drawings, simply declare a new class in the package, extend `Drawing` and implement its abstract methods.
