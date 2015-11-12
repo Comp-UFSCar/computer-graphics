@@ -17,7 +17,7 @@ polygons (which are dealt here as, essentially, collections of lines) and circle
 
 Additionally, forms are being filled with the [Scan-line Algorithm](src/org/pixelpainter/infrastructure/algorithms/scanline/ScanLineAlgorithm.java).
 
-The [screenshots](screenshots) folder contains some illustrations of the executing program.
+The [screenshots](screenshots) folder contains some illustrations of the executing program. Additionally, a video demonstrating how to draw cubes can be found here: [youtube.com/watch?v=REtDHDdq034](https://www.youtube.com/watch?v=REtDHDdq034).
 
 ## Installing and running
 
