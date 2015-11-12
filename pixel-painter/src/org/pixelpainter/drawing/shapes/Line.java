@@ -39,7 +39,7 @@ public class Line extends Drawing {
         Vector d = v.delta(start);
         start = v;
 
-        reshape(end.move(d));
+        reshape(end.add(d));
     }
 
     /**

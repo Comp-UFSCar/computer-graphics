@@ -76,7 +76,7 @@ public abstract class Drawing implements Interactive, Reshapable {
     /**
      * Move the shape to a specific point in space.
      *
-     * @param v point to which the shape should move.
+     * @param v point to which the shape should add.
      */
     @Override
     public void moveTo(Vector v) {
@@ -91,7 +91,7 @@ public abstract class Drawing implements Interactive, Reshapable {
      */
     @Override
     public void move(Vector v) {
-        moveTo(start.move(v));
+        moveTo(start.add(v));
     }
 
     /**

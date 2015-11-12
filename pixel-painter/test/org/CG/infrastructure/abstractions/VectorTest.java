@@ -64,7 +64,7 @@ public class VectorTest extends TestCase {
     }
 
     /**
-     * Test of move method, of class Vector.
+     * Test of add method, of class Vector.
      */
     public void testMove_int_int() {
         System.out.println("move");
@@ -72,13 +72,13 @@ public class VectorTest extends TestCase {
         int dy = -20;
 
         Vector expected = new Vector(10, -20, 0);
-        Vector actual = Vector.ORIGIN.move(dx, dy);
+        Vector actual = Vector.ORIGIN.add(dx, dy);
 
         assertEquals(expected, actual);
     }
 
     /**
-     * Test of move method, of class Vector.
+     * Test of add method, of class Vector.
      */
     public void testMove_3args() {
         System.out.println("move");
@@ -87,19 +87,19 @@ public class VectorTest extends TestCase {
         int dz = -20;
 
         Vector expected = new Vector(10, 20, -20);
-        Vector actual = Vector.ORIGIN.move(dx, dy, dz);
+        Vector actual = Vector.ORIGIN.add(dx, dy, dz);
 
         assertEquals(expected, actual);
     }
 
     /**
-     * Test of move method, of class Vector.
+     * Test of add method, of class Vector.
      */
     public void testMove_Vector3() {
         System.out.println("move");
 
         Vector expected = new Vector(50, 10, 10);
-        Vector actual = new Vector(40, 5, 1).move(new Vector(10, 5, 9));
+        Vector actual = new Vector(40, 5, 1).add(new Vector(10, 5, 9));
 
         assertEquals(expected, actual);
     }

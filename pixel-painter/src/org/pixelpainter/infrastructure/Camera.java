@@ -1,6 +1,7 @@
 package org.pixelpainter.infrastructure;
 
 import javax.media.opengl.glu.GLU;
+import org.pixelpainter.infrastructure.interfaces.Interactive;
 import org.pixelpainter.infrastructure.representations.Vector;
 
 /**
@@ -10,7 +11,7 @@ import org.pixelpainter.infrastructure.representations.Vector;
  *
  * @author ldavid
  */
-public class Camera {
+public class Camera implements Interactive {
 
     Vector position;
     Vector lookAt;
@@ -60,5 +61,15 @@ public class Camera {
                 up.getX(),
                 up.getY(),
                 up.getZ());
+    }
+
+    @Override
+    public void moveTo(Vector v) {
+        setPosition(v);
+    }
+
+    @Override
+    public void move(Vector v) {
+        moveTo(position.add(v));
     }
 }

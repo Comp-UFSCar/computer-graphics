@@ -31,11 +31,11 @@ public class Pencil extends Drawing {
      */
     @Override
     public void moveTo(Vector point) {
-        point = point.move(-start.getX(), -start.getY());
-        start = start.move(point.getX(), point.getY());
+        point = point.add(-start.getX(), -start.getY());
+        start = start.add(point.getX(), point.getY());
 
         for (int i = 0; i < points.size(); i++) {
-            points.set(i, points.get(i).move(point.getX(), point.getY()));
+            points.set(i, points.get(i).add(point.getX(), point.getY()));
         }
     }
 

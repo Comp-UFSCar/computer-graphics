@@ -74,8 +74,8 @@ public class Cube extends Square {
         int dy = (int) point.getY() - (int) start.getY();
 
         end = Math.abs(dx) > Math.abs(dy)
-                ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx), Math.abs(dx))
-                : start.move((int) Math.signum(dx) * Math.abs(dy), dy, Math.abs(dy));
+                ? start.add(dx, (int) Math.signum(dy) * Math.abs(dx), Math.abs(dx))
+                : start.add((int) Math.signum(dx) * Math.abs(dy), dy, Math.abs(dy));
 
         update();
     }

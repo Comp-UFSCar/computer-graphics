@@ -29,7 +29,7 @@ public class Square extends Rectangle {
         int dy = (int) (point.getY() - start.getY());
 
         end = Math.abs(dx) > Math.abs(dy)
-                ? start.move(dx, (int) Math.signum(dy) * Math.abs(dx))
-                : start.move((int) Math.signum(dx) * Math.abs(dy), dy);
+                ? start.add(dx, (int) Math.signum(dy) * Math.abs(dx))
+                : start.add((int) Math.signum(dx) * Math.abs(dy), dy);
     }
 }

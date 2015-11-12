@@ -12,8 +12,8 @@ import org.pixelpainter.infrastructure.representations.Vector;
  */
 public class Polygon extends Drawing {
 
-    protected Vector lastPoint;
-    protected final LinkedList<Line> lines;
+    protected LinkedList<Line> lines;
+    protected Vector end;
 
     public Polygon() {
         super();
@@ -25,7 +25,7 @@ public class Polygon extends Drawing {
     @Override
     public Drawing setStart(Vector start) {
         super.setStart(start);
-        lastPoint = start;
+        end = start;
 
         return setNextCoordinate(start);
     }
@@ -39,12 +39,12 @@ public class Polygon extends Drawing {
             lastTranslation = edge.getEnd();
         }
 
-        lastPoint = lastTranslation;
+        end = lastTranslation;
     }
 
     @Override
     public void reshape(Vector point) {
-        lastPoint = point;
+        end = point;
         lines.getLast().reshape(point);
     }
 
@@ -55,10 +55,10 @@ public class Polygon extends Drawing {
         lines.add(new Line());
         lines.getLast()
                 .setColor(color)
-                .setStart(lastPoint)
+                .setStart(end)
                 .reshape(point);
-        
-        lastPoint = point;
+
+        end = point;
         return this;
     }
 
@@ -78,4 +78,5 @@ public class Polygon extends Drawing {
             edge.draw(gl);
         });
     }
+
 }

@@ -43,7 +43,7 @@ public class Rectangle extends Drawing {
 
     @Override
     public void moveTo(Vector v) {
-        end = v.move(end.delta(start));
+        end = v.add(end.delta(start));
         start = v;
     }
 

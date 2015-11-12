@@ -11,7 +11,7 @@ import org.pixelpainter.infrastructure.Environment;
 public class Vector {
 
     /**
-     * The origin (0, 0) point
+     * The origin (0, 0) vector
      */
     public final static Vector ORIGIN = new Vector(0, 0, 0);
     public final static Vector UP = new Vector(0, 1, 0);
@@ -24,10 +24,10 @@ public class Vector {
     private final float z;
 
     /**
-     * Instantiates a new point in the given coordinates
+     * Instantiates a new vector in the given coordinates
      *
-     * @param x x-coordinate of the point
-     * @param y y-coordinate of the point
+     * @param x x-coordinate of the vector
+     * @param y y-coordinate of the vector
      */
     public Vector(float x, float y) {
         this(x, y, 0);
@@ -40,7 +40,7 @@ public class Vector {
     }
 
     /**
-     * The x-coordinate of the point
+     * The x-coordinate of the vector
      *
      * @return the x-coordinate
      */
@@ -49,7 +49,7 @@ public class Vector {
     }
 
     /**
-     * The y-coordinate of the point
+     * The y-coordinate of the vector
      *
      * @return the y-coordinate
      */
@@ -58,7 +58,7 @@ public class Vector {
     }
 
     /**
-     * The z-coordinate of the point
+     * The z-coordinate of the vector
      *
      * @return the z-coordinate
      */
@@ -67,36 +67,36 @@ public class Vector {
     }
 
     /**
-     * Creates a new point by translating this point and ignoring the z coordinate. This point remains unaltered.
+     * Creates a new vector by translating this vector and ignoring the z coordinate. This vector remains unaltered.
      *
      * @param dx The movement performed on x-coordinate
      * @param dy The movement performed on y-coordinate
-     * @return A new point achieved by translating this point by given values
+     * @return A new vector achieved by translating this vector by given values
      */
-    public Vector move(float dx, float dy) {
-        return move(dx, dy, 0);
+    public Vector add(float dx, float dy) {
+        return Vector.this.add(dx, dy, 0);
     }
 
     /**
-     * Creates a new point by translating this point. This point remains unaltered.
+     * Creates a new vector by translating this vector. This vector remains unaltered.
      *
      * @param dx The movement performed on x-coordinate
      * @param dy The movement performed on y-coordinate
      * @param dz The movement performed on z-coordinate
-     * @return A new point achieved by translating this point by given values
+     * @return A new vector achieved by translating this vector by given values
      */
-    public Vector move(float dx, float dy, float dz) {
+    public Vector add(float dx, float dy, float dz) {
         return new Vector(x + dx, y + dy, z + dz);
     }
 
     /**
-     * Creates a new point by translating this point. This point remains unaltered.
+     * Creates a new vector by translating this vector. This vector remains unaltered.
      *
      * @param v The movement to be performed.
-     * @return A new point achieved by translating this point.
+     * @return A new vector achieved by translating this vector.
      */
-    public Vector move(Vector v) {
-        return move(v.getX(), v.getY(), v.getZ());
+    public Vector add(Vector v) {
+        return Vector.this.add(v.getX(), v.getY(), v.getZ());
     }
 
     /**
@@ -115,7 +115,7 @@ public class Vector {
      * @return the new vector that represents the difference between {@code v} and this.
      */
     public Vector delta(Vector v) {
-        return move(v.reflected());
+        return Vector.this.add(v.reflected());
     }
 
     /**
@@ -165,38 +165,40 @@ public class Vector {
     }
 
     /**
-     * Creates a new point by changing the x and y-coordinates This is effectively translating the octant
+     * Creates a new vector by changing the x and y-coordinates This is effectively translating the octant
      *
-     * @return A new point achieved by translating this point in octant
+     * @return A new vector achieved by translating this vector in octant
      */
     public Vector invertAxises() {
         return new Vector(y, x, z);
     }
 
     /**
-     * Creates a new point by changing the signal of the y-coordinate
+     * Creates a new vector by changing the signal of the y-coordinate.
      *
-     * @return A new point achieved by mirroring the point upon the X-axis
+     * @return A new vector achieved by mirroring the vector upon the X-axis.
      */
     public Vector mirrorOnHorizontalAxis() {
         return new Vector(x, -y);
     }
 
     /**
-     * Creates a new point by changing the signal of the x-coordinate
+     * Creates a new vector by changing the signal of the x-coordinate.
      *
-     * @return A new point achieved by mirroring the point upon the Y-axis
+     * @return A new vector achieved by mirroring the vector upon the Y-axis.
      */
     public Vector mirrorOnVerticalAxis() {
         return new Vector(-x, y);
     }
 
     /**
-     * Finds the 8 octant values relative to this point (this one included) Equivalent to calling all permutations of {@link #invertAxises() invertAxises},
-     * {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis}
-     * methods. The points are in octant order, starting at the first octant.
+     * Finds the 8 octant values relative to this vector (this one included) Equivalent to calling all permutations of
+     * {@link #invertAxises() invertAxises}, {@link #mirrorOnHorizontalAxis() mirrorOnHorizontalAxis} and 
+     * {@link #mirrorOnVerticalAxis() mirrorOnVerticalAxis} methods.
+     * 
+     * The vectors are in octant order, starting at the first octant.
      *
-     * @return An array of length 8 with the octant variations of this point
+     * @return An array of length 8 with the octant variations of this vector.
      */
     public Vector[] allOctants() {
         return new Vector[]{
@@ -212,10 +214,10 @@ public class Vector {
     }
 
     /**
-     * Calculates the Euclidian distance induced by the L2-norm between two points.
+     * Calculates the Euclidian distance induced by the L2-norm between two vectors.
      *
-     * @param v point to calculate distance.
-     * @return the distance between this point and the given point.
+     * @param v vector to calculate distance.
+     * @return the distance between this vector and the given vector.
      */
     public float l2Distance(Vector v) {
         return delta(v).length();
@@ -237,6 +239,11 @@ public class Vector {
         return new Vector(x / zd, y / zd);
     }
 
+    /**
+     * Returns a vector which contains the this vector's coordinates truncated.
+     *
+     * @return Vector with truncated coordinates.
+     */
     public Vector truncate() {
         return new Vector((int) x, (int) y, (int) z);
     }

@@ -220,7 +220,7 @@ public class PixelPainter implements GLEventListener {
         t.setValue(direction.getX());
         t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
             Vector d = env.getLight().getDirection();
-            env.getLight().setDirection(d.move(((Number) evt.getNewValue()).floatValue() - d.getX(), 0, 0));
+            env.getLight().setDirection(d.add(((Number) evt.getNewValue()).floatValue() - d.getX(), 0, 0));
         });
         menu.add(new JLabel("x"));
         menu.add(t);
@@ -229,7 +229,7 @@ public class PixelPainter implements GLEventListener {
         t.setValue(direction.getY());
         t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
             Vector d = env.getLight().getDirection();
-            env.getLight().setDirection(d.move(0, ((Number) evt.getNewValue()).floatValue() - d.getY(), 0));
+            env.getLight().setDirection(d.add(0, ((Number) evt.getNewValue()).floatValue() - d.getY(), 0));
         });
         menu.add(new JLabel("y"));
         menu.add(t);
@@ -238,7 +238,7 @@ public class PixelPainter implements GLEventListener {
         t.setValue(direction.getZ());
         t.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
             Vector d = env.getLight().getDirection();
-            env.getLight().setDirection(d.move(0, 0, ((Number) evt.getNewValue()).floatValue() - d.getZ()));
+            env.getLight().setDirection(d.add(0, 0, ((Number) evt.getNewValue()).floatValue() - d.getZ()));
         });
         menu.add(new JLabel("z"));
         menu.add(t);
