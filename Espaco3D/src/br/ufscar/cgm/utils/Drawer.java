@@ -14,9 +14,20 @@ import com.sun.opengl.util.BufferUtil;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
-
+/**
+ * Classe com métodos para desenhar o cubo.
+ * @author João Paulo RA:408034
+ * @author Breno Silveira RA:551481
+ * @author Camilo Moreira RA:359645
+ */
 public class Drawer {
-
+    
+    /**
+     * Método para desenhar um pixel 2D, realizando os ajustes necessários na tela.
+     * @param gl objeto gl
+     * @param x coordenada x
+     * @param y  coordenada y
+     */
     public static void drawPixel2D(GL gl, int x, int y) {
         
         IntBuffer buffer = BufferUtil.newIntBuffer(4);
@@ -27,16 +38,19 @@ public class Drawer {
         gl.glVertex2d(x, y);
         gl.glEnd();
     }
-
+    
+    /**
+     * Método para desenhar uma linha a partir de um ponto inicial e um ponto final. Consiste do algoritmo do
+     * Ponto médio (algoritmo de Bresenham), implementado e documentado no trabalho 1.
+     * @param gl objeto gl
+     * @param x0 coordenada x do primeiro ponto
+     * @param y0 coordenada y do primeiro ponto
+     * @param x1 coordenada x do segundo ponto
+     * @param y1 coordenada y do segundo ponto
+     */
     public static void drawLine2D(GL gl, int x0, int y0, int x1, int y1) {
 
-        /* NÃƒÂ£o ÃƒÂ© mais necessÃƒÂ¡rio essa conversÃƒÂ£o.
-         IntBuffer buffer = BufferUtil.newIntBuffer(4);
-         gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-         int height = buffer.get(3);
-
-         y0 = height - y0;
-         y1 = height - y1;*/
+        
 
         int dx = 0, dy = 0, incE, incNE, d;
         int x, y;
@@ -118,6 +132,19 @@ public class Drawer {
 
     }
 
+    /**
+     * Método para desenhar um cubo a partir de algumas informações iniciais que são passadas como parâmetro.
+     * Os pontos foram determinados com o auxílio da biblioteca Jama, para manipulação de matrizes, estabelecendo
+     * os valores do ponto e os valores de uma matriz de rotação que é aplicada em cada um dos pontos.
+     * Após a determinação dos pontos em cada face, um array de faces passado como parâmetro é preenchido, depois
+     * que todas as arestas das faces são determinadas.
+     * @param gl objeto gl
+     * @param faces array para armazenar todas as faces
+     * @param r variação para determinar os 8 valores de x, y, z
+     * @param x valor de x
+     * @param y valor de y
+     * @param z valor de z
+     */
     public static void drawCube(GL gl, ArrayList<Face> faces, double r, double x, double y, double z) {
         
         ArrayList<Face> fs = new ArrayList<Face>();
@@ -142,6 +169,7 @@ public class Drawer {
         Matrix ponto = new Matrix(4,1);
         ponto.set(3, 0, 1.0);     
        
+        //atribui a posição 0,0 da matriz o valor do terceiro argumento
         ponto.set(0, 0, x+r); 
         ponto.set(1, 0, y+r); 
         ponto.set(2, 0, z+r);
@@ -185,29 +213,17 @@ public class Drawer {
 
         Aresta3D[] a = new Aresta3D[12];
         a[0] = new Aresta3D(p[0], p[1]);
-        //drawLine3D(gl, a[0]);
         a[1] = new Aresta3D(p[0], p[2]);
-        //drawLine3D(gl, a[1]);
         a[2] = new Aresta3D(p[0], p[4]);
-        //drawLine3D(gl, a[2]);
         a[3] = new Aresta3D(p[1], p[3]);
-        //drawLine3D(gl, a[3]);
         a[4] = new Aresta3D(p[1], p[5]);
-        //drawLine3D(gl, a[4]);
         a[5] = new Aresta3D(p[2], p[3]);
-        //drawLine3D(gl, a[5]);
         a[6] = new Aresta3D(p[2], p[6]);
-        //drawLine3D(gl, a[6]);
         a[7] = new Aresta3D(p[3], p[7]);
-        //drawLine3D(gl, a[7]);
         a[8] = new Aresta3D(p[4], p[5]);
-        //drawLine3D(gl, a[8]);
         a[9] = new Aresta3D(p[4], p[6]);
-        //drawLine3D(gl, a[9]);
         a[10] = new Aresta3D(p[5], p[7]);
-        //drawLine3D(gl, a[10]);
         a[11] = new Aresta3D(p[6], p[7]);
-        //drawLine3D(gl, a[11]);
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[0]);

@@ -8,9 +8,9 @@ package br.ufscar.cgm.geometria;
 import br.ufscar.cgm.utils.Racional;
 
 /**
- * Classe que representa uma aresta no espa√ßo 3D, composta de 2 pontos 3D, representados pelos atributos
+ * Classe que representa uma aresta no espaÁo 3D, composta de 2 pontos 3D, representados pelos atributos
  * inicio e fim.<br>
- * @author Jo√£o Paulo RA:408034
+ * @author Jo„o Paulo RA:408034
  * @author Breno Silveira RA:551481
  * @author Camilo Moreira RA:359645
  */

@@ -23,11 +23,11 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 /**
- * Espaco3D.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel)
- * <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
+ * Classe principal, contando com as incializações e as chamadas dos métodos auxiliares em outras classes.
+ * 
+ * @author João Paulo RA:408034
+ * @author Breno Silveira RA:551481
+ * @author Camilo Moreira RA:359645
  */
 public class Espaco3D implements GLEventListener {
 
@@ -149,6 +149,14 @@ public class Espaco3D implements GLEventListener {
         //gl.glShadeModel(GL.GL_FLAT); 
     }
 
+    /**
+     * No método reshape o vetor com a posição da camera, do foco de luz e da direção da câmera são definidos.
+     * @param drawable
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         GL gl = drawable.getGL();
         GLU glu = new GLU();
@@ -170,6 +178,12 @@ public class Espaco3D implements GLEventListener {
         vetorDirecaoDaCamera = new Ponto3D(0, 1, 0);
     }
 
+    /**
+     * No método display, é chamado o método drawcube da classe Drawer. Logo após, as faces que foram definidas
+     * por esse método são ordenadas através do método ordenaFaces e logo após são preenchidas, de forma que a
+     * face mais ao fundo é desenhada primeiro.
+     * @param drawable 
+     */
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         faces = new ArrayList<Face>();
@@ -195,6 +209,17 @@ public class Espaco3D implements GLEventListener {
 
     }
 
+    /**
+     * Método de preenchimento. Lembrando que o cubo contém 6 faces, então, cada uma delas é necessita ter sua
+     * tabela ET incializada, e, logo após, ter o algoritmo aplicado. Cada ponto da face é projetado através do
+     * método projetaPonto. O ponto resultante, que consistirá de coordenadas x ey, com z igual a 0, deve ser 
+     * convertido, pois no espaço 3D, os pontos são considerados indo de -1 a 1 no plano cartesiano, enquanto que 
+     * no espaço 2D, considera-se os valores dos pixeis da tela. Isso é feito através do método normaliza, e para 
+     * cada aresta em cada face do cubo, a tabela ET é inicializada. Depois de feita a inicialização da ET a intensidade
+     * da cor é calculada, lembrando que essa intensidade considera as informações que foram lidas do usuário e é calculada
+     * de acordo com a normal da face do cubo. Após isso, as faces são preenchidas (considerando a intensidade).
+     * @param gl 
+     */
     public void preencheEspaco3D(GL gl) {
         //Nada para preencher
         if (faces == null || faces.size() == 0) {
@@ -325,7 +350,11 @@ public class Espaco3D implements GLEventListener {
         }
     }
 
-    private void ordenaFaces() {
+    /**
+     * Método de ordenação das faces, que percorre todas as faces do cubo e determina a maior distância da face
+     * até a posição da câmere através do método getMaiorDistanciaAtePonto da classe Face. 
+     */
+    public void ordenaFaces() {
         ArrayList<Face> facesOrdenadas = new ArrayList<Face>(faces.size());
         int size = 0;
         int i;
@@ -347,7 +376,21 @@ public class Espaco3D implements GLEventListener {
 
     }
     
-    private int normaliza(double var, int base){
+    /**
+     * Considerando que no Espaço 3D, os pontos são definidos variando x e y de -1 a 1, e que no espaço 2D
+     * se considera os valores dos pixeis da janela, o método normaliza tem intenção de converter do espaço
+     * de coordenadas 3D pro 2D. Desse modo, primeiramente é verificado se o ponto projetado não ultrapassa os limites
+     * de -1 e 1, se isso ocorrer, então o valor -1 ou 1 (dependendo de que lado o ponto ultrapassa) é atribuído pra
+     * coordenada do ponto.
+     * A conversão então é feita somando base/2 (base se refere a altura ou largura da tela)
+     * ao valor da multiplicação de base/2 pelo valor da coordenada. Isso se deve ao fato de que podem existir valores negativos
+     * que seriam convertidos para pixeis com valores de x ou y menores, desse modo, como metade da janela é positiva, esse
+     * valor é somado, enquanto que a outra metade é multiplicada.
+     * @param var o valor da coordenada x ou y do ponto projetado
+     * @param base valor utilizado para converter, refere-se a largura ou altura da tela.
+     * @return 
+     */
+    public int normaliza(double var, int base){
         if(var < -1)
             var = -1;
         if(var > 1)

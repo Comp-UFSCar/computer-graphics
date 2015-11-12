@@ -8,12 +8,12 @@ package br.ufscar.cgm.geometria;
 import java.util.ArrayList;
 
 /**
- * Classe que representa a face do pol√≠gono. A face possui como atributos uma lista de arestas (usadas para desenhar 
- * o "contorno" de cada face), um atributo do tipo Pontos3D para armaznar 3 pontos dessa face (3 pontos n√£o colineares
- * determinam um plano, e a partir da dos coeficientes da equa√ß√£o do plano ser√° calculado o vetor normal) e um atributo
- * do tipo Ponto3D para representar o vetor normal. Na constru√ß√£o de uma inst√¢ncia da classe Face o vetor normal dessa 
- * face √© calculado para ser utilizado nas equa√ß√µes de determina√ß√£o de intensidade. <br>
- * @author Jo√£o Paulo RA:408034
+ * Classe que representa a face do polÌgono. A face possui como atributos uma lista de arestas (usadas para desenhar 
+ * o "contorno" de cada face), um atributo do tipo Pontos3D para armaznar 3 pontos dessa face (3 pontos n„o colineares
+ * determinam um plano, e a partir da dos coeficientes da equaÁ„o do plano ser· calculado o vetor normal) e um atributo
+ * do tipo Ponto3D para representar o vetor normal. Na construÁ„o de uma inst‚ncia da classe Face o vetor normal dessa 
+ * face È calculado para ser utilizado nas equaÁıes de determinaÁ„o de intensidade. <br>
+ * @author Jo„o Paulo RA:408034
  * @author Breno Silveira RA:551481
  * @author Camilo Moreira RA:359645
  */
@@ -31,12 +31,12 @@ public class Face {
     }
 
     /**
-     * O c√°lculo da normal da face √© feito determinando 2 vetores que pertencem ao plano a partir dos pontos informados.
-     * Assim, a partir c√°lculo do determinante s√£o da matriz formada por esses vetores, obt√©m-se os valores
+     * O c·lculo da normal da face È feito determinando 2 vetores que pertencem ao plano a partir dos pontos informados.
+     * Assim, a partir c·lculo do determinante s„o da matriz formada por esses vetores, obtÈm-se os valores
      * de i, j, k do vetor normal.
      * 
-     * @param arg: representa o conjunto de pontos 3D para calcular o vetor normal
-     * @return o vetor normal representado por uma inst√¢ncia da classe Ponto3D
+     * @param arg representa o conjunto de pontos 3D para calcular o vetor normal
+     * @return o vetor normal representado por uma inst‚ncia da classe Ponto3D
      */
     private Ponto3D normalDaFace(Pontos3D arg)
     {
@@ -48,15 +48,15 @@ public class Face {
     }
     
     /**
-     * Para determinar a intendidade, primeiramente √© realizado o c√°lculo do produtoEscalar entre o vetor normal
-     * da face e a dire√ß√£o da luz. Ap√≥s isso √© feito o c√°lculo da norma da dire√ß√£o e do vetor normal. Por fim, a f√≥rmula
-     * para se obter a intensidade da luz √© calculada (considerando a luz ambiente e a luz difusa).
+     * Para determinar a intendidade, primeiramente È realizado o c·lculo do produtoEscalar entre o vetor normal
+     * da face e a direÁ„o da luz. ApÛs isso È feito o c·lculo da norma da direÁ„o e do vetor normal. Por fim, a fÛrmula
+     * para se obter a intensidade da luz È calculada (considerando a luz ambiente e a luz difusa).
      * 
-     * @param Ia - intensidade da luz ambiente
-     * @param Ka - constante de reflex√£o da luz ambiente
-     * @param Ip - intensidade da luz pontual
-     * @param Kd - constante de reflex√£o da luz difusa
-     * @param direcao - vetor que representa a direcao da luz
+     * @param Ia intensidade da luz ambiente
+     * @param Ka constante de reflex„o da luz ambiente
+     * @param Ip intensidade da luz pontual
+     * @param Kd constante de reflex„o da luz difusa
+     * @param direcao vetor que representa a direcao da luz
      * @return intensidade da luz (considerando a luz ambiente e a luz difusa)
      */
     public float getIntensidade(float Ia, float Ka, float Ip, float Kd, Ponto3D direcao)
@@ -72,12 +72,12 @@ public class Face {
     }
     
     /**
-     * M√©todo auxiliar para determinar a maior dist√¢ncia de uma face e um ponto (no caso, o ponto que representa
-     * a deire√ß√£o da c√¢mera). A partir dos pontos que formam a face √© determinadp a maior dist√¢ncia por meio
-     * do c√°lculo da dist√¢ncia de cada ponto do vetor passado como par√¢metro, por meio do m√©todo distanciaAte da
+     * MÈtodo auxiliar para determinar a maior dist‚ncia de uma face e um ponto (no caso, o ponto que representa
+     * a deireÁ„o da c‚mera). A partir dos pontos que formam a face È determinadp a maior dist‚ncia por meio
+     * do c·lculo da dist‚ncia de cada ponto do vetor passado como par‚metro, por meio do mÈtodo distanciaAte da
      * classe Ponto3D.
-     * @param camera - vetor com a dire√ß√£o da c√¢mera
-     * @return a dist√¢ncia m√°xima da face at√© a c√¢mera
+     * @param camera vetor com a direÁ„o da c‚mera
+     * @return a dist‚ncia m·xima da face atÈ a c‚mera
      */
     public double getMaiorDistanciaAtePonto(Ponto3D camera){
         ArrayList<Ponto3D> pontos = new ArrayList<Ponto3D>(4);
