@@ -1,4 +1,4 @@
-﻿# CG - Matrix Paint
+﻿# CG - Pixel Painter
 
 * Repository: [github.com/UFSCar-CS/computer-graphics-2015-2](https://github.com/UFSCar-CS/computer-graphics-2015-2)
 * Language: Java
