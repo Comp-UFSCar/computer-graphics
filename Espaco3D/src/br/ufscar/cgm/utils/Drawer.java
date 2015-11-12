@@ -15,15 +15,15 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 /**
- * Classe com m�todos para desenhar o cubo.
- * @author Jo�o Paulo RA:408034
+ * Classe com métodos para desenhar o cubo.
+ * @author João Paulo RA:408034
  * @author Breno Silveira RA:551481
  * @author Camilo Moreira RA:359645
  */
 public class Drawer {
     
     /**
-     * M�todo para desenhar um pixel 2D, realizando os ajustes necess�rios na tela.
+     * Método para desenhar um pixel 2D, realizando os ajustes necessários na tela.
      * @param gl objeto gl
      * @param x coordenada x
      * @param y  coordenada y
@@ -40,8 +40,8 @@ public class Drawer {
     }
     
     /**
-     * M�todo para desenhar uma linha a partir de um ponto inicial e um ponto final. Consiste do algoritmo do
-     * Ponto m�dio (algoritmo de Bresenham), implementado e documentado no trabalho 1.
+     * Método para desenhar uma linha a partir de um ponto inicial e um ponto final. Consiste do algoritmo do
+     * Ponto médio (algoritmo de Bresenham), implementado e documentado no trabalho 1.
      * @param gl objeto gl
      * @param x0 coordenada x do primeiro ponto
      * @param y0 coordenada y do primeiro ponto
@@ -54,10 +54,10 @@ public class Drawer {
 
         int dx = 0, dy = 0, incE, incNE, d;
         int x, y;
-        // CondiÃ§Ã£o para saber se a inclinaÃ§Ã£o da reta
-        // estÃ¡ entre 0 e 45 ou entre 46 e 90 graus.
+        // CondiÃƒÂ§ÃƒÂ£o para saber se a inclinaÃƒÂ§ÃƒÂ£o da reta
+        // estÃƒÂ¡ entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
-        // Usado para saber se a reta Ã© 
+        // Usado para saber se a reta ÃƒÂ© 
         // crescente ou decrescente
         int dy_signal = 1;
 
@@ -96,15 +96,15 @@ public class Drawer {
             dy = -dy;
         }
 
-        // Se dy Ã© negativo, a reta Ã© decrescente.
+        // Se dy ÃƒÂ© negativo, a reta ÃƒÂ© decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao invÃ©s de incrementar, y Ã© decrementado (por dy_signal)
+        // Mas ao invÃƒÂ©s de incrementar, y ÃƒÂ© decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
         }
 
-        //CÃ¡lculo das variÃ¡veis do algoritmo
+        //CÃƒÂ¡lculo das variÃƒÂ¡veis do algoritmo
         d = 2 * dy - dx;
         incE = 2 * dy;
         incNE = 2 * (dy - dx);
@@ -133,14 +133,14 @@ public class Drawer {
     }
 
     /**
-     * M�todo para desenhar um cubo a partir de algumas informa��es iniciais que s�o passadas como par�metro.
-     * Os pontos foram determinados com o aux�lio da biblioteca Jama, para manipula��o de matrizes, estabelecendo
-     * os valores do ponto e os valores de uma matriz de rota��o que � aplicada em cada um dos pontos.
-     * Ap�s a determina��o dos pontos em cada face, um array de faces passado como par�metro � preenchido, depois
-     * que todas as arestas das faces s�o determinadas.
+     * Método para desenhar um cubo a partir de algumas informações iniciais que são passadas como parâmetro.
+     * Os pontos foram determinados com o auxílio da biblioteca Jama, para manipulação de matrizes, estabelecendo
+     * os valores do ponto e os valores de uma matriz de rotação que é aplicada em cada um dos pontos.
+     * Após a determinação dos pontos em cada face, um array de faces passado como parâmetro é preenchido, depois
+     * que todas as arestas das faces são determinadas.
      * @param gl objeto gl
      * @param faces array para armazenar todas as faces
-     * @param r varia��o para determinar os 8 valores de x, y, z
+     * @param r variação para determinar os 8 valores de x, y, z
      * @param x valor de x
      * @param y valor de y
      * @param z valor de z
@@ -153,7 +153,7 @@ public class Drawer {
         
         double[][] rot = new double[4][4];
         
-        // Rotação de 30 no eixo z e de 60 graus no eixo x
+        // RotaÃ§Ã£o de 30 no eixo z e de 60 graus no eixo x
         double sqrt3 = Math.sqrt(3);
         rot[0][0] = 0.86;//Math.cos(Math.PI/4);
         rot[0][1] = -0.5;//-Math.sin(Math.PI/4);
@@ -169,7 +169,7 @@ public class Drawer {
         Matrix ponto = new Matrix(4,1);
         ponto.set(3, 0, 1.0);     
        
-        //atribui a posi��o 0,0 da matriz o valor do terceiro argumento
+        //atribui a posição 0,0 da matriz o valor do terceiro argumento
         ponto.set(0, 0, x+r); 
         ponto.set(1, 0, y+r); 
         ponto.set(2, 0, z+r);
