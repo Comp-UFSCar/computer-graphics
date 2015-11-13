@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufscar.cgm.geometria;
-
-import br.ufscar.cgm.utils.Racional;
 
 /**
  * Classe que representa uma aresta no espaço 3D, composta de 2 pontos 3D, representados pelos atributos

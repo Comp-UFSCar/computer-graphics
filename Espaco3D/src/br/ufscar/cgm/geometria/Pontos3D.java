@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufscar.cgm.geometria;
 
-/**
- *
- * @author Breno
- */
 /**
  * Classe que representa 3 pontos 3D de uma face. Ela possui métodos para determinar dois vetores a partir desses
  * 3 pontos 3D, vetor v e w. <br>

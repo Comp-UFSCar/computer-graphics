@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufscar.cgm.utils;
 
 import Jama.Matrix;
@@ -29,10 +24,6 @@ public class Drawer {
      * @param y  coordenada y
      */
     public static void drawPixel2D(GL gl, int x, int y) {
-        
-        IntBuffer buffer = BufferUtil.newIntBuffer(4);
-        gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-        int height = buffer.get(3);
         
         gl.glBegin(GL.GL_POINTS);
         gl.glVertex2d(x, y);
@@ -139,13 +130,13 @@ public class Drawer {
      * @param gl objeto gl
      * @param faces array para armazenar todas as faces
      * @param r variação para determinar os 8 valores de x, y, z
-     * @param x valor de x
-     * @param y valor de y
-     * @param z valor de z
+     * @param x valor de x do centro
+     * @param y valor de y do centro
+     * @param z valor de z do centro
      */
     public static void drawCube(GL gl, ArrayList<Face> faces, double r, double x, double y, double z) {
         
-        ArrayList<Face> fs = new ArrayList<Face>();
+        ArrayList<Face> novasFaces = new ArrayList<Face>();
         ArrayList<Aresta3D> arestas;
         Ponto3D[] p = new Ponto3D[8];
         
@@ -163,50 +154,50 @@ public class Drawer {
         rot[2][2] = 0.5;
         
         Matrix matriz_rotacao_cubo = new Matrix(rot); 
-        Matrix matriz_coord_ponto = new Matrix(4,1); // 4 linhas e uma coluna
-        matriz_coord_ponto.set(3, 0, 1.0);     
+        Matrix matriz_do_ponto = new Matrix(4,1); // 4 linhas e uma coluna
+        matriz_do_ponto.set(3, 0, 1.0);     
        
         //atribui a posição 0,0 da matriz o valor do terceiro argumento
-        matriz_coord_ponto.set(0, 0, x+r); 
-        matriz_coord_ponto.set(1, 0, y+r); 
-        matriz_coord_ponto.set(2, 0, z+r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[0] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x+r); 
-        matriz_coord_ponto.set(1, 0, y+r); 
-        matriz_coord_ponto.set(2, 0, z-r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[1] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x+r); 
-        matriz_coord_ponto.set(1, 0, y-r); 
-        matriz_coord_ponto.set(2, 0, z+r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[2] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x+r); 
-        matriz_coord_ponto.set(1, 0, y-r); 
-        matriz_coord_ponto.set(2, 0, z-r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[3] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x-r); 
-        matriz_coord_ponto.set(1, 0, y+r); 
-        matriz_coord_ponto.set(2, 0, z+r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[4] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x-r); 
-        matriz_coord_ponto.set(1, 0, y+r); 
-        matriz_coord_ponto.set(2, 0, z-r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[5] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x-r); 
-        matriz_coord_ponto.set(1, 0, y-r); 
-        matriz_coord_ponto.set(2, 0, z+r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[6] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
-        matriz_coord_ponto.set(0, 0, x-r); 
-        matriz_coord_ponto.set(1, 0, y-r); 
-        matriz_coord_ponto.set(2, 0, z-r);
-        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
-        p[7] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x+r); 
+        matriz_do_ponto.set(1, 0, y+r); 
+        matriz_do_ponto.set(2, 0, z+r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[0] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x+r); 
+        matriz_do_ponto.set(1, 0, y+r); 
+        matriz_do_ponto.set(2, 0, z-r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[1] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x+r); 
+        matriz_do_ponto.set(1, 0, y-r); 
+        matriz_do_ponto.set(2, 0, z+r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[2] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x+r); 
+        matriz_do_ponto.set(1, 0, y-r); 
+        matriz_do_ponto.set(2, 0, z-r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[3] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x-r); 
+        matriz_do_ponto.set(1, 0, y+r); 
+        matriz_do_ponto.set(2, 0, z+r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[4] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x-r); 
+        matriz_do_ponto.set(1, 0, y+r); 
+        matriz_do_ponto.set(2, 0, z-r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[5] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x-r); 
+        matriz_do_ponto.set(1, 0, y-r); 
+        matriz_do_ponto.set(2, 0, z+r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[6] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
+        matriz_do_ponto.set(0, 0, x-r); 
+        matriz_do_ponto.set(1, 0, y-r); 
+        matriz_do_ponto.set(2, 0, z-r);
+        matriz_do_ponto = matriz_rotacao_cubo.times(matriz_do_ponto);
+        p[7] = new Ponto3D(matriz_do_ponto.get(0, 0), matriz_do_ponto.get(1, 0), matriz_do_ponto.get(2, 0));
 
         Aresta3D[] a = new Aresta3D[12];
         a[0] = new Aresta3D(p[0], p[1]);
@@ -227,45 +218,45 @@ public class Drawer {
         arestas.add(a[1]);
         arestas.add(a[3]);
         arestas.add(a[5]);
-        fs.add(new Face(arestas, new Pontos3D(p[2],p[1],p[0])));
+        novasFaces.add(new Face(arestas, new Pontos3D(p[2],p[1],p[0])));
         
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[0]);
         arestas.add(a[2]);
         arestas.add(a[4]);
         arestas.add(a[8]);
-        fs.add(new Face(arestas, new Pontos3D(p[4], p[1], p[0])));
+        novasFaces.add(new Face(arestas, new Pontos3D(p[4], p[1], p[0])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[1]);
         arestas.add(a[2]);
         arestas.add(a[6]);
         arestas.add(a[9]);
-        fs.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
+        novasFaces.add(new Face(arestas, new Pontos3D(p[4],p[2],p[0])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[5]);
         arestas.add(a[6]);
         arestas.add(a[7]);
         arestas.add(a[11]);
-        fs.add(new Face(arestas, new Pontos3D(p[2],p[3],p[6])));
+        novasFaces.add(new Face(arestas, new Pontos3D(p[2],p[3],p[6])));
         
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[3]);
         arestas.add(a[4]);
         arestas.add(a[7]);
         arestas.add(a[10]);
-        fs.add(new Face(arestas, new Pontos3D(p[1], p[3], p[5])));
+        novasFaces.add(new Face(arestas, new Pontos3D(p[1], p[3], p[5])));
 
         arestas = new ArrayList<Aresta3D>();
         arestas.add(a[8]);
         arestas.add(a[9]);
         arestas.add(a[10]);
         arestas.add(a[11]);
-        fs.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6]))); 
+        novasFaces.add(new Face(arestas, new Pontos3D(p[4],p[5],p[6]))); 
         
         if(faces != null)
-            faces.addAll(fs);
+            faces.addAll(novasFaces);
     }
 
 }
