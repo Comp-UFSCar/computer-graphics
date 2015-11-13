@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * determinam um plano, e a partir da dos coeficientes da equação do plano será calculado o vetor normal) e um atributo
  * do tipo Ponto3D para representar o vetor normal. Na construção de uma instância da classe Face o vetor normal dessa 
  * face é calculado para ser utilizado nas equações de determinação de intensidade. <br>
+ * 
  * @author João Paulo RA:408034
  * @author Breno Silveira RA:551481
  * @author Camilo Moreira RA:359645
@@ -27,7 +28,6 @@ public class Face {
         arestas = as;
         ptParaCalcNorma = pt;
         vetorNormal = normalDaFace(pt); 
-        
     }
 
     /**

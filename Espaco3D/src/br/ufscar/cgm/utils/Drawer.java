@@ -50,14 +50,12 @@ public class Drawer {
      */
     public static void drawLine2D(GL gl, int x0, int y0, int x1, int y1) {
 
-        
-
         int dx = 0, dy = 0, incE, incNE, d;
         int x, y;
-        // CondiÃƒÂ§ÃƒÂ£o para saber se a inclinaÃƒÂ§ÃƒÂ£o da reta
-        // estÃƒÂ¡ entre 0 e 45 ou entre 46 e 90 graus.
+        // Condição para saber se a inclinação da reta
+        // está entre 0 e 45 ou entre 46 e 90 graus.
         boolean dx_menor_dy = false;
-        // Usado para saber se a reta ÃƒÂ© 
+        // Usado para saber se a reta é 
         // crescente ou decrescente
         int dy_signal = 1;
 
@@ -96,15 +94,15 @@ public class Drawer {
             dy = -dy;
         }
 
-        // Se dy ÃƒÂ© negativo, a reta ÃƒÂ© decrescente.
+        // Se dy é negativo, a reta é decrescente.
         // Mudamos o valor de dy para ser desenhado entre 0 e 45 graus
-        // Mas ao invÃƒÂ©s de incrementar, y ÃƒÂ© decrementado (por dy_signal)
+        // Mas ao invés de incrementar, y é decrementado (por dy_signal)
         if (dy < 0) {
             dy_signal = -1;
             dy = -dy;
         }
 
-        //CÃƒÂ¡lculo das variÃƒÂ¡veis do algoritmo
+        //Cálculo das variáveis do algoritmo
         d = 2 * dy - dx;
         incE = 2 * dy;
         incNE = 2 * (dy - dx);
@@ -153,63 +151,62 @@ public class Drawer {
         
         double[][] rot = new double[4][4];
         
-        // RotaÃ§Ã£o de 30 no eixo z e de 60 graus no eixo x
-        double sqrt3 = Math.sqrt(3);
-        rot[0][0] = 0.86;//Math.cos(Math.PI/4);
-        rot[0][1] = -0.5;//-Math.sin(Math.PI/4);
-        rot[0][2] = 0;//Math.sin(Math.PI/4);
-        rot[1][0] = 0.25;//Math.cos(Math.PI/4);
-        rot[1][1] = 0.43;
-        rot[1][2] = 0.86;
-        rot[2][0] = -0.43;
-        rot[2][1] = -0.75;
+        // Rotação de -30 no eixo z e de -60 graus no eixo x
+        rot[0][0] = 0.866;
+        rot[0][1] = -0.5;
+        rot[0][2] = 0;
+        rot[1][0] = 0.25;
+        rot[1][1] = 0.433;
+        rot[1][2] = -0.866;
+        rot[2][0] = 0.433;
+        rot[2][1] = 0.75;
         rot[2][2] = 0.5;
         
-        Matrix rotacao = new Matrix(rot);
-        Matrix ponto = new Matrix(4,1);
-        ponto.set(3, 0, 1.0);     
+        Matrix matriz_rotacao_cubo = new Matrix(rot); 
+        Matrix matriz_coord_ponto = new Matrix(4,1); // 4 linhas e uma coluna
+        matriz_coord_ponto.set(3, 0, 1.0);     
        
         //atribui a posição 0,0 da matriz o valor do terceiro argumento
-        ponto.set(0, 0, x+r); 
-        ponto.set(1, 0, y+r); 
-        ponto.set(2, 0, z+r);
-        ponto = rotacao.times(ponto);
-        p[0] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x+r); 
-        ponto.set(1, 0, y+r); 
-        ponto.set(2, 0, z-r);
-        ponto = rotacao.times(ponto);
-        p[1] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x+r); 
-        ponto.set(1, 0, y-r); 
-        ponto.set(2, 0, z+r);
-        ponto = rotacao.times(ponto);
-        p[2] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x+r); 
-        ponto.set(1, 0, y-r); 
-        ponto.set(2, 0, z-r);
-        ponto = rotacao.times(ponto);
-        p[3] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x-r); 
-        ponto.set(1, 0, y+r); 
-        ponto.set(2, 0, z+r);
-        ponto = rotacao.times(ponto);
-        p[4] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x-r); 
-        ponto.set(1, 0, y+r); 
-        ponto.set(2, 0, z-r);
-        ponto = rotacao.times(ponto);
-        p[5] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x-r); 
-        ponto.set(1, 0, y-r); 
-        ponto.set(2, 0, z+r);
-        ponto = rotacao.times(ponto);
-        p[6] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
-        ponto.set(0, 0, x-r); 
-        ponto.set(1, 0, y-r); 
-        ponto.set(2, 0, z-r);
-        ponto = rotacao.times(ponto);
-        p[7] = new Ponto3D(ponto.get(0, 0), ponto.get(1, 0), ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x+r); 
+        matriz_coord_ponto.set(1, 0, y+r); 
+        matriz_coord_ponto.set(2, 0, z+r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[0] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x+r); 
+        matriz_coord_ponto.set(1, 0, y+r); 
+        matriz_coord_ponto.set(2, 0, z-r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[1] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x+r); 
+        matriz_coord_ponto.set(1, 0, y-r); 
+        matriz_coord_ponto.set(2, 0, z+r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[2] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x+r); 
+        matriz_coord_ponto.set(1, 0, y-r); 
+        matriz_coord_ponto.set(2, 0, z-r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[3] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x-r); 
+        matriz_coord_ponto.set(1, 0, y+r); 
+        matriz_coord_ponto.set(2, 0, z+r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[4] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x-r); 
+        matriz_coord_ponto.set(1, 0, y+r); 
+        matriz_coord_ponto.set(2, 0, z-r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[5] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x-r); 
+        matriz_coord_ponto.set(1, 0, y-r); 
+        matriz_coord_ponto.set(2, 0, z+r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[6] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
+        matriz_coord_ponto.set(0, 0, x-r); 
+        matriz_coord_ponto.set(1, 0, y-r); 
+        matriz_coord_ponto.set(2, 0, z-r);
+        matriz_coord_ponto = matriz_rotacao_cubo.times(matriz_coord_ponto);
+        p[7] = new Ponto3D(matriz_coord_ponto.get(0, 0), matriz_coord_ponto.get(1, 0), matriz_coord_ponto.get(2, 0));
 
         Aresta3D[] a = new Aresta3D[12];
         a[0] = new Aresta3D(p[0], p[1]);

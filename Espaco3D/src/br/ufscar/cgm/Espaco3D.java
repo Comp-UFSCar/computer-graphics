@@ -36,7 +36,7 @@ public class Espaco3D implements GLEventListener {
     Ponto3D vetorDirecaoDaCamera;
     final double distanciaCamera = -3;
 
-    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 0, 1);
+    Ponto3D vetorDirecaoDaLuz = new Ponto3D(0, 0, 0);
     float intensidadeLuz = -1f;
     float intensidadeLuzAmbiente = -1f;
     float ka = -1f;
@@ -64,7 +64,7 @@ public class Espaco3D implements GLEventListener {
                 if(espaco.vetorDirecaoDaLuz.x == 0 &&
                    espaco.vetorDirecaoDaLuz.y == 0 &&
                    espaco.vetorDirecaoDaLuz.z == 0){
-                    System.out.println("Vetor direÃ§Ã£o nÃ£o pode ser nulo. Comece de novo.");
+                    System.out.println("Vetor direção não pode ser nulo. Comece de novo.");
                     continue;
                 }else 
                     break;
@@ -94,7 +94,7 @@ public class Espaco3D implements GLEventListener {
             }
         while(espaco.kd < 0 || espaco.kd > 1 )
             try {
-                System.out.print("Digite um valor entre 0 e 1 da constante de reflexÃ£o da luz difusa: ");
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflexão da luz difusa: ");
                 espaco.kd = (float) keyboard.nextDouble();
             } catch(Exception e){      
                 keyboard.next();
@@ -102,14 +102,14 @@ public class Espaco3D implements GLEventListener {
             }
         while(espaco.ka < 0 || espaco.ka > 1 )
             try {
-                System.out.print("Digite um valor entre 0 e 1 da constante de reflexÃ£o da luz ambiente: ");
+                System.out.print("Digite um valor entre 0 e 1 da constante de reflexão da luz ambiente: ");
                 espaco.ka = (float) keyboard.nextDouble();
             } catch(Exception e){      
                 keyboard.next();
                 continue;       
             }
         
-        Frame frame = new Frame("Simple JOGL Application");
+        Frame frame = new Frame("Trabalho 3 CGM");
         GLCanvas canvas = new GLCanvas();
 
         canvas.addGLEventListener(espaco);
@@ -141,7 +141,7 @@ public class Espaco3D implements GLEventListener {
     public void init(GLAutoDrawable drawable) {
 
         GL gl = drawable.getGL();
-        System.err.println("INIT GL IS: " + gl.getClass().getName());
+        //System.err.println("INIT GL IS: " + gl.getClass().getName());
 
         gl.setSwapInterval(1);
 
@@ -243,7 +243,7 @@ public class Espaco3D implements GLEventListener {
                 int inicio_y = normaliza(inicio.y, height);
                 int fim_x = normaliza(fim.x,width);
                 int fim_y = normaliza(fim.y, height);
-                //se a linha nÃ£o esta desenhada na horizontal
+                //se a linha não esta desenhada na horizontal
                 if(inicio_y!=fim_y)
                 {
                     if(inicio_y > fim_y)

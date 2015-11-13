@@ -21,12 +21,6 @@ public class Ponto3D {
         this.z = z;
     }
     
-    public Ponto3D pontoNormalizado()
-    {
-        int norma = (int) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-        return new Ponto3D(this.x/norma,this.x/norma,this.x/norma );
-    }
-    
     @Override
     public String toString(){
         return ("["+String.valueOf(x)+", "+String.valueOf(y)+", "+String.valueOf(z)+"]" );
