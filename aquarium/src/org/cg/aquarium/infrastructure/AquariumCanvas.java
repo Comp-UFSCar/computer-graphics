@@ -1,4 +1,4 @@
-package org.cg.infrastructure;
+package org.cg.aquarium.infrastructure;
 
 import com.sun.opengl.util.FPSAnimator;
 import javax.media.opengl.DebugGL;
@@ -8,6 +8,8 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.Aquarium;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  *
@@ -17,6 +19,10 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
 
     protected FPSAnimator animator;
     private GLU glu;
+
+    public AquariumCanvas(GLCapabilities capabilities) {
+        this(1366, 768, capabilities);
+    }
 
     public AquariumCanvas(int width, int height, GLCapabilities capabilities) {
         super(capabilities);
@@ -51,7 +57,13 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         // Perspective.
         float widthHeightRatio = (float) getWidth() / (float) getHeight();
         glu.gluPerspective(45, widthHeightRatio, 1, 1000);
-        glu.gluLookAt(0, 0, 100, 0, 0, 0, 0, 1, 0);
+
+        Camera c = Aquarium.getEnvironment().getCamera();
+
+        c.setPosition(new Vector(0, 0, 100));
+        c.setLookAt(new Vector(0, 0, 0));
+        c.setUp(new Vector(0, 1, 0));
+        c.adjustCameraOnScene(glu);
 
         // Change back to model view matrix.
         gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -70,6 +82,8 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         gl.glVertex3f(+20, -20, 0);
         gl.glVertex3f(0, 20, 0);
         gl.glEnd();
+
+        Aquarium.getEnvironment().getBodies().forEach(b -> b.display(gl));
     }
 
     @Override

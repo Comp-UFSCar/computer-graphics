@@ -2,8 +2,8 @@ package org.cg.aquarium;
 
 import com.sun.opengl.util.Animator;
 import javax.media.opengl.GLCapabilities;
-import org.cg.infrastructure.AquariumCanvas;
-import org.cg.infrastructure.Environment;
+import org.cg.aquarium.infrastructure.AquariumCanvas;
+import org.cg.aquarium.infrastructure.Environment;
 
 /**
  * Aquarium singleton for scene coordination.
@@ -24,7 +24,7 @@ public class Aquarium extends Environment {
         capabilities.setGreenBits(8);
         capabilities.setAlphaBits(8);
 
-        canvas = new AquariumCanvas(1366, 768, capabilities);
+        canvas = new AquariumCanvas(capabilities);
         canvas.addGLEventListener(canvas);
 
         animator = new Animator(canvas);
@@ -32,8 +32,8 @@ public class Aquarium extends Environment {
     }
 
     @Override
-    public Environment update() {
-        return this;
+    public void update() {
+        bodies.stream().forEach(b -> b.update());
     }
 
     public AquariumCanvas getCanvas() {

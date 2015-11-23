@@ -1,6 +1,6 @@
-package org.cg.infrastructure;
+package org.cg.aquarium.infrastructure;
 
-import org.cg.infrastructure.representations.Vector;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Represents a basic lighting model (flat).

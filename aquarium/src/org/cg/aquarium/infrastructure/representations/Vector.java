@@ -1,4 +1,4 @@
-package org.cg.infrastructure.representations;
+package org.cg.aquarium.infrastructure.representations;
 
 /**
  * Represents a vector in the 3-dimensional space.

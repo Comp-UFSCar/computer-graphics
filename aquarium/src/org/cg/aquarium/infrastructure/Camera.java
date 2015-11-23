@@ -1,8 +1,8 @@
-package org.cg.infrastructure;
+package org.cg.aquarium.infrastructure;
 
 import javax.media.opengl.glu.GLU;
-import org.cg.infrastructure.base.Interactive;
-import org.cg.infrastructure.representations.Vector;
+import org.cg.aquarium.infrastructure.base.Interactive;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Camera in the environment.
@@ -20,7 +20,7 @@ public class Camera implements Interactive {
     public Camera() {
         this(new Vector(0, 0, -1000), Vector.ORIGIN, new Vector(0, 1, 0));
     }
-
+    
     public Camera(Vector position, Vector lookAt, Vector up) {
         this.position = position;
         this.lookAt = lookAt;
@@ -55,7 +55,7 @@ public class Camera implements Interactive {
         glu.gluLookAt(position.getX(),
                 position.getY(),
                 position.getZ(),
-                position.getX(),
+                lookAt.getX(),
                 lookAt.getY(),
                 lookAt.getZ(),
                 up.getX(),

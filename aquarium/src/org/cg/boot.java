@@ -11,7 +11,7 @@ import org.cg.aquarium.Aquarium;
  * @author ldavid
  */
 public class boot {
-    
+
     static final String TITLE = "Aquarium";
     private static Aquarium aquarium;
 
@@ -21,7 +21,8 @@ public class boot {
         aquarium = Aquarium.getAquarium();
 
         frame.add(aquarium.getCanvas());
-        frame.setSize(1366, 768);
+        frame.setSize(aquarium.getCanvas().getWidth(),
+                aquarium.getCanvas().getHeight());
 
         frame.addWindowListener(new WindowAdapter() {
 

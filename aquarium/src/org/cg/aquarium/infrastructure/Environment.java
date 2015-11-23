@@ -1,10 +1,11 @@
-package org.cg.infrastructure;
+package org.cg.aquarium.infrastructure;
 
 import java.util.LinkedList;
-import org.cg.solar.Body;
 
 /**
- * Environment singleton for scene coordination.
+ * Environment for scene coordination.
+ * 
+ * This class will most likely be extended by a singleton.
  *
  * @author ldavid
  */
@@ -23,14 +24,12 @@ public abstract class Environment {
     }
     
     /**
-     * Updates all components.
-     *
+     * Update all environment components.
+     * 
      * Should be called when environmental changes happen, such as lighting or
      * camera movement.
-     *
-     * @return this.
      */
-    public abstract Environment update();
+    public abstract void update();
 
     public Camera getCamera() {
         return camera;
@@ -42,5 +41,9 @@ public abstract class Environment {
 
     public static Environment getEnvironment() {
         return environment;
+    }
+
+    public LinkedList<Body> getBodies() {
+        return bodies;
     }
 }

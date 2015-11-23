@@ -1,6 +1,7 @@
-package org.cg.infrastructure.base;
+package org.cg.aquarium.infrastructure.base;
 
-import org.cg.infrastructure.representations.Vector;
+import org.cg.aquarium.infrastructure.representations.Vector;
+
 
 /**
  * Implementations of this interface will move onto the canvas.
