@@ -165,13 +165,13 @@ public class VectorTest extends TestCase {
     }
 
     /**
-     * Test of length method, of class Vector.
+     * Test of norm method, of class Vector.
      */
     public void testLength() {
         System.out.println("length");
 
         float expected = 5;
-        float actual = new Vector(3, 4, 0).length();
+        float actual = new Vector(3, 4, 0).norm();
         assertEquals(expected, actual, 0.0);
     }
 

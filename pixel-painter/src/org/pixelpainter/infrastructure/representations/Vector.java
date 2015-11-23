@@ -1,6 +1,5 @@
 package org.pixelpainter.infrastructure.representations;
 
-import org.pixelpainter.infrastructure.Camera;
 import org.pixelpainter.infrastructure.Environment;
 
 /**
@@ -121,8 +120,8 @@ public class Vector {
     /**
      * Dot-product between two vectors.
      *
-     * @param v
-     * @return
+     * @param v the other vector.
+     * @return float the dot-product between two vectors.
      */
     public float dot(Vector v) {
         return x * v.x + y * v.y + z * v.z;
@@ -147,21 +146,25 @@ public class Vector {
     }
 
     /**
-     * Length of the vector. Calculated by the square root of X² + Y² + Z².
+     * Norm of the vector.
+     * 
+     * Calculated by the square root of X² + Y² + Z².
      *
-     * @return
+     * @return float the norm of this vector.
      */
-    public float length() {
-        return (float) Math.sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+    public float norm() {
+        return (float) Math.sqrt(dot(this));
     }
 
     /**
-     * Normalizes the vector. Divides each component by the length of the vector.
+     * Normalizes the vector.
+     * 
+     * Divides each component by the norm of the vector.
      *
-     * @return
+     * @return the vector normalized.
      */
     public Vector normalize() {
-        return scale(1 / length());
+        return scale(1 / norm());
     }
 
     /**
@@ -198,7 +201,7 @@ public class Vector {
      * 
      * The vectors are in octant order, starting at the first octant.
      *
-     * @return An array of length 8 with the octant variations of this vector.
+     * @return An array of norm 8 with the octant variations of this vector.
      */
     public Vector[] allOctants() {
         return new Vector[]{
@@ -220,7 +223,7 @@ public class Vector {
      * @return the distance between this vector and the given vector.
      */
     public float l2Distance(Vector v) {
-        return delta(v).length();
+        return delta(v).norm();
     }
 
     /**

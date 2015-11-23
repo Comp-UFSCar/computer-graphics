@@ -27,7 +27,6 @@ public class Pencil extends Drawing {
      * Translates every point by a certain amount.
      *
      * @param point determines dx/dy of the movement
-     * @return this
      */
     @Override
     public void moveTo(Vector point) {
@@ -43,7 +42,6 @@ public class Pencil extends Drawing {
      * Adds a new point to the list of points to be drawn.
      *
      * @param point new point in the collection
-     * @return this
      */
     @Override
     public void reshape(Vector point) {

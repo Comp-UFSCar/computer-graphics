@@ -13,7 +13,6 @@ public interface Interactive {
      * Move object to a given point in space.
      *
      * @param v the point to where the object should be moved.
-     * @return this.
      */
     public void moveTo(Vector v);
 
