@@ -50,22 +50,14 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         GL gl = drawable.getGL();
         gl.glViewport(0, 0, width, height);
 
-        // Change to projection matrix.
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        // Perspective.
         float widthHeightRatio = (float) getWidth() / (float) getHeight();
         glu.gluPerspective(45, widthHeightRatio, 1, 1000);
 
-        Camera c = Aquarium.getEnvironment().getCamera();
+        Aquarium.getEnvironment().getCamera().adjustCameraOnScene(glu);
 
-        c.setPosition(new Vector(0, 0, 100));
-        c.setLookAt(new Vector(0, 0, 0));
-        c.setUp(new Vector(0, 1, 0));
-        c.adjustCameraOnScene(glu);
-
-        // Change back to model view matrix.
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
     }
@@ -74,14 +66,7 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
     public void display(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
-        // Write triangle.
-        gl.glColor3f(1f, 0, 0);
-        gl.glBegin(GL.GL_TRIANGLE_FAN);
-        gl.glVertex3f(-20, -20, 0);
-        gl.glVertex3f(+20, -20, 0);
-        gl.glVertex3f(0, 20, 0);
-        gl.glEnd();
+        gl.glLoadIdentity();
 
         Aquarium.getEnvironment().getBodies().forEach(b -> b.display(gl));
     }

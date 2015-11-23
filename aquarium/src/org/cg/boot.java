@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
+import org.cg.aquarium.bodies.ReferenceTriangle;
 
 /**
  * Bootstrap class for Aquarium.
@@ -35,7 +36,16 @@ public class boot {
             }
         });
 
+        populateEcosystem();
+
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    protected static void populateEcosystem() {
+
+        for (int i = 0; i < 10; i++) {
+            aquarium.addToEcosystem(new ReferenceTriangle());
+        }
     }
 }

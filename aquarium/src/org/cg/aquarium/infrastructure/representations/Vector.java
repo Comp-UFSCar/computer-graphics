@@ -13,6 +13,8 @@ public class Vector {
     public final static Vector ORIGIN = new Vector(0, 0, 0);
     public final static Vector UP = new Vector(0, 1, 0);
     public final static Vector DOWN = new Vector(0, -1, 0);
+    public final static Vector LEFT = new Vector(-1, 0, 0);
+    public final static Vector RIGHT = new Vector(1, 0, 0);
 
     private final float x;
 
@@ -277,5 +279,12 @@ public class Vector {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ")";
+    }
+
+    public static Vector random() {
+        return new Vector(
+                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()),
+                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()),
+                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()));
     }
 }

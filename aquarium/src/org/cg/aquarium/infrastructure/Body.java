@@ -1,6 +1,7 @@
 package org.cg.aquarium.infrastructure;
 
 import org.cg.aquarium.infrastructure.base.Visible;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Body base class.
@@ -10,6 +11,16 @@ import org.cg.aquarium.infrastructure.base.Visible;
  * @author ldavid
  */
 public abstract class Body implements Visible {
+
+    protected Vector position = Vector.ORIGIN;
+
+    public Vector getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector position) {
+        this.position = position;
+    }
 
     public abstract void update();
 
