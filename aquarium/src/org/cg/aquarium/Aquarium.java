@@ -2,7 +2,6 @@ package org.cg.aquarium;
 
 import com.sun.opengl.util.Animator;
 import javax.media.opengl.GLCapabilities;
-import org.cg.aquarium.bodies.ReferenceTriangle;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.Environment;

@@ -26,6 +26,8 @@ public abstract class Environment {
     protected Thread time;
     protected Lock timeLock;
 
+    protected long tick;
+
     protected Environment() {
         camera = new Camera();
         light = new Lighting();
@@ -38,6 +40,7 @@ public abstract class Environment {
                 timeLock.lock();
                 try {
                     update();
+                    tick++;
                     Thread.sleep(refreshPeriod);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,5 +85,9 @@ public abstract class Environment {
 
     public void setRefreshPeriod(long refreshPeriod) {
         this.refreshPeriod = refreshPeriod;
+    }
+
+    public long getTick() {
+        return tick;
     }
 }

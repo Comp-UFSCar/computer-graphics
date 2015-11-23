@@ -44,7 +44,7 @@ public class boot {
 
     protected static void populateEcosystem() {
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             aquarium.addToEcosystem(new ReferenceTriangle());
         }
     }
