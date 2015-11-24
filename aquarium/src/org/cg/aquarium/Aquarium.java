@@ -5,7 +5,6 @@ import javax.media.opengl.GLCapabilities;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.Environment;
-import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Aquarium singleton for scene coordination.
@@ -35,7 +34,7 @@ public class Aquarium extends Environment {
 
     @Override
     public void update() {
-//        bodies.stream().forEach(b -> b.update());
+        bodies.stream().forEach(b -> b.update());
     }
 
     public AquariumCanvas getCanvas() {
