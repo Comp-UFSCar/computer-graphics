@@ -1,7 +1,6 @@
 package org.cg.aquarium.infrastructure;
 
 import com.sun.opengl.util.FPSAnimator;
-import java.util.HashSet;
 import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -66,13 +65,12 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
     public void display(GLAutoDrawable drawable) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        
-        Aquarium
-                .getAquarium()
+
+        Aquarium.getAquarium()
                 .getAndCleanChanged().stream()
                 .forEach(o -> o.processChanges(gl, glu));
 
-        Aquarium.getEnvironment().getBodies().forEach(b -> b.display(gl));
+        Aquarium.getEnvironment().getBodies().forEach(b -> b.display(gl, glu));
     }
 
     @Override

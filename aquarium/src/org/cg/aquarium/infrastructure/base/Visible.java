@@ -1,6 +1,7 @@
 package org.cg.aquarium.infrastructure.base;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 /**
  * Visible interface.
@@ -16,6 +17,7 @@ public interface Visible {
      * Draws the object onto the canvas.
      *
      * @param gl OpenGL object which can be used to draw onto the screen.
+     * @param glu GLU object which can be used to draw onto the screen.
      */
-    public abstract void display(GL gl);
+    public abstract void display(GL gl, GLU glu);
 }

@@ -1,5 +1,7 @@
 package org.cg.aquarium.infrastructure.representations;
 
+import java.util.Random;
+
 /**
  * Represents a vector in the 3-dimensional space.
  *
@@ -281,10 +283,10 @@ public class Vector {
         return "(" + x + ", " + y + ", " + z + ")";
     }
 
-    public static Vector random() {
+    public static Vector random(Random r) {
         return new Vector(
-                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()),
-                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()),
-                (float) ((Math.random() > .5 ? 1 : -1) * Math.random()));
+                (r.nextBoolean() ? 1 : -1) * r.nextFloat(),
+                (r.nextBoolean() ? 1 : -1) * r.nextFloat(),
+                (r.nextBoolean() ? 1 : -1) * r.nextFloat());
     }
 }

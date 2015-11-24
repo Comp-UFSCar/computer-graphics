@@ -2,6 +2,7 @@ package org.cg.aquarium.infrastructure;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -25,10 +26,12 @@ public abstract class Environment {
     protected LinkedList<Body> bodies;
     protected Set<GraphicsMutator> changed;
 
-    protected long refreshPeriod = 1;
+    protected long refreshPeriod = 100;
     protected Thread time;
     protected Lock tickL;
     protected Lock changeL;
+
+    protected Random random;
 
     protected long tick;
 
@@ -37,6 +40,8 @@ public abstract class Environment {
         light = new Lighting();
         bodies = new LinkedList<>();
         changed = new HashSet<>();
+
+        random = new Random();
 
         tickL = new ReentrantLock();
         changeL = new ReentrantLock();
@@ -70,34 +75,6 @@ public abstract class Environment {
      */
     public abstract void update();
 
-    public Camera getCamera() {
-        return camera;
-    }
-
-    public Lighting getLight() {
-        return light;
-    }
-
-    public static Environment getEnvironment() {
-        return environment;
-    }
-
-    public LinkedList<Body> getBodies() {
-        return bodies;
-    }
-
-    public long getRefreshPeriod() {
-        return refreshPeriod;
-    }
-
-    public void setRefreshPeriod(long refreshPeriod) {
-        this.refreshPeriod = refreshPeriod;
-    }
-
-    public long getTick() {
-        return tick;
-    }
-
     public void notifyChanged(GraphicsMutator c) {
         changeL.lock();
 
@@ -123,4 +100,37 @@ public abstract class Environment {
 
         return c;
     }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public Lighting getLight() {
+        return light;
+    }
+
+    public static Environment getEnvironment() {
+        return environment;
+    }
+
+    public LinkedList<Body> getBodies() {
+        return bodies;
+    }
+
+    public long getTick() {
+        return tick;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public long getRefreshPeriod() {
+        return refreshPeriod;
+    }
+
+    public void setRefreshPeriod(long refreshPeriod) {
+        this.refreshPeriod = refreshPeriod;
+    }
+
 }

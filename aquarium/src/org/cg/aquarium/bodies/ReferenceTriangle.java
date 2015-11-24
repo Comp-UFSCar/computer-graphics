@@ -1,6 +1,7 @@
 package org.cg.aquarium.bodies;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
@@ -23,8 +24,11 @@ public class ReferenceTriangle extends Body implements Mobile {
     public ReferenceTriangle() {
         super();
 
-        direction = Vector.random().normalize();
-        color = Color.random();
+        position = Vector.ORIGIN;
+
+        direction = Vector.random(Environment.getEnvironment()
+                .getRandom()).normalize();
+        color = Color.random(Environment.getEnvironment().getRandom());
     }
 
     @Override
@@ -33,7 +37,7 @@ public class ReferenceTriangle extends Body implements Mobile {
     }
 
     @Override
-    public void display(GL gl) {
+    public void display(GL gl, GLU glu) {
         gl.glColor3f(color.getRed(), color.getBlue(), color.getGreen());
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
         gl.glBegin(GL.GL_TRIANGLE_FAN);
@@ -46,7 +50,9 @@ public class ReferenceTriangle extends Body implements Mobile {
     @Override
     public void move() {
         if (Environment.getEnvironment().getTick() % ITERATIONS_TO_CHANGE == 0) {
-            direction = Vector.random().normalize();
+            direction = Vector
+                    .random(Environment.getEnvironment().getRandom())
+                    .normalize();
 
             Vector v = Vector.ORIGIN.delta(position);
             if (v.norm() > MAX_DISTANCE_FROM_ORIGIN) {

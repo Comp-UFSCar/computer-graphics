@@ -20,7 +20,7 @@ public class Camera implements Interactive, GraphicsMutator {
     Vector up;
 
     public Camera() {
-        this(new Vector(0, 0, -100), Vector.ORIGIN, new Vector(0, 1, 0));
+        this(new Vector(0, 0, 100), Vector.ORIGIN, new Vector(0, 1, 0));
     }
 
     public Camera(Vector position, Vector lookAt, Vector up) {

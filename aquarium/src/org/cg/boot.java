@@ -46,9 +46,12 @@ public class boot {
     }
 
     protected static void populateEcosystem() {
+        System.out.print("Populating ecosystem... ");
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 1000; i++) {
             aquarium.addToEcosystem(new ReferenceTriangle());
         }
+
+        System.out.println("Done.");
     }
 }
