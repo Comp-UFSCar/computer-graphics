@@ -1,6 +1,7 @@
 package org.cg.aquarium.infrastructure;
 
 import com.sun.opengl.util.FPSAnimator;
+import java.util.HashSet;
 import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -9,7 +10,6 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.Aquarium;
-import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  *
@@ -17,8 +17,9 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class AquariumCanvas extends GLCanvas implements GLEventListener {
 
-    protected FPSAnimator animator;
+    private GL gl;
     private GLU glu;
+    protected FPSAnimator animator;
 
     public AquariumCanvas(GLCapabilities capabilities) {
         this(1366, 768, capabilities);
@@ -31,7 +32,7 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
 
     @Override
     public void init(GLAutoDrawable drawable) {
-        GL gl = drawable.getGL();
+        gl = drawable.getGL();
         glu = new GLU();
         drawable.setGL(new DebugGL(gl));
 
@@ -47,7 +48,6 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-        GL gl = drawable.getGL();
         gl.glViewport(0, 0, width, height);
 
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -56,7 +56,7 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         float widthHeightRatio = (float) getWidth() / (float) getHeight();
         glu.gluPerspective(45, widthHeightRatio, 1, 1000);
 
-        Aquarium.getEnvironment().getCamera().adjustCameraOnScene(glu);
+        Aquarium.getEnvironment().getCamera().processChanges(gl, glu);
 
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -64,9 +64,13 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
+        
+        Aquarium
+                .getAquarium()
+                .getAndCleanChanged().stream()
+                .forEach(o -> o.processChanges(gl, glu));
 
         Aquarium.getEnvironment().getBodies().forEach(b -> b.display(gl));
     }

@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.bodies.ReferenceTriangle;
+import org.cg.aquarium.infrastructure.KeyboardListener;
 
 /**
  * Bootstrap class for Aquarium.
@@ -35,6 +36,8 @@ public class boot {
                 }).start();
             }
         });
+
+        aquarium.getCanvas().addKeyListener(new KeyboardListener());
 
         populateEcosystem();
 

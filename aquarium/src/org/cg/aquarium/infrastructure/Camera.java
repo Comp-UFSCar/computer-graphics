@@ -1,26 +1,28 @@
 package org.cg.aquarium.infrastructure;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.infrastructure.base.Interactive;
 import org.cg.aquarium.infrastructure.representations.Vector;
+import org.cg.aquarium.infrastructure.base.GraphicsMutator;
 
 /**
  * Camera in the environment.
- * 
+ *
  * Class used by Environment to calculate projections.
  *
  * @author ldavid
  */
-public class Camera implements Interactive {
+public class Camera implements Interactive, GraphicsMutator {
 
     Vector position;
     Vector lookAt;
     Vector up;
 
     public Camera() {
-        this(new Vector(0, 0, -1000), Vector.ORIGIN, new Vector(0, 1, 0));
+        this(new Vector(0, 0, -100), Vector.ORIGIN, new Vector(0, 1, 0));
     }
-    
+
     public Camera(Vector position, Vector lookAt, Vector up) {
         this.position = position;
         this.lookAt = lookAt;
@@ -51,7 +53,21 @@ public class Camera implements Interactive {
         this.up = up;
     }
 
-    public void adjustCameraOnScene(GLU glu) {
+    @Override
+    public void moveTo(Vector v) {
+        setPosition(v);
+    }
+
+    @Override
+    public void move(Vector v) {
+        moveTo(position.add(v));
+        Environment.getEnvironment().notifyChanged(this);
+    }
+
+    @Override
+    public void processChanges(GL gl, GLU glu) {
+        System.out.println("Process changes on camera: " + position.toString());
+
         glu.gluLookAt(position.getX(),
                 position.getY(),
                 position.getZ(),
@@ -61,15 +77,5 @@ public class Camera implements Interactive {
                 up.getX(),
                 up.getY(),
                 up.getZ());
-    }
-
-    @Override
-    public void moveTo(Vector v) {
-        setPosition(v);
-    }
-
-    @Override
-    public void move(Vector v) {
-        moveTo(position.add(v));
     }
 }

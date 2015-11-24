@@ -1,11 +1,13 @@
 package org.cg.aquarium.infrastructure;
 
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.concurrent.locks.Condition;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cg.aquarium.infrastructure.base.GraphicsMutator;
 
 /**
  * Environment for scene coordination.
@@ -21,10 +23,12 @@ public abstract class Environment {
     protected Camera camera;
     protected Lighting light;
     protected LinkedList<Body> bodies;
+    protected Set<GraphicsMutator> changed;
 
     protected long refreshPeriod = 1;
     protected Thread time;
-    protected Lock timeLock;
+    protected Lock tickL;
+    protected Lock changeL;
 
     protected long tick;
 
@@ -32,21 +36,24 @@ public abstract class Environment {
         camera = new Camera();
         light = new Lighting();
         bodies = new LinkedList<>();
+        changed = new HashSet<>();
 
-        this.timeLock = new ReentrantLock();
+        tickL = new ReentrantLock();
+        changeL = new ReentrantLock();
 
         time = new Thread(() -> {
             while (true) {
-                timeLock.lock();
+                tickL.lock();
                 try {
                     update();
                     tick++;
+
                     Thread.sleep(refreshPeriod);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
                     return;
                 } finally {
-                    timeLock.unlock();
+                    tickL.unlock();
                 }
             }
         });
@@ -89,5 +96,31 @@ public abstract class Environment {
 
     public long getTick() {
         return tick;
+    }
+
+    public void notifyChanged(GraphicsMutator c) {
+        changeL.lock();
+
+        try {
+            changed.add(c);
+        } finally {
+            changeL.unlock();
+        }
+    }
+
+    public Set<GraphicsMutator> getAndCleanChanged() {
+        Set<GraphicsMutator> c;
+
+        changeL.lock();
+
+        try {
+            c = changed;
+            changed = new HashSet<>();
+
+        } finally {
+            changeL.unlock();
+        }
+
+        return c;
     }
 }

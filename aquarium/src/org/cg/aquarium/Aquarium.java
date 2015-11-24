@@ -20,10 +20,6 @@ public class Aquarium extends Environment {
     protected Aquarium() {
         super();
 
-        camera.setPosition(new Vector(0, 0, 100));
-        camera.setLookAt(new Vector(0, 0, 0));
-        camera.setUp(new Vector(0, 1, 0));
-
         GLCapabilities capabilities = new GLCapabilities();
         capabilities.setRedBits(8);
         capabilities.setBlueBits(8);
@@ -39,7 +35,7 @@ public class Aquarium extends Environment {
 
     @Override
     public void update() {
-        bodies.stream().forEach(b -> b.update());
+//        bodies.stream().forEach(b -> b.update());
     }
 
     public AquariumCanvas getCanvas() {
@@ -59,11 +55,11 @@ public class Aquarium extends Environment {
     }
 
     public void addToEcosystem(Body b) {
-        timeLock.lock();
+        tickL.lock();
         try {
             bodies.add(b);
         } finally {
-            timeLock.unlock();
+            tickL.unlock();
         }
     }
 
@@ -77,12 +73,12 @@ public class Aquarium extends Environment {
 
     public boolean removeFromEcosystem(Body b) {
         boolean removed;
-        timeLock.lock();
+        tickL.lock();
 
         try {
             removed = bodies.remove(b);
         } finally {
-            timeLock.unlock();
+            tickL.unlock();
         }
 
         return removed;
