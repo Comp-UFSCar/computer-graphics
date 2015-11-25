@@ -26,7 +26,7 @@ public abstract class Environment {
     protected LinkedList<Body> bodies;
     protected Set<GraphicsMutator> changed;
 
-    protected long refreshPeriod = 100;
+    protected long refreshPeriod = 10;
     protected Thread time;
     protected Lock tickL;
     protected Lock changeL;
@@ -34,19 +34,17 @@ public abstract class Environment {
     protected Random random;
 
     protected long tick;
+    private boolean debugging;
 
-    protected Environment() {
-        camera = new Camera();
-        light = new Lighting();
-        bodies = new LinkedList<>();
-        changed = new HashSet<>();
+    protected class Tick extends Thread {
 
-        random = new Random();
+        public Tick() {
+            super();
+            setDaemon(true);
+        }
 
-        tickL = new ReentrantLock();
-        changeL = new ReentrantLock();
-
-        time = new Thread(() -> {
+        @Override
+        public void run() {
             while (true) {
                 tickL.lock();
                 try {
@@ -61,9 +59,23 @@ public abstract class Environment {
                     tickL.unlock();
                 }
             }
-        });
+        }
+    }
 
-        time.setDaemon(true);
+    protected Environment() {
+        camera = new Camera();
+        light = new Lighting();
+        bodies = new LinkedList<>();
+        changed = new HashSet<>();
+
+        random = new Random();
+
+        tickL = new ReentrantLock();
+        changeL = new ReentrantLock();
+        time = new Tick();
+    }
+
+    public void start() {
         time.start();
     }
 
@@ -133,4 +145,11 @@ public abstract class Environment {
         this.refreshPeriod = refreshPeriod;
     }
 
+    public boolean isDebugging() {
+        return debugging;
+    }
+
+    public void setDebugging(boolean debugging) {
+        this.debugging = debugging;
+    }
 }
