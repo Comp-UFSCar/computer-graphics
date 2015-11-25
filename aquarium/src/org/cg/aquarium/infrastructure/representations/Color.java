@@ -1,6 +1,7 @@
 package org.cg.aquarium.infrastructure.representations;
 
 import java.util.Random;
+import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 
 /**
@@ -9,6 +10,10 @@ import org.cg.aquarium.infrastructure.helpers.MathHelper;
  * @author Diorge-Mephy
  */
 public class Color {
+
+    public final static Color RED = new Color(1, 0, 0);
+    public final static Color GREEN = new Color(0, 1, 0);
+    public final static Color BLUE = new Color(0, 0, 1);
 
     private final float red;
 
@@ -104,10 +109,7 @@ public class Color {
     }
 
     public static Color random() {
-        return new Color(
-                (float) Math.random(),
-                (float) Math.random(),
-                (float) Math.random());
+        return random(Environment.getEnvironment().getRandom());
     }
 
     /**

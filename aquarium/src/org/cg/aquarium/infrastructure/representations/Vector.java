@@ -1,6 +1,7 @@
 package org.cg.aquarium.infrastructure.representations;
 
 import java.util.Random;
+import org.cg.aquarium.infrastructure.Environment;
 
 /**
  * Represents a vector in the 3-dimensional space.
@@ -281,6 +282,10 @@ public class Vector {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ")";
+    }
+
+    public static Vector random() {
+        return random(Environment.getEnvironment().getRandom());
     }
 
     public static Vector random(Random r) {
