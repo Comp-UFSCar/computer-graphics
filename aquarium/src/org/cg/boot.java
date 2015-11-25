@@ -4,7 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
-import org.cg.aquarium.bodies.ReferenceTriangle;
+import org.cg.aquarium.bodies.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
 
 /**
@@ -15,12 +15,15 @@ import org.cg.aquarium.infrastructure.KeyboardListener;
 public class boot {
 
     static final String TITLE = "Aquarium";
-    private static Aquarium aquarium;
+    static final boolean DEBUGGING = true;
+
+    static Aquarium aquarium;
 
     public static void main(String[] args) {
         Frame frame = new Frame(TITLE);
 
         aquarium = Aquarium.getAquarium();
+        aquarium.setDebugging(DEBUGGING);
 
         frame.add(aquarium.getCanvas());
         frame.setSize(aquarium.getCanvas().getWidth(),
@@ -39,19 +42,10 @@ public class boot {
 
         aquarium.getCanvas().addKeyListener(new KeyboardListener());
 
-        populateEcosystem();
+        aquarium.addToEcosystem(new Shoal(90));
+        aquarium.start();
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    protected static void populateEcosystem() {
-        System.out.print("Populating ecosystem... ");
-
-        for (int i = 0; i < 1000; i++) {
-            aquarium.addToEcosystem(new ReferenceTriangle());
-        }
-
-        System.out.println("Done.");
     }
 }

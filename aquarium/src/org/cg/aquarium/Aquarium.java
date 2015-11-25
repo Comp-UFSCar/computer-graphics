@@ -4,7 +4,11 @@ import com.sun.opengl.util.Animator;
 import javax.media.opengl.GLCapabilities;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
+import org.cg.aquarium.infrastructure.colliders.Collider;
 import org.cg.aquarium.infrastructure.Environment;
+import org.cg.aquarium.infrastructure.colliders.BoxCollider;
+import org.cg.aquarium.infrastructure.helpers.Debug;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Aquarium singleton for scene coordination.
@@ -15,9 +19,14 @@ public class Aquarium extends Environment {
 
     protected final AquariumCanvas canvas;
     protected final Animator animator;
+    protected final Collider collider;
 
     protected Aquarium() {
         super();
+
+        collider = new BoxCollider(
+                Vector.ORIGIN, new Vector(100, 100, 100)
+        );
 
         GLCapabilities capabilities = new GLCapabilities();
         capabilities.setRedBits(8);
@@ -54,12 +63,16 @@ public class Aquarium extends Environment {
     }
 
     public void addToEcosystem(Body b) {
+        Debug.info("Populating ecosystem...");
+
         tickL.lock();
         try {
             bodies.add(b);
         } finally {
             tickL.unlock();
         }
+        
+        Debug.info("Ecosystem population complete.");
     }
 
     public boolean removeFromEcosystem() {
@@ -81,5 +94,9 @@ public class Aquarium extends Environment {
         }
 
         return removed;
+    }
+
+    public Collider getCollider() {
+        return collider;
     }
 }
