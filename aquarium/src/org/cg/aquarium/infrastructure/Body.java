@@ -12,7 +12,15 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public abstract class Body implements Visible {
 
-    protected Vector position = Vector.ORIGIN;
+    protected Vector position;
+
+    public Body() {
+        this(Vector.ORIGIN);
+    }
+
+    public Body(Vector position) {
+        this.position = position;
+    }
 
     public Vector getPosition() {
         return position;

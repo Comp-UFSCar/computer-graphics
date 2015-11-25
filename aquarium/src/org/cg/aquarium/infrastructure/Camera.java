@@ -66,7 +66,9 @@ public class Camera implements Interactive, GraphicsMutator {
 
     @Override
     public void processChanges(GL gl, GLU glu) {
-        System.out.println("Process changes on camera: " + position.toString());
+        if (Environment.getEnvironment().isDebugging()) {
+            System.out.println("Process changes on camera: " + position.toString());
+        }
 
         glu.gluLookAt(position.getX(),
                 position.getY(),
