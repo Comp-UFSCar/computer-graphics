@@ -12,7 +12,7 @@ import org.cg.aquarium.infrastructure.KeyboardListener;
  *
  * @author ldavid
  */
-public class boot {
+public class Boot {
 
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = true;
