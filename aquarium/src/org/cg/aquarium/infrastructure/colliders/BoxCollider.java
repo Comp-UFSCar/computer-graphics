@@ -6,20 +6,39 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  *
  * @author ldavid
  */
-public class BoxCollider extends Collider {
+public class BoxCollider implements Collider {
+
+    protected Vector start;
+    protected Vector end;
 
     public BoxCollider(Vector start, Vector end) {
-        super(start, end);
+        this.start = start;
+        this.end = end;
     }
 
     @Override
-    public Vector closestPointOf(Vector v) {
+    public Vector closestPointFrom(Vector v) {
         return start.delta(v).norm() < end.delta(v).norm() ? start : end;
     }
 
     @Override
-    public Vector farthestPointOf(Vector v) {
+    public Vector farthestPointFrom(Vector v) {
         return start.delta(v).norm() > end.delta(v).norm() ? start : end;
+    }
+
+    @Override
+    public boolean isColliding(Collider c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean contains(Collider c) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Vector getCenter() {
+        return start.delta(end).scale(.5f).add(start);
     }
 
 }

@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
+import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -23,37 +24,39 @@ public class Fish extends Mobile {
             RANDOMIZE_DIRECTION = true;
 
     protected Color color;
+    protected Shoal shoal;
 
-    public Fish() {
-        this(Color.random());
+    public Fish(Shoal shoal) {
+        this(shoal, Color.random());
     }
 
-    public Fish(Color color) {
+    public Fish(Shoal shoal, Color color) {
         super();
+
+        this.shoal = shoal;
         setColor(color);
     }
-    
-    public Fish(Vector direction, float speed) {
-        this(Color.random(), direction, speed);
+
+    public Fish(Shoal shoal, Vector direction, float speed) {
+        this(shoal, Color.random(), direction, speed);
     }
 
-    public Fish(Color color, Vector direction, float speed) {
+    public Fish(Shoal shoal, Color color, Vector direction, float speed) {
         super(direction, speed);
+
+        this.shoal = shoal;
         setColor(color);
     }
-    
-    public Fish(Vector direction, float speed, Vector position) {
-        this(Color.random(), direction, speed, position);
+
+    public Fish(Shoal shoal, Vector direction, float speed, Vector position) {
+        this(shoal, Color.random(), direction, speed, position);
     }
 
-    public Fish(Color color, Vector direction, float speed, Vector position) {
+    public Fish(Shoal shoal, Color color, Vector direction, float speed, Vector position) {
         super(direction, speed, position);
-        setColor(color);
-    }
 
-    @Override
-    public void update() {
-        move();
+        this.shoal = shoal;
+        setColor(color);
     }
 
     @Override
@@ -94,6 +97,26 @@ public class Fish extends Mobile {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public void update() {
+        if (isPossiblyInDanger()) {
+            Debug.info("Fish in danger zone. Distance from shoal center: " + distanteFromShoalCenter());
+            headBackToShoal();
+        }
+    }
+
+    private void headBackToShoal() {
+        setDirection(shoal.getPosition().delta(position).normalize());
+    }
+
+    public boolean isPossiblyInDanger() {
+        return distanteFromShoalCenter() > shoal.radius;
+    }
+
+    public float distanteFromShoalCenter() {
+        return position.l2Distance(shoal.getPosition());
     }
 
 }

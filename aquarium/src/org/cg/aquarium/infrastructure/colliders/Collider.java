@@ -9,27 +9,15 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  *
  * @author ldavid
  */
-public abstract class Collider {
+public interface Collider {
 
-    protected Vector start;
-    protected Vector end;
+    public boolean isColliding(Collider c);
 
-    public Collider(Vector start, Vector end) {
-        this.start = start;
-        this.end = end;
-    }
+    public boolean contains(Collider c);
 
-    public boolean isColliding(Collider c) {
-        return c.closestPointOf(start).delta(start).norm()
-                < end.delta(start).norm();
-    }
+    public Vector closestPointFrom(Vector v);
 
-    public boolean contains(Collider c) {
-        return c.farthestPointOf(start).delta(start).norm()
-                < end.delta(start).norm();
-    }
+    public Vector farthestPointFrom(Vector v);
 
-    public abstract Vector closestPointOf(Vector v);
-
-    public abstract Vector farthestPointOf(Vector v);
+    public Vector getCenter();
 }

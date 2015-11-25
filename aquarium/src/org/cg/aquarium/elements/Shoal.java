@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.colliders.Collider;
@@ -30,27 +31,21 @@ public class Shoal extends Mobile {
     public Shoal() {
         this(new LinkedList<>());
 
-        this.collider = new SphereCollider(
-                position,
-                position.add(new Vector(radius, 0, 0)));
+        this.collider = new SphereCollider(position, radius);
     }
 
     public Shoal(List<Fish> shoal) {
         super();
         this.shoal = shoal;
 
-        this.collider = new SphereCollider(
-                position,
-                position.add(new Vector(radius, 0, 0)));
+        this.collider = new SphereCollider(position, radius);
     }
 
     public Shoal(List<Fish> shoal, Vector direction, float speed) {
         super(direction, speed);
         this.shoal = shoal;
 
-        this.collider = new SphereCollider(
-                position,
-                position.add(new Vector(radius, 0, 0)));
+        this.collider = new SphereCollider(position, radius);
     }
 
     public Shoal(
@@ -60,9 +55,7 @@ public class Shoal extends Mobile {
 
         this.shoal = shoal;
 
-        this.collider = new SphereCollider(
-                position,
-                position.add(new Vector(radius, 0, 0)));
+        this.collider = new SphereCollider(position, radius);
     }
 
     public Shoal(int size) {
@@ -86,8 +79,27 @@ public class Shoal extends Mobile {
         }
     }
 
+    @Override
+    public void display(GL gl, GLU glu) {
+        if (Environment.getEnvironment().isDebugging()) {
+            GLUT glut = new GLUT();
+
+            gl.glPushMatrix();
+            gl.glColor3f(.2f, .2f, .2f);
+            gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+            glut.glutWireSphere(radius, 10, 10);
+            gl.glPopMatrix();
+        }
+
+        shoal.stream().forEach(f -> f.display(gl, glu));
+    }
+
+    public Collider getCollider() {
+        return collider;
+    }
+
     public boolean addFish(Vector position) {
-        Fish f = new Fish(direction, speed, position);
+        Fish f = new Fish(this, direction, 2*speed, position);
 
         return addFish(f);
     }
@@ -108,26 +120,13 @@ public class Shoal extends Mobile {
     @Override
     public void update() {
         move();
-    }
 
-    @Override
-    public void display(GL gl, GLU glu) {
-        if (Environment.getEnvironment().isDebugging()) {
-            GLUT glut = new GLUT();
-
-            gl.glPushMatrix();
-            gl.glColor3f(.2f, .2f, .2f);
-            gl.glTranslatef(position.getX(), position.getY(), position.getZ());
-            glut.glutWireSphere(radius, 10, 10);
-            gl.glPopMatrix();
-        }
-
-        shoal.stream().forEach(f -> f.display(gl, glu));
+        shoal.stream().forEach(f -> f.update());
     }
 
     @Override
     public void move() {
-        if (position.norm() < maximumDistanceFromOrigin) {
+        if (isInsideAquarium()) {
             shoal.stream().forEach(f -> f.move());
         } else {
             Debug.info("Shoal's direction has changed:" + direction.toString());
@@ -141,4 +140,13 @@ public class Shoal extends Mobile {
 
         setPosition(position.add(direction.scale(speed)));
     }
+
+    public float distanceFromAquariumCenter() {
+        return position.norm();
+    }
+
+    public boolean isInsideAquarium() {
+        return distanceFromAquariumCenter() < maximumDistanceFromOrigin;
+    }
+
 }
