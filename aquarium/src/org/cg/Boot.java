@@ -4,7 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
-import org.cg.aquarium.bodies.Shoal;
+import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
 
 /**

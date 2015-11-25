@@ -1,4 +1,4 @@
-package org.cg.aquarium.bodies;
+package org.cg.aquarium.elements;
 
 import com.sun.opengl.util.GLUT;
 import java.util.LinkedList;

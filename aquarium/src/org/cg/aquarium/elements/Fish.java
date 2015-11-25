@@ -1,8 +1,7 @@
-package org.cg.aquarium.bodies;
+package org.cg.aquarium.elements;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.representations.Color;
