@@ -26,7 +26,7 @@ public abstract class Environment {
     protected LinkedList<Body> bodies;
     protected Set<GraphicsMutator> changed;
 
-    protected long refreshPeriod = 10;
+    protected long refreshPeriod = 16;
     protected Thread time;
     protected Lock tickL;
     protected Lock changeL;

@@ -15,7 +15,7 @@ import org.cg.aquarium.infrastructure.KeyboardListener;
 public class Boot {
 
     static final String TITLE = "Aquarium";
-    static final boolean DEBUGGING = true;
+    static final boolean DEBUGGING = false;
 
     static Aquarium aquarium;
 
@@ -42,7 +42,7 @@ public class Boot {
 
         aquarium.getCanvas().addKeyListener(new KeyboardListener());
 
-        aquarium.addToEcosystem(new Shoal(90));
+        aquarium.addToEcosystem(new Shoal(200));
         aquarium.start();
 
         frame.setLocationRelativeTo(null);

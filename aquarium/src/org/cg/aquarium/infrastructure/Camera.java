@@ -1,5 +1,6 @@
 package org.cg.aquarium.infrastructure;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.infrastructure.base.Interactive;
@@ -65,7 +66,7 @@ public class Camera implements Interactive, GraphicsMutator {
     }
 
     @Override
-    public void processChanges(GL gl, GLU glu) {
+    public void processChanges(GL gl, GLU glu, GLUT glut) {
         if (Environment.getEnvironment().isDebugging()) {
             System.out.println("Process changes on camera: " + position.toString());
         }

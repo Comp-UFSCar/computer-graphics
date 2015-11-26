@@ -1,5 +1,6 @@
 package org.cg.aquarium.infrastructure.colliders;
 
+import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -9,20 +10,20 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class SphereCollider implements Collider {
 
-    protected Vector center;
+    protected Mobile parent;
     protected float radius;
 
-    public SphereCollider(Vector center, float radius) {
+    public SphereCollider(Mobile parent, float radius) {
         if (radius < 0) {
             Debug.error(String.format("Cannot create SphereCollider with negative radius: ", radius));
         }
 
-        this.center = center;
+        this.parent = parent;
         this.radius = radius;
     }
 
-    public Vector getCenter() {
-        return center;
+    public Mobile getParent() {
+        return parent;
     }
 
     public float getRadius() {
@@ -31,24 +32,31 @@ public class SphereCollider implements Collider {
 
     @Override
     public boolean isColliding(Collider c) {
-        return c.closestPointFrom(center).delta(center).norm()
+        return c.closestPointFrom(parent.getPosition()).delta(parent.getPosition()).norm()
                 <= radius;
     }
 
     @Override
     public boolean contains(Collider c) {
-        return c.farthestPointFrom(center).delta(center).norm()
+        return c.farthestPointFrom(parent.getPosition()).delta(parent.getPosition()).norm()
                 <= radius;
     }
 
     @Override
     public Vector closestPointFrom(Vector v) {
-        return v.delta(center).normalize().scale(getRadius());
+        Vector center = getCenter();
+        return v.delta(center).normalize().scale(getRadius()).add(center);
     }
 
     @Override
     public Vector farthestPointFrom(Vector v) {
-        return v.delta(center).normalize().scale(-getRadius());
+        Vector center = getCenter();
+        return v.delta(center).normalize().scale(-getRadius()).add(center);
+    }
+
+    @Override
+    public Vector getCenter() {
+        return parent.getPosition();
     }
 
 }

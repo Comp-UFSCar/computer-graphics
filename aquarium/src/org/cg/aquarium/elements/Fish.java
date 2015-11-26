@@ -1,10 +1,9 @@
 package org.cg.aquarium.elements;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
-import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -17,11 +16,8 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Fish extends Mobile {
 
-    public final static float DIRECTION_RANDOMNESS = .1f,
-            SPEED_RANDOMNESS = .005f;
-
-    public final static boolean RANDOMIZE_SPEED = true,
-            RANDOMIZE_DIRECTION = true;
+    public static final float MAXIMUM_SAFE_DISTANCE = 2;
+    public static final float ALIGNMENT = .01f, SEPARATION = .1f, RANDOMNESS = .001f;
 
     protected Color color;
     protected Shoal shoal;
@@ -60,39 +56,12 @@ public class Fish extends Mobile {
     }
 
     @Override
-    public void display(GL gl, GLU glu) {
+    public void display(GL gl, GLU glu, GLUT glut) {
         gl.glPushMatrix();
         gl.glColor3f(color.getRed(), color.getGreen(), color.getBlue());
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
-        gl.glBegin(GL.GL_TRIANGLE_FAN);
-        gl.glVertex3f(-1, -1, 0);
-        gl.glVertex3f(+1, -1, 0);
-        gl.glVertex3f(0, 1, 0);
-        gl.glEnd();
+        glut.glutSolidSphere(1, 20, 20);
         gl.glPopMatrix();
-    }
-
-    @Override
-    public void setDirection(Vector direction) {
-        if (RANDOMIZE_DIRECTION) {
-            direction = direction.add(Vector
-                    .random()
-                    .normalize()
-                    .scale(DIRECTION_RANDOMNESS)
-            ).normalize();
-        }
-
-        this.direction = direction;
-    }
-
-    @Override
-    public void setSpeed(float speed) {
-        if (RANDOMIZE_SPEED) {
-            speed += Environment.getEnvironment().getRandom().nextFloat()
-                    * SPEED_RANDOMNESS;
-        }
-
-        this.speed = speed;
     }
 
     public void setColor(Color color) {
@@ -101,22 +70,41 @@ public class Fish extends Mobile {
 
     @Override
     public void update() {
-        if (isPossiblyInDanger()) {
-            Debug.info("Fish in danger zone. Distance from shoal center: " + distanteFromShoalCenter());
-            headBackToShoal();
-        }
+        Vector v = computeAlignment()
+                .add(computeCohersion())
+                .add(computeSeparation())
+                .add(Vector.random().scale(RANDOMNESS));
+
+        setDirection(direction.add(v).normalize());
+
+        move();
     }
 
     private void headBackToShoal() {
-        setDirection(shoal.getPosition().delta(position).normalize());
+        setDirection(shoal.collider
+                .closestPointFrom(position)
+                .delta(position)
+                .normalize());
     }
 
     public boolean isPossiblyInDanger() {
-        return distanteFromShoalCenter() > shoal.radius;
+        return distanceFromShoalCenter() > shoal.radius + MAXIMUM_SAFE_DISTANCE;
     }
 
-    public float distanteFromShoalCenter() {
+    public float distanceFromShoalCenter() {
         return position.l2Distance(shoal.getPosition());
+    }
+
+    private Vector computeAlignment() {
+        return shoal.getDirection().scale(ALIGNMENT);
+    }
+
+    private Vector computeCohersion() {
+        return shoal.getPosition().delta(position).normalize().scale(distanceFromShoalCenter() / shoal.radius / 10);
+    }
+
+    private Vector computeSeparation() {
+        return shoal.getPosition().delta(position).reflected().normalize().scale(SEPARATION);
     }
 
 }

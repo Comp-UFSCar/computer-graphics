@@ -5,9 +5,9 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Mobile.
- * 
- * Besides localization, subclasses will also have 
- * the capacity to move in the 3-dimensional space.
+ *
+ * Besides localization, subclasses will also have the capacity to move in the
+ * 3-dimensional space.
  *
  * @author ldavid
  */

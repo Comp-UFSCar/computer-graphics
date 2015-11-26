@@ -1,5 +1,6 @@
 package org.cg.aquarium.infrastructure.base;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
@@ -20,8 +21,9 @@ public interface GraphicsMutator {
      * Once a object is added to Environment.changed set, {@code processChanges}
      * will eventually be called.
      *
-     * @param gl the OpenGL object associated.
-     * @param glu the GLU object associated.
+     * @param gl the GL available instance.
+     * @param glu the GLU available instance.
+     * @param glut the GLUT available instance.
      */
-    public void processChanges(GL gl, GLU glu);
+    public void processChanges(GL gl, GLU glu, GLUT glut);
 }
