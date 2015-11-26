@@ -62,7 +62,7 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         gl.glShadeModel(GL.GL_SMOOTH);
         gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 //        gl.glClearColor(.2f, .6f, 1f, 1f);
-        gl.glClearColor(1, 1, 1, 1);
+        gl.glClearColor(.7f, .7f, 1, 1);
 
         animator = new FPSAnimator(this, 60);
         animator.start();
