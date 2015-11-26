@@ -76,7 +76,7 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         gl.glLoadIdentity();
 
         float widthHeightRatio = (float) getWidth() / (float) getHeight();
-        glu.gluPerspective(45, widthHeightRatio, 1, 1000);
+        glu.gluPerspective(45, widthHeightRatio, 10, 500);
 
         Aquarium.getEnvironment().getCamera().processChanges(gl, glu, glut);
 
