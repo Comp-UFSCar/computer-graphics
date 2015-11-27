@@ -50,12 +50,6 @@ public class Mobile extends Fish {
 
     @Override
     public void update() {
-        Vector v = computeCohersion()
-                .add(computeSeparation()).scale(.1f)
-                .add(Vector.random().scale(RANDOMNESS));
-
-        setDirection(direction.add(v).normalize());
-
         move();
     }
     
