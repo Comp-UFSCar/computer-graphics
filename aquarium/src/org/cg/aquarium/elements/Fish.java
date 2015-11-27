@@ -21,8 +21,8 @@ public class Fish extends Mobile {
     public static final float PREDATOR_DANGER_RADIUS = 1f;
 
     public static final float ALIGNMENT = .01f,
-            SEPARATION = .8f,
-            COHERSION = .01f,
+            COHERSION = .4f,
+            SEPARATION = .2f,
             EVASION = 1f,
             RANDOMNESS = .01f;
 
@@ -101,15 +101,15 @@ public class Fish extends Mobile {
     }
 
     protected Vector computeCohersion() {
-        return shoal.getPosition().delta(position).normalize()
+        return shoal.getPosition()
+                .delta(position)
+                .normalize()
                 .scale(COHERSION * distanceFromShoalCenter() / shoal.radius);
     }
 
     protected Vector computeSeparation() {
-        return shoal.getPosition()
-                .delta(position)
-                .normalize()
-                .scale(SEPARATION * distanceFromShoalCenter() / shoal.radius);
+        return shoal.getPosition().delta(position).reflected()
+                .normalize().scale(SEPARATION);
     }
 
     protected Vector computeRandomness() {
