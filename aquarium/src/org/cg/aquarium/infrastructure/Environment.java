@@ -2,13 +2,14 @@ package org.cg.aquarium.infrastructure;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.cg.aquarium.infrastructure.base.GraphicsMutator;
+import org.cg.aquarium.infrastructure.base.Visible;
 
 /**
  * Environment for scene coordination.
@@ -20,43 +21,50 @@ import org.cg.aquarium.infrastructure.base.GraphicsMutator;
 public abstract class Environment {
 
     protected static Environment environment;
+    public static final int THREADS = 6;
 
     protected Camera camera;
     protected Lighting light;
     protected LinkedList<Body> bodies;
-    protected Set<GraphicsMutator> changed;
+    protected Set<Visible> changed;
 
+    protected List<Tick> tickers;
     protected long refreshPeriod = 16;
-    protected Thread time;
     protected Lock tickL;
     protected Lock changeL;
 
     protected Random random;
 
-    protected long tick;
     private boolean debugging;
 
+    /**
+     * Tick.
+     *
+     * Thread Class helper for asynchronous bodies update.
+     */
     protected class Tick extends Thread {
 
-        public Tick() {
+        public int tickid;
+
+        public Tick(int tickId) {
             super();
             setDaemon(true);
+
+            this.tickid = tickId;
         }
 
         @Override
         public void run() {
             while (true) {
-                tickL.lock();
                 try {
-                    update();
-                    tick++;
+                    update(
+                            this.tickid * bodies.size() / THREADS,
+                            (this.tickid + 1) * bodies.size() / THREADS);
 
                     Thread.sleep(refreshPeriod);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Environment.class.getName()).log(Level.SEVERE, null, ex);
                     return;
-                } finally {
-                    tickL.unlock();
                 }
             }
         }
@@ -68,15 +76,26 @@ public abstract class Environment {
         bodies = new LinkedList<>();
         changed = new HashSet<>();
 
-        random = new Random();
+        tickers = new LinkedList<>();
+
+        for (int i = 0; i < THREADS; i++) {
+            tickers.add(new Tick(i));
+        }
 
         tickL = new ReentrantLock();
         changeL = new ReentrantLock();
-        time = new Tick();
+
+        random = new Random();
     }
 
+    /**
+     * Start tickers.
+     *
+     * Adjacent threads will start executing, calling for the update methods of
+     * the bodies contained in this environment.
+     */
     public void start() {
-        time.start();
+        tickers.stream().forEach(t -> t.start());
     }
 
     /**
@@ -84,10 +103,31 @@ public abstract class Environment {
      *
      * Should be called when environmental changes happen, such as lighting or
      * camera movement.
+     *
+     * This method supports partial update, useful when using more than a single
+     * thread. Use the {@code start} and {@code end} parameters to control the
+     * interval that should be updated.
+     *
+     * @param start start of the interval that should be updated.
+     * @param end end of the interval that should be updated.
      */
-    public abstract void update();
+    public void update(int start, int end) {
+        bodies.subList(start, end).forEach(b -> b.update());
+    }
 
-    public void notifyChanged(GraphicsMutator c) {
+    /**
+     * Notify change in component c.
+     *
+     * If {@code c} is a low priority component, rarely changes its state or is
+     * simply costly to update, one might consider implementing the
+     * {@code Visible} interface and using NotifyChanged to update it.
+     *
+     * Components passed as argument to this method will be updated ONCE and
+     * removed from the updating queue.
+     *
+     * @param c
+     */
+    public void notifyChanged(Visible c) {
         changeL.lock();
 
         try {
@@ -97,8 +137,8 @@ public abstract class Environment {
         }
     }
 
-    public Set<GraphicsMutator> getAndCleanChanged() {
-        Set<GraphicsMutator> c;
+    public Set<Visible> getAndCleanChanged() {
+        Set<Visible> c;
 
         changeL.lock();
 
@@ -127,10 +167,6 @@ public abstract class Environment {
 
     public LinkedList<Body> getBodies() {
         return bodies;
-    }
-
-    public long getTick() {
-        return tick;
     }
 
     public Random getRandom() {

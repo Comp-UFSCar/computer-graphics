@@ -1,8 +1,8 @@
 package org.cg.aquarium;
 
 import com.sun.opengl.util.Animator;
+import java.util.List;
 import javax.media.opengl.GLCapabilities;
-import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.colliders.Collider;
@@ -42,11 +42,6 @@ public class Aquarium extends Environment {
 
         animator = new Animator(canvas);
         animator.start();
-    }
-
-    @Override
-    public void update() {
-        bodies.stream().forEach(b -> b.update());
     }
 
     public AquariumCanvas getCanvas() {
