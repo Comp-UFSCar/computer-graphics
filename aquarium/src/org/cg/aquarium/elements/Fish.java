@@ -20,10 +20,10 @@ public class Fish extends Mobile {
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
     public static final float PREDATOR_DANGER_RADIUS = 1f;
 
-    public static final float ALIGNMENT = .01f,
-            COHERSION = .4f,
-            SEPARATION = .2f,
-            EVASION = 10f,
+    public static final float ALIGNMENT = .8f,
+            COHERSION = .2f,
+            SEPARATION = .4f,
+            EVASION = 0,
             RANDOMNESS = .01f;
 
     protected Color color;
