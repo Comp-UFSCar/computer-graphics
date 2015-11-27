@@ -3,6 +3,7 @@ package org.cg.aquarium.elements;
 import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -17,10 +18,13 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
+    public static final float PREDATOR_DANGER_RADIUS = 1f;
+
     public static final float ALIGNMENT = .01f,
-            SEPARATION = .1f,
-            COHERSION = .1f,
-            RANDOMNESS = .001f;
+            COHERSION = .4f,
+            SEPARATION = .2f,
+            EVASION = 10f,
+            RANDOMNESS = .01f;
 
     protected Color color;
     protected Shoal shoal;
@@ -76,18 +80,12 @@ public class Fish extends Mobile {
         Vector v = computeAlignment()
                 .add(computeCohersion())
                 .add(computeSeparation())
+                .add(computeEvasion())
                 .add(computeRandomness());
 
         setDirection(direction.add(v).normalize());
 
         move();
-    }
-
-    private void headBackToShoal() {
-        setDirection(shoal.collider
-                .closestPointFrom(position)
-                .delta(position)
-                .normalize());
     }
 
     public boolean isPossiblyInDanger() {
@@ -118,4 +116,23 @@ public class Fish extends Mobile {
         return Vector.random().normalize().scale(RANDOMNESS);
     }
 
+    protected Vector computeEvasion() {
+        Vector v = Vector.ZERO;
+
+        Mobile predator = Aquarium.getAquarium().getPredator();
+
+        if (predator != null) {
+            float distance = predator.getPosition().squareDistance(position);
+
+            if (distance < 200) {
+                // Find a scape route and scale inversibly proportional to
+                // distance between this and predator.
+                v = predator.getDirection().cross(
+                        predator.getDirection().mirrorOnVerticalAxis()
+                ).scale(EVASION);
+            }
+        }
+
+        return v;
+    }
 }

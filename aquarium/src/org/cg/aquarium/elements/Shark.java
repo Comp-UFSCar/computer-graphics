@@ -47,8 +47,8 @@ public class Shark extends Fish {
 
     @Override
     public void update() {
-        Vector v = computeCohersion().scale(.4f)
-                .add(computeSeparation().scale(.4f))
+        Vector v = computeCohersion().scale(.1f)
+                .add(computeSeparation().scale(0.05f))
                 .add(computeRandomness());
 
         setDirection(direction.add(v).normalize());
