@@ -1,5 +1,9 @@
 package org.cg.aquarium.infrastructure;
 
+import com.sun.opengl.util.GLUT;
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.infrastructure.base.Visible;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -7,7 +11,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  *
  * @author diorge
  */
-public class Lighting {
+public class Lighting implements Visible {
 
     private Vector direction;
 
@@ -53,9 +57,9 @@ public class Lighting {
 
         if (!direction.equals(this.direction)) {
             System.out.println(String.format("%s -> %s", this.direction, direction));
-            
+
             this.direction = direction;
-            Environment.getEnvironment().update();
+            Environment.getEnvironment().notifyChanged(this);
         }
     }
 
@@ -66,7 +70,7 @@ public class Lighting {
     public void setIntensity(float intensity) {
         if (this.intensity != intensity) {
             this.intensity = intensity;
-            Environment.getEnvironment().update();
+            Environment.getEnvironment().notifyChanged(this);
         }
     }
 
@@ -77,7 +81,7 @@ public class Lighting {
     public void setAmbientIntensity(float ambientIntensity) {
         if (this.ambientIntensity != ambientIntensity) {
             this.ambientIntensity = ambientIntensity;
-            Environment.getEnvironment().update();
+            Environment.getEnvironment().notifyChanged(this);
         }
     }
 
@@ -88,7 +92,7 @@ public class Lighting {
     public void setAmbientReflection(float ambientReflection) {
         if (this.ambientReflection != ambientReflection) {
             this.ambientReflection = ambientReflection;
-            Environment.getEnvironment().update();
+            Environment.getEnvironment().notifyChanged(this);
         }
     }
 
@@ -99,7 +103,7 @@ public class Lighting {
     public void setDiffuseReflection(float diffuseReflection) {
         if (this.diffuseReflection != diffuseReflection) {
             this.diffuseReflection = diffuseReflection;
-            Environment.getEnvironment().update();
+            Environment.getEnvironment().notifyChanged(this);
         }
     }
 
@@ -113,6 +117,37 @@ public class Lighting {
         float cos = normal.normalize().dot(direction);
 
         return ambientIntensity * ambientReflection + intensity * diffuseReflection * cos;
+    }
+
+    @Override
+    public void display(GL gl, GLU glu, GLUT glut) {
+        float ambient[] = {0f, 0f, 0.4f, 0f};
+        float diffuse[] = {0.8f, 0.8f, 1.0f, 0.0f};
+        float specular[] = {0.8f, 0.8f, 1.0f, 1.0f};
+        float position[] = {5.0f, 10.0f, 2.0f, 0.0f};
+        float lmodel_ambient[] = {0.4f, 0.4f, 0.4f, 1.0f};
+        float local_view[] = {0.0f};
+        
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambient, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuse, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, position, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, specular, 0);
+        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, lmodel_ambient, 0);
+        gl.glLightModelfv(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, local_view, 0);
+        gl.glEnable(GL.GL_LIGHTING);
+        gl.glEnable(GL.GL_LIGHT0);
+
+        gl.glEnable(GL.GL_COLOR_MATERIAL);
+        gl.glShadeModel(GL.GL_SMOOTH);
+        gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+        gl.glClearColor(.7f, .7f, 1, 1);
+    }
+
+    public Lighting setup(GL gl) {
+        gl.glEnable(GL.GL_DEPTH_TEST);
+        gl.glDepthFunc(GL.GL_LESS);
+
+        return this;
     }
 
 }

@@ -4,8 +4,8 @@ import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.infrastructure.base.Interactive;
+import org.cg.aquarium.infrastructure.base.Visible;
 import org.cg.aquarium.infrastructure.representations.Vector;
-import org.cg.aquarium.infrastructure.base.GraphicsMutator;
 
 /**
  * Camera in the environment.
@@ -14,7 +14,7 @@ import org.cg.aquarium.infrastructure.base.GraphicsMutator;
  *
  * @author ldavid
  */
-public class Camera implements Interactive, GraphicsMutator {
+public class Camera implements Interactive, Visible {
 
     Vector position;
     Vector lookAt;
@@ -66,7 +66,7 @@ public class Camera implements Interactive, GraphicsMutator {
     }
 
     @Override
-    public void processChanges(GL gl, GLU glu, GLUT glut) {
+    public void display(GL gl, GLU glu, GLUT glut) {
         if (Environment.getEnvironment().isDebugging()) {
             System.out.println("Process changes on camera: " + position.toString());
         }
