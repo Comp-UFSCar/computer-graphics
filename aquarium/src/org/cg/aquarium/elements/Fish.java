@@ -1,8 +1,11 @@
 package org.cg.aquarium.elements;
 
 import com.sun.opengl.util.GLUT;
+import java.util.Comparator;
+import java.util.Optional;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -17,7 +20,13 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
-    public static final float ALIGNMENT = .01f, SEPARATION = .1f, RANDOMNESS = .001f;
+    public static final float PREDATOR_DANGER_RADIUS = 1f;
+
+    public static final float ALIGNMENT = .001f,
+            SEPARATION = .8f,
+            COHERSION = 1f,
+            EVASION = 1f,
+            RANDOMNESS = .001f;
 
     protected Color color;
     protected Shoal shoal;
@@ -73,18 +82,14 @@ public class Fish extends Mobile {
         Vector v = computeAlignment()
                 .add(computeCohersion())
                 .add(computeSeparation())
-                .add(Vector.random().scale(RANDOMNESS));
+                //                .add(computeEvasion())
+                .add(Vector.random().scale(RANDOMNESS))
+                .normalize();
 
+//        v.add(Vector.random();
         setDirection(direction.add(v).normalize());
 
         move();
-    }
-
-    private void headBackToShoal() {
-        setDirection(shoal.collider
-                .closestPointFrom(position)
-                .delta(position)
-                .normalize());
     }
 
     public boolean isPossiblyInDanger() {
@@ -95,16 +100,39 @@ public class Fish extends Mobile {
         return position.l2Distance(shoal.getPosition());
     }
 
-    private Vector computeAlignment() {
+    protected Vector computeAlignment() {
         return shoal.getDirection().scale(ALIGNMENT);
     }
 
-    private Vector computeCohersion() {
-        return shoal.getPosition().delta(position).normalize().scale(distanceFromShoalCenter() / shoal.radius / 10);
+    protected Vector computeCohersion() {
+        return shoal.getPosition().delta(position).normalize()
+                .scale(COHERSION * distanceFromShoalCenter() / shoal.radius);
     }
 
-    private Vector computeSeparation() {
+    protected Vector computeSeparation() {
         return shoal.getPosition().delta(position).reflected().normalize().scale(SEPARATION);
     }
 
+    protected Vector computeEvasion() {
+        Vector v = Vector.ZERO;
+
+        Mobile predator = Aquarium.getAquarium().getPredator();
+
+        if (predator != null) {
+            float distance = predator.getPosition().squareDistance(position);
+
+            if (distance < 100) {
+                // Find a scape route and scale inversibly proportional to
+                // distance between this and predator.
+                v = predator.getDirection().cross(
+                        predator.getDirection().mirrorOnVerticalAxis()
+                ).scale(EVASION / distance);
+
+                System.out.println("Danger: " + distance);
+                System.out.println(v.toString() + "\n");
+            }
+        }
+
+        return v;
+    }
 }
