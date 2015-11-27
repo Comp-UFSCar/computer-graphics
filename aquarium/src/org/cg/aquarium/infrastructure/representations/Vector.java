@@ -10,10 +10,7 @@ import org.cg.aquarium.infrastructure.Environment;
  */
 public class Vector {
 
-    /**
-     * The origin (0, 0) vector
-     */
-    public final static Vector ORIGIN = new Vector(0, 0, 0);
+    public final static Vector ZERO = new Vector(0, 0, 0);
     public final static Vector UP = new Vector(0, 1, 0);
     public final static Vector DOWN = new Vector(0, -1, 0);
     public final static Vector LEFT = new Vector(-1, 0, 0);
@@ -190,7 +187,7 @@ public class Vector {
      * @return A new vector achieved by mirroring the vector upon the X-axis.
      */
     public Vector mirrorOnHorizontalAxis() {
-        return new Vector(x, -y);
+        return new Vector(x, -y, z);
     }
 
     /**
@@ -199,7 +196,7 @@ public class Vector {
      * @return A new vector achieved by mirroring the vector upon the Y-axis.
      */
     public Vector mirrorOnVerticalAxis() {
-        return new Vector(-x, y);
+        return new Vector(-x, y, z);
     }
 
     /**
@@ -230,10 +227,24 @@ public class Vector {
      * vectors.
      *
      * @param v vector to calculate distance.
-     * @return the distance between this vector and the given vector.
+     * @return the distance between this and the vector {@code v}.
      */
     public float l2Distance(Vector v) {
         return delta(v).norm();
+    }
+
+    /**
+     * Calculates the square distance between two vectors.
+     *
+     * This operations doesn't involve calculating a square root, which should
+     * be faster.
+     *
+     * @param v the other vector.
+     * @return the square distance between this and the vector {@code v}.
+     */
+    public float squareDistance(Vector v) {
+        v = delta(v);
+        return v.dot(v);
     }
 
     /**
