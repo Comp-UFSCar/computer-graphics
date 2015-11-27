@@ -4,7 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
-import org.cg.aquarium.elements.Mobile;
+import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -51,8 +51,8 @@ public class Boot {
         aquarium.addToEcosystem(s);
 
         if (ADD_SHARK) {
-            Mobile shark = new Mobile(
-                    s, Vector.random().normalize(), 1f,
+            Shark shark = new Shark(
+                    s, Vector.random().normalize(), .5f,
                     Vector.random().normalize().scale(20)
             );
 

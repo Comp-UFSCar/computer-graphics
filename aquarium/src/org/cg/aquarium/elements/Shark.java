@@ -10,32 +10,29 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  *
  * @author ldavid
  */
-public class Mobile extends Fish {
-    
-    public static final float SHARK_BASE_SPEED = 1f;
+public class Shark extends Fish {
 
-    public Mobile(Shoal shoal) {
+    public Shark(Shoal shoal) {
         super(shoal);
-        setSpeed(SHARK_BASE_SPEED);
     }
-    
-    public Mobile(Shoal shoal, Color color) {
+
+    public Shark(Shoal shoal, Color color) {
         super(shoal, color);
     }
 
-    public Mobile(Shoal shoal, Vector direction, float speed) {
+    public Shark(Shoal shoal, Vector direction, float speed) {
         this(shoal, Color.random(), direction, speed);
     }
 
-    public Mobile(Shoal shoal, Color color, Vector direction, float speed) {
+    public Shark(Shoal shoal, Color color, Vector direction, float speed) {
         super(shoal, color, direction, speed);
     }
 
-    public Mobile(Shoal shoal, Vector direction, float speed, Vector position) {
+    public Shark(Shoal shoal, Vector direction, float speed, Vector position) {
         this(shoal, Color.random(), direction, speed, position);
     }
 
-    public Mobile(Shoal shoal, Color color, Vector direction, float speed, Vector position) {
+    public Shark(Shoal shoal, Color color, Vector direction, float speed, Vector position) {
         super(shoal, color, direction, speed, position);
     }
 
@@ -50,7 +47,12 @@ public class Mobile extends Fish {
 
     @Override
     public void update() {
+        Vector v = computeCohersion().scale(.4f)
+                .add(computeSeparation().scale(.4f))
+                .add(computeRandomness());
+
+        setDirection(direction.add(v).normalize());
         move();
     }
-    
+
 }

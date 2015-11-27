@@ -1,8 +1,6 @@
 package org.cg.aquarium.elements;
 
 import com.sun.opengl.util.GLUT;
-import java.util.Comparator;
-import java.util.Optional;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.cg.aquarium.Aquarium;
@@ -22,11 +20,11 @@ public class Fish extends Mobile {
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
     public static final float PREDATOR_DANGER_RADIUS = 1f;
 
-    public static final float ALIGNMENT = .001f,
+    public static final float ALIGNMENT = .01f,
             SEPARATION = .8f,
-            COHERSION = 1f,
+            COHERSION = .01f,
             EVASION = 1f,
-            RANDOMNESS = .001f;
+            RANDOMNESS = .01f;
 
     protected Color color;
     protected Shoal shoal;
@@ -82,11 +80,9 @@ public class Fish extends Mobile {
         Vector v = computeAlignment()
                 .add(computeCohersion())
                 .add(computeSeparation())
-                //                .add(computeEvasion())
-                .add(Vector.random().scale(RANDOMNESS))
-                .normalize();
+//                .add(computeEvasion())
+                .add(computeRandomness());
 
-//        v.add(Vector.random();
         setDirection(direction.add(v).normalize());
 
         move();
@@ -110,7 +106,14 @@ public class Fish extends Mobile {
     }
 
     protected Vector computeSeparation() {
-        return shoal.getPosition().delta(position).reflected().normalize().scale(SEPARATION);
+        return shoal.getPosition()
+                .delta(position)
+                .normalize()
+                .scale(SEPARATION * distanceFromShoalCenter() / shoal.radius);
+    }
+
+    protected Vector computeRandomness() {
+        return Vector.random().normalize().scale(RANDOMNESS);
     }
 
     protected Vector computeEvasion() {
