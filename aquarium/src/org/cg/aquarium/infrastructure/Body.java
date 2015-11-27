@@ -15,7 +15,7 @@ public abstract class Body implements Visible {
     protected Vector position;
 
     public Body() {
-        this(Vector.ORIGIN);
+        this(Vector.ZERO);
     }
 
     public Body(Vector position) {

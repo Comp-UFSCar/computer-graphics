@@ -22,7 +22,7 @@ public class KeyboardListener implements KeyListener {
     public void keyTyped(KeyEvent e) {
         char key = e.getKeyChar();
 
-        Vector v = Vector.ORIGIN;
+        Vector v = Vector.ZERO;
 
         if (key == CAMERA_FORWARD) {
             v = new Vector(0, 0, 1);
@@ -38,7 +38,7 @@ public class KeyboardListener implements KeyListener {
             v = new Vector(0, -1, 0);
         }
 
-        if (v != Vector.ORIGIN) {
+        if (v != Vector.ZERO) {
             Environment.getEnvironment().getCamera().move(v);
         }
     }
