@@ -17,7 +17,10 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
-    public static final float ALIGNMENT = .01f, SEPARATION = .1f, RANDOMNESS = .001f;
+    public static final float ALIGNMENT = .01f,
+            SEPARATION = .1f,
+            COHERSION = .1f,
+            RANDOMNESS = .001f;
 
     protected Color color;
     protected Shoal shoal;
@@ -73,7 +76,7 @@ public class Fish extends Mobile {
         Vector v = computeAlignment()
                 .add(computeCohersion())
                 .add(computeSeparation())
-                .add(Vector.random().scale(RANDOMNESS));
+                .add(computeRandomness());
 
         setDirection(direction.add(v).normalize());
 
@@ -95,16 +98,24 @@ public class Fish extends Mobile {
         return position.l2Distance(shoal.getPosition());
     }
 
-    private Vector computeAlignment() {
+    protected Vector computeAlignment() {
         return shoal.getDirection().scale(ALIGNMENT);
     }
 
-    private Vector computeCohersion() {
-        return shoal.getPosition().delta(position).normalize().scale(distanceFromShoalCenter() / shoal.radius / 10);
+    protected Vector computeCohersion() {
+        return shoal.getPosition()
+                .delta(position)
+                .normalize()
+                .scale(COHERSION * distanceFromShoalCenter() / shoal.radius);
     }
 
-    private Vector computeSeparation() {
-        return shoal.getPosition().delta(position).reflected().normalize().scale(SEPARATION);
+    protected Vector computeSeparation() {
+        return shoal.getPosition().delta(position).reflected()
+                .normalize().scale(SEPARATION);
+    }
+
+    protected Vector computeRandomness() {
+        return Vector.random().normalize().scale(RANDOMNESS);
     }
 
 }

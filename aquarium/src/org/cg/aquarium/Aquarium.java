@@ -2,11 +2,12 @@ package org.cg.aquarium;
 
 import com.sun.opengl.util.Animator;
 import javax.media.opengl.GLCapabilities;
-import org.cg.aquarium.elements.Mobile;
+import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.colliders.Collider;
 import org.cg.aquarium.infrastructure.Environment;
+import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.colliders.BoxCollider;
 import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
