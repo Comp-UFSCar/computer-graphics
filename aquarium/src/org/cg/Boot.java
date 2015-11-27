@@ -4,8 +4,10 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
+import org.cg.aquarium.elements.Mobile;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
+import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Bootstrap class for Aquarium.
@@ -16,6 +18,9 @@ public class Boot {
 
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = false;
+
+    static final int FISH_COUNT = 100;
+    static final boolean ADD_SHARK = true;
 
     static Aquarium aquarium;
 
@@ -42,7 +47,19 @@ public class Boot {
 
         aquarium.getCanvas().addKeyListener(new KeyboardListener());
 
-        aquarium.addToEcosystem(new Shoal(200));
+        Shoal s = new Shoal(FISH_COUNT);
+        aquarium.addToEcosystem(s);
+
+        if (ADD_SHARK) {
+            Mobile shark = new Mobile(
+                    s, Vector.random().normalize(), 1f,
+                    Vector.random().normalize().scale(20)
+            );
+
+            aquarium.addToEcosystem(shark);
+            aquarium.setPredator(shark);
+        }
+
         aquarium.start();
 
         frame.setLocationRelativeTo(null);

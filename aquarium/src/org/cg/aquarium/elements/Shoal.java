@@ -115,7 +115,7 @@ public class Shoal extends Mobile {
         if (!isInsideAquarium()) {
             Debug.info("Shoal's direction has changed:" + direction.toString());
 
-            direction = Vector.ORIGIN.delta(position)
+            direction = Vector.ZERO.delta(position)
                     .add(Vector.random().normalize().scale(10f))
                     .normalize();
         }

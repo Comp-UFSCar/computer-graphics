@@ -2,6 +2,7 @@ package org.cg.aquarium;
 
 import com.sun.opengl.util.Animator;
 import javax.media.opengl.GLCapabilities;
+import org.cg.aquarium.elements.Mobile;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.colliders.Collider;
@@ -20,12 +21,13 @@ public class Aquarium extends Environment {
     protected final AquariumCanvas canvas;
     protected final Animator animator;
     protected final Collider collider;
+    protected Mobile predator;
 
     protected Aquarium() {
         super();
 
         collider = new BoxCollider(
-                Vector.ORIGIN, new Vector(100, 100, 100)
+                Vector.ZERO, new Vector(100, 100, 100)
         );
 
         GLCapabilities capabilities = new GLCapabilities();
@@ -71,7 +73,7 @@ public class Aquarium extends Environment {
         } finally {
             tickL.unlock();
         }
-        
+
         Debug.info("Ecosystem population complete.");
     }
 
@@ -98,5 +100,13 @@ public class Aquarium extends Environment {
 
     public Collider getCollider() {
         return collider;
+    }
+
+    public void setPredator(Mobile predator) {
+        this.predator = predator;
+    }
+
+    public Mobile getPredator() {
+        return predator;
     }
 }
