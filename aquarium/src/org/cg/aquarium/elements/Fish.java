@@ -23,7 +23,7 @@ public class Fish extends Mobile {
     public static final float ALIGNMENT = .01f,
             COHERSION = .4f,
             SEPARATION = .2f,
-            EVASION = 1f,
+            EVASION = 10f,
             RANDOMNESS = .01f;
 
     protected Color color;
@@ -80,7 +80,7 @@ public class Fish extends Mobile {
         Vector v = computeAlignment()
                 .add(computeCohersion())
                 .add(computeSeparation())
-//                .add(computeEvasion())
+                .add(computeEvasion())
                 .add(computeRandomness());
 
         setDirection(direction.add(v).normalize());
@@ -124,15 +124,12 @@ public class Fish extends Mobile {
         if (predator != null) {
             float distance = predator.getPosition().squareDistance(position);
 
-            if (distance < 100) {
+            if (distance < 200) {
                 // Find a scape route and scale inversibly proportional to
                 // distance between this and predator.
                 v = predator.getDirection().cross(
                         predator.getDirection().mirrorOnVerticalAxis()
-                ).scale(EVASION / distance);
-
-                System.out.println("Danger: " + distance);
-                System.out.println(v.toString() + "\n");
+                ).scale(EVASION);
             }
         }
 
