@@ -1,5 +1,6 @@
 package org.cg.aquarium.elements;
 
+import com.obj.WavefrontObject;
 import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
