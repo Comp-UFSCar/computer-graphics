@@ -24,13 +24,13 @@ public class Seahorse extends Mobile {
 
     protected static void initializeSeahorses() {
         if (wavefrontObject == null) {
-            wavefrontObject = new WavefrontObject("seahorse.obj");
+            wavefrontObject = new WavefrontObject("seahorse.obj", 2, 2, 2);
 
             material = new Material("base");
             material.setKa(new Vertex(.6f, .6f, 1));
             material.setKd(new Vertex(.6f, .6f, 1));
             material.setKs(new Vertex(.2f, .2f, .2f));
-            material.setShininess(.3f);
+            material.setShininess(30);
         }
     }
 
@@ -62,7 +62,7 @@ public class Seahorse extends Mobile {
         setDirection(
                 direction.scale(
                         (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
-                        position.reflected().scale(1 - RANDOMNESS)
+                        position.scale(RANDOMNESS - 1)
                         .add(Vector.random().normalize().scale(RANDOMNESS))
                         .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
 

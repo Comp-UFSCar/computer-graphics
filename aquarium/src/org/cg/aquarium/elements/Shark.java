@@ -6,6 +6,7 @@ import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
+import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -14,14 +15,14 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  * @author ldavid
  */
 public class Shark extends Fish {
-    
+
     private static WavefrontObject wavefrontObject;
     private static Material material;
-    
-    protected static void initializeShark(){
-        if(wavefrontObject == null) {
-            wavefrontObject = new WavefrontObject("Shark.obj", 10, 10, 10);
-            
+
+    protected static void initializeShark() {
+        if (wavefrontObject == null) {
+            wavefrontObject = new WavefrontObject("Shark.obj", 6, 6, 6);
+
             material = new Material("shark");
             material.setKa(new Vertex(.6f, .6f, 1));
             material.setKd(new Vertex(.6f, .6f, 1));
@@ -29,6 +30,8 @@ public class Shark extends Fish {
             material.setShininess(.3f);
         }
     }
+
+    public static float DISTANCE_FROM_CENTER = 100000;
 
     public Shark(Shoal shoal) {
         super(shoal);
@@ -65,6 +68,10 @@ public class Shark extends Fish {
         gl.glPushMatrix();
 
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+        float cos = new Vector(0, 0, 1).dot(new Vector(
+                direction.getX(), 0, direction.getZ()).normalize());
+
+        gl.glRotated(MathHelper.radiansToDegree(Math.acos(cos)), 0, 1, 0);
 
         wavefrontObject.getGroups().stream().forEach((g) -> {
             g.getFaces().stream().forEach((f) -> {
@@ -84,11 +91,17 @@ public class Shark extends Fish {
 
     @Override
     public void update() {
-        Vector v = computeCohersion().scale(.1f)
-                .add(computeSeparation().scale(0.05f))
-                .add(computeRandomness());
+//        Vector v = computeCohersion().scale(.1f)
+//                .add(computeSeparation().scale(0.05f))
+//                .add(computeRandomness());
+//        float distanceFromOrigin = position.norm();
+//        setDirection(
+//                direction.scale(
+//                        (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
+//                        position.scale(RANDOMNESS - 1)
+//                        .add(Vector.random().normalize().scale(RANDOMNESS))
+//                        .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
 
-        setDirection(direction.add(v).normalize());
         move();
     }
 
