@@ -1,6 +1,5 @@
 package org.cg.aquarium.elements;
 
-import com.obj.WavefrontObject;
 import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
@@ -24,7 +23,7 @@ public class Fish extends Mobile {
     public static final float ALIGNMENT = .8f,
             COHERSION = .2f,
             SEPARATION = .4f,
-            EVASION = 0,
+            EVASION = .4f,
             RANDOMNESS = .01f;
 
     protected Color color;

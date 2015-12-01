@@ -47,7 +47,7 @@ public abstract class Mobile extends Body {
     }
 
     public void setDirection(Vector direction) {
-        this.direction = direction;
+        this.direction = direction.normalize();
     }
 
     public Vector getDirection() {

@@ -92,4 +92,13 @@ public class MathHelper {
         return num / dem;
     }
 
+    /**
+     * Convert an angle in radians to degrees.
+     *
+     * @param angle
+     * @return
+     */
+    public static double radiansToDegree(double angle) {
+        return 90 * angle / Math.PI;
+    }
 }

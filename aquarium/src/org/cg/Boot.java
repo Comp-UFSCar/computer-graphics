@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
+import org.cg.aquarium.elements.Seahorse;
 import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
@@ -19,8 +20,9 @@ public class Boot {
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = false;
 
-    static final int FISH_COUNT = 300;
-    static final boolean ADD_SHARK = true;
+    static final int FISH_COUNT = 1;
+    static final boolean ADD_SHARK = false;
+    static final int SEAHORSE_COUNT = 3;
 
     static Aquarium aquarium;
 
@@ -58,6 +60,14 @@ public class Boot {
 
             aquarium.addToEcosystem(shark);
             aquarium.setPredator(shark);
+        }
+
+        for (int i = 0; i < SEAHORSE_COUNT; i++) {
+            aquarium.addToEcosystem(new Seahorse(
+                    Vector.random().normalize().scale(10),
+                    .1f,
+                    Vector.random().normalize()
+            ));
         }
 
         aquarium.start();

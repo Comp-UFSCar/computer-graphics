@@ -170,7 +170,7 @@ public class Vector {
     public Vector normalize() {
         return scale(1 / norm());
     }
-
+    
     /**
      * Creates a new vector by changing the x and y-coordinates This is
      * effectively translating the octant
