@@ -30,7 +30,6 @@ public abstract class Environment {
 
     protected List<Tick> tickers;
     protected long refreshPeriod = 16;
-    protected Lock tickL;
     protected Lock changeL;
 
     protected Random random;
@@ -82,7 +81,6 @@ public abstract class Environment {
             tickers.add(new Tick(i));
         }
 
-        tickL = new ReentrantLock();
         changeL = new ReentrantLock();
 
         random = new Random();
@@ -97,7 +95,7 @@ public abstract class Environment {
     public void start() {
         tickers.stream().forEach(t -> t.start());
     }
-
+    
     /**
      * Update all environment components.
      *
