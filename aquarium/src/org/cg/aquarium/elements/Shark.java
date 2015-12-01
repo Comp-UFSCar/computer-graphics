@@ -91,16 +91,13 @@ public class Shark extends Fish {
 
     @Override
     public void update() {
-//        Vector v = computeCohersion().scale(.1f)
-//                .add(computeSeparation().scale(0.05f))
-//                .add(computeRandomness());
-//        float distanceFromOrigin = position.norm();
-//        setDirection(
-//                direction.scale(
-//                        (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
-//                        position.scale(RANDOMNESS - 1)
-//                        .add(Vector.random().normalize().scale(RANDOMNESS))
-//                        .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
+        float distanceFromOrigin = position.norm();
+        setDirection(
+                direction.scale(
+                        (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
+                        position.scale(RANDOMNESS - 1)
+                        .add(Vector.random().normalize().scale(RANDOMNESS))
+                        .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
 
         move();
     }
