@@ -94,6 +94,7 @@ public class Seahorse extends Mobile {
             });
         });
 
+        debugDisplayDirectionVector(gl, glu, glut);
         gl.glPopMatrix();
     }
 

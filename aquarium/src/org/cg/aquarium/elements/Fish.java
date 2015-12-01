@@ -65,9 +65,12 @@ public class Fish extends Mobile {
     @Override
     public void display(GL gl, GLU glu, GLUT glut) {
         gl.glPushMatrix();
+        
         gl.glColor3f(color.getRed(), color.getGreen(), color.getBlue());
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
         glut.glutSolidSphere(1, 20, 20);
+        
+        debugDisplayDirectionVector(gl, glu, glut);
         gl.glPopMatrix();
     }
 

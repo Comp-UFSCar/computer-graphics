@@ -6,7 +6,6 @@ import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
-import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -86,6 +85,7 @@ public class Shark extends Fish {
             });
         });
 
+        debugDisplayDirectionVector(gl, glu, glut);
         gl.glPopMatrix();
     }
 
