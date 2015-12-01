@@ -1,4 +1,4 @@
-package utils;
+package org.cg.aquarium.infrastructure.helpers;
 
 public class Logger {
 

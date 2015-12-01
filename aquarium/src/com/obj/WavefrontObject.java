@@ -11,7 +11,7 @@ import com.obj.parser.LineParser;
 import com.obj.parser.obj.ObjLineParserFactory;
 
 //import engine.Engine;
-import utils.Logger;
+import org.cg.aquarium.infrastructure.helpers.Logger;
 
 
 public class WavefrontObject {
