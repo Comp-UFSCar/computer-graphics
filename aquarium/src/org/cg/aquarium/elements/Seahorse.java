@@ -1,8 +1,8 @@
 package org.cg.aquarium.elements;
 
-import com.obj.Material;
-import com.obj.Vertex;
-import com.obj.WavefrontObject;
+import libs.modelparser.Material;
+import libs.modelparser.Vertex;
+import libs.modelparser.WavefrontObject;
 import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;

@@ -20,8 +20,8 @@ public class Boot {
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = false;
 
-    static final int FISH_COUNT = 1;
-    static final boolean ADD_SHARK = false;
+    static final int FISH_COUNT = 100;
+    static final boolean ADD_SHARK = true;
     static final int SEAHORSE_COUNT = 3;
 
     static Aquarium aquarium;
