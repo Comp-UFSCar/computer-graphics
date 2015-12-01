@@ -119,7 +119,7 @@ public class Fish extends Mobile {
     protected Vector computeEvasion() {
         Vector v = Vector.ZERO;
 
-        Mobile predator = Aquarium.getAquarium().getPredator();
+        Mobile predator = (Mobile) Aquarium.getAquarium().getPredator(0);
 
         if (predator != null) {
             float distance = predator.getPosition().squareDistance(position);

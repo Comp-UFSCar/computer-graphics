@@ -8,6 +8,7 @@ import org.cg.aquarium.elements.Seahorse;
 import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.KeyboardListener;
+import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -18,10 +19,10 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Boot {
 
     static final String TITLE = "Aquarium";
-    static final boolean DEBUGGING = false;
+    static final boolean DEBUGGING = true;
 
-    static final int FISH_COUNT = 100;
-    static final boolean ADD_SHARK = true;
+    static final int FISH_COUNT = 200;
+    static final int SHARK_COUNT = 2;
     static final int SEAHORSE_COUNT = 3;
 
     static Aquarium aquarium;
@@ -50,16 +51,15 @@ public class Boot {
         aquarium.getCanvas().addKeyListener(new KeyboardListener());
 
         Shoal s = new Shoal(FISH_COUNT);
-        aquarium.addToEcosystem(s);
+        aquarium.addShoal(s);
 
-        if (ADD_SHARK) {
+        for (int i = 0; i < SHARK_COUNT; i++) {
             Shark shark = new Shark(
                     s, Vector.random().normalize(), .5f,
                     Vector.random().normalize().scale(20)
             );
 
-            aquarium.addToEcosystem(shark);
-            aquarium.setPredator(shark);
+            aquarium.addPredator(shark);
         }
 
         for (int i = 0; i < SEAHORSE_COUNT; i++) {
@@ -69,6 +69,9 @@ public class Boot {
                     Vector.random().normalize()
             ));
         }
+
+        Debug.info(String.format("There are %d bodies in ecosystem.",
+                aquarium.getBodies().size()));
 
         aquarium.start();
 

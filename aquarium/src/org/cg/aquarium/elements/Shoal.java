@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import org.cg.aquarium.infrastructure.Body;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.colliders.Collider;
@@ -81,8 +82,6 @@ public class Shoal extends Mobile {
             glut.glutWireSphere(radius, 10, 10);
             gl.glPopMatrix();
         }
-
-        shoal.stream().forEach(f -> f.display(gl, glu, glut));
     }
 
     public Collider getCollider() {
@@ -131,6 +130,10 @@ public class Shoal extends Mobile {
 
     public boolean isInsideAquarium() {
         return distanceFromAquariumCenter() < maximumDistanceFromOrigin;
+    }
+
+    public List<Body> getInnerShoal() {
+        return (List<Body>) (List<?>) shoal;
     }
 
 }

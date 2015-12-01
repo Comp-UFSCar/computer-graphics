@@ -6,6 +6,7 @@ import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
+import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -16,12 +17,12 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Shark extends Fish {
 
-    private static WavefrontObject wavefrontObject;
+    private static WavefrontObject model;
     private static Material material;
 
     protected static void initializeShark() {
-        if (wavefrontObject == null) {
-            wavefrontObject = new WavefrontObject("Shark.obj", 6, 6, 6);
+        if (model == null) {
+            model = new WavefrontObject("Shark.obj", 6, 6, 6);
 
             material = new Material("shark");
             material.setKa(new Vertex(.6f, .6f, 1));
@@ -63,9 +64,8 @@ public class Shark extends Fish {
 
     @Override
     public void display(GL gl, GLU glu, GLUT glut) {
-        setMaterial(material, gl);
-
         gl.glPushMatrix();
+        setMaterial(material, gl);
 
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
         float cos = new Vector(0, 0, 1).dot(new Vector(
@@ -73,7 +73,7 @@ public class Shark extends Fish {
 
         gl.glRotated(MathHelper.radiansToDegree(Math.acos(cos)), 0, 1, 0);
 
-        wavefrontObject.getGroups().stream().forEach((g) -> {
+        model.getGroups().stream().forEach((g) -> {
             g.getFaces().stream().forEach((f) -> {
                 gl.glBegin(GL.GL_TRIANGLES);
                 for (Vertex v : f.getVertices()) {
