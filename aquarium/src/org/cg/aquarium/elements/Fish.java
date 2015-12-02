@@ -22,9 +22,9 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final double EVASION_SPEED_INCREASE = 2;
-    public static final double MAXIMUM_DISTANCE = 100000;
+    public static final double MAXIMUM_SQUARE_OFFSET = 100000;
     public static final double ALIGNMENT = .01,
-            EVASION = .8,
+            EVASIVENESS = .8,
             RANDOMNESS = .01,
             MOMENTUM = .1;
 
@@ -67,12 +67,19 @@ public class Fish extends Mobile {
         );
     }
 
+    /**
+     * Update Fish direction based on different factors.
+     *
+     * Each computation returns a direction scaled by its factor. Check each
+     * method's respective documentation for more info.
+     *
+     */
     @Override
     public void update() {
         setDirection(computeMomentum()
-                .add(computeCohesion())
+                .add(computeCohesiveness())
                 .add(computeAlignment())
-                .add(computeEvasion())
+                .add(computeEvasiveness())
                 .add(computeRandomness())
         );
 
@@ -85,36 +92,62 @@ public class Fish extends Mobile {
 
     protected Vector computeMomentum() {
         return direction
-                .scale((MAXIMUM_DISTANCE - squareDistanceFromShoalCenter())
-                        / MAXIMUM_DISTANCE);
+                .scale((MAXIMUM_SQUARE_OFFSET - squareDistanceFromShoalCenter())
+                        / MAXIMUM_SQUARE_OFFSET);
     }
 
+    /**
+     * Compute the alignment of a Fish.
+     *
+     * Alignment is the factor that forces each fish in the Shoal to align with
+     * the Shoal movement itself.
+     *
+     * @return Vector scaled by the {@code ALIGNMENT} factor defined.
+     */
     protected Vector computeAlignment() {
         return shoal.getDirection().scale(ALIGNMENT);
     }
 
     /**
-     * Compute cohesion factor for shoal movement.
+     * Compute cohesiveness of a Fish movement.
      *
      * Cohesion is the factor that brings the shoal tight together, being
      * fundamentally high when the shoal is sparse and progressively loosing
      * importance as it becomes denser.
      *
-     * @return the vector aligned to the direction that will increase the
-     * cohesion of the shoal, scaled by a {@code COHESION} factor.
+     * @return Vector aligned to the direction that will increase the cohesion
+     * of the shoal, scaled by a {@code COHESION} factor.
      */
-    protected Vector computeCohesion() {
+    protected Vector computeCohesiveness() {
         return shoal.getPosition()
                 .delta(position)
                 .normalize()
-                .scale(squareDistanceFromShoalCenter() / MAXIMUM_DISTANCE);
+                .scale(squareDistanceFromShoalCenter() / MAXIMUM_SQUARE_OFFSET);
     }
 
+    /**
+     * Compute randomness of a Fish movement.
+     *
+     * Randomness if the factor that represent the individual movement
+     * willingness of each component of the shoal.
+     *
+     * @return Vector scaled by the {@code RANDOMNESS} factor defined.
+     */
     protected Vector computeRandomness() {
         return Vector.random().normalize().scale(RANDOMNESS);
     }
 
-    protected Vector computeEvasion() {
+    /**
+     * Compute evasiveness of a Fish movement.
+     *
+     * Evasiveness is the most complicated from all factors, and also the
+     * strongest. In normal conditions, evasiveness is the Vector.Direction. It
+     * will, however, drastically change when the fish notice that a predator is
+     * dangerously close.
+     *
+     * @return Vector scaled by the {@code EVASIVENESS} factor defined.
+     */
+    protected Vector computeEvasiveness() {
         Vector v = Vector.ZERO;
 
         setSpeed(baseSpeed);
@@ -138,7 +171,7 @@ public class Fish extends Mobile {
                         .dot(predator.getDirection());
 
                 v = predator.getDirection().scale(alpha);
-                v = position.delta(v).normalize().scale(EVASION);
+                v = position.delta(v).normalize().scale(EVASIVENESS);
 
                 setSpeed(baseSpeed * EVASION_SPEED_INCREASE);
             }

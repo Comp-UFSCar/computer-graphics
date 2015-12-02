@@ -19,8 +19,10 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Shoal extends Mobile {
 
-    public final static double MAXIMUM_ORIGIN_OFFSET = 1200;
+    public final static double MAXIMUM_ORIGIN_SQUARE_OFFSET = 1200;
     public final static double RADIUS = 20;
+
+    public final static double COHESION = .2, RANDOMNESS = .8;
 
     protected List<Fish> shoal;
 
@@ -69,14 +71,23 @@ public class Shoal extends Mobile {
         shoal.add(fish);
     }
 
+    /**
+     * Update Shoal movement.
+     *
+     * Shoal moves linearly in its direction, except when it gets too far from
+     * the origin. If the latter is the case, direction is updated to a linear
+     * combination between vector {@code position-zero} scaled by
+     * {@code COHESION} factor and a random direction scaled by
+     * {@code RANDOMNESS}.
+     */
     @Override
     public void update() {
         if (!isInsideAquarium()) {
             Debug.info("Shoal's direction has changed:" + direction.toString());
 
-            direction = Vector.ZERO.delta(position)
-                    .add(Vector.random().normalize().scale(10f))
-                    .normalize();
+            setDirection(Vector.ZERO.delta(position)
+                    .normalize().scale(COHESION)
+                    .add(Vector.random().normalize().scale(RANDOMNESS)));
         }
 
         move();
@@ -84,8 +95,13 @@ public class Shoal extends Mobile {
         shoal.stream().forEach(f -> f.update());
     }
 
+    /**
+     * Check if shoal is inside Aquarium (the frame, approximately).
+     *
+     * @return true, if shoal is inside the Aquarium. False, otherwise.
+     */
     public boolean isInsideAquarium() {
-        return position.squareDistance(Vector.ZERO) < MAXIMUM_ORIGIN_OFFSET;
+        return position.squareDistance(Vector.ZERO) < MAXIMUM_ORIGIN_SQUARE_OFFSET;
     }
 
     public List<Body> getInnerShoal() {
