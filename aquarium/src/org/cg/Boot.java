@@ -22,7 +22,7 @@ public class Boot {
     static final boolean DEBUGGING = false;
 
     static final int FISH_COUNT = 100;
-    static final int SHARK_COUNT = 1;
+    static final int SHARK_COUNT = 3;
     static final int SEAHORSE_COUNT = 3;
 
     static Aquarium aquarium;

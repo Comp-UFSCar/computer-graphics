@@ -22,7 +22,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final double MAXIMUM_DISTANCE = 100000;
-    public static final double ALIGNMENT = .0f,
+    public static final double ALIGNMENT = .01f,
             EVASION = .4f,
             RANDOMNESS = .01f,
             MOMENTUM = .1f;
