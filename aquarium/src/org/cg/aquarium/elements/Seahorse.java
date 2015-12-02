@@ -16,12 +16,12 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Seahorse extends Mobile {
 
-    public static float DISTANCE_FROM_CENTER = 100000;
-    public static float RANDOMNESS = .2f;
+    public static float MAXIMUM_DISTANCE = 100000;
+    public static float RANDOMNESS = .01f;
 
     protected Graphics graphics;
 
-    protected Vector spawn;
+    protected Vector lairLocation;
 
     public Seahorse() {
         super();
@@ -38,7 +38,7 @@ public class Seahorse extends Mobile {
     @Override
     public void initializeProperties() {
         size = new Vector(2, 2, 2);
-        spawn = Vector.random().normalize().scale(20);
+        lairLocation = Vector.random().normalize().scale(40);
 
         Material material = new Material("base");
         material.setKa(new Vertex(.6f, .6f, 1));
@@ -52,13 +52,12 @@ public class Seahorse extends Mobile {
 
     @Override
     public void update() {
-        float distanceFromOrigin = position.dot(position);
-        setDirection(
-                direction.scale(
-                        (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
-                        position.scale(RANDOMNESS - 1)
-                        .add(Vector.random().normalize().scale(RANDOMNESS))
-                        .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
+        float d = position.squareDistance(lairLocation);
+
+        setDirection(direction.scale((MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
+                .add(lairLocation.delta(position).normalize().scale(d / MAXIMUM_DISTANCE))
+                .add(Vector.random().normalize().scale(RANDOMNESS))
+        );
 
         move();
     }
@@ -69,11 +68,11 @@ public class Seahorse extends Mobile {
 
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
 
-        graphics.glDefineMaterial(gl);
-        graphics.glAlignDirection(gl, direction, Vector.LEFT);
-        graphics.glRender(gl);
+        graphics.glDefineObjectMaterial(gl);
+        graphics.glAlignObjectWithVector(gl, direction, Vector.LEFT);
+        graphics.glRenderObject(gl);
 
-        debugDisplayDirectionVector(gl, glu, glut);
+        graphics.glDebugPlotVector(gl, direction.scale(20 * speed));
 
         gl.glPopMatrix();
     }

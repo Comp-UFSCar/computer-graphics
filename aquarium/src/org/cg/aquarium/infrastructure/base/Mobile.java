@@ -64,18 +64,4 @@ public abstract class Mobile extends Body {
     public float getSpeed() {
         return speed;
     }
-
-    protected void debugDisplayDirectionVector(GL gl, GLU glu, GLUT glut) {
-        if (Environment.getEnvironment().isDebugging()) {
-            Vector v = direction.scale(20 * speed);
-
-            gl.glBegin(GL.GL_LINES);
-
-            gl.glVertex3d(0, 0, 0);
-            gl.glVertex3d(v.getX(), v.getY(), v.getZ());
-
-            gl.glEnd();
-
-        }
-    }
 }

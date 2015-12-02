@@ -32,13 +32,13 @@ public class Fish extends Mobile {
 
     public Fish(Shoal shoal) {
         super();
-        
+
         this.shoal = shoal;
     }
 
     public Fish(Shoal shoal, Vector direction, float speed) {
         super(direction, speed);
-        
+
         this.shoal = shoal;
     }
 
@@ -51,7 +51,7 @@ public class Fish extends Mobile {
     @Override
     public void initializeProperties() {
         size = new Vector(1, 1, 1);
-        
+
         Material material = new Material("shark");
         material.setKa(new Vertex(.6f, .6f, 1));
         material.setKd(new Vertex(.6f, .6f, 1));
@@ -131,11 +131,10 @@ public class Fish extends Mobile {
 
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
 
-        graphics.glDefineMaterial(gl);
-        graphics.glAlignDirection(gl, direction, Vector.FORWARD);
-        graphics.glRender(gl);
-
-        debugDisplayDirectionVector(gl, glu, glut);
+        graphics.glDefineObjectMaterial(gl);
+        graphics.glAlignObjectWithVector(gl, direction, Vector.FORWARD);
+        graphics.glRenderObject(gl);
+        graphics.glDebugPlotVector(gl, direction.scale(20 * speed));
 
         gl.glPopMatrix();
     }

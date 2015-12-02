@@ -1,9 +1,12 @@
 package org.cg.aquarium.infrastructure.base;
 
+import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
+import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -45,7 +48,7 @@ public class Graphics {
         this.material = material;
     }
 
-    public void glDefineMaterial(GL gl) {
+    public void glDefineObjectMaterial(GL gl) {
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, new float[]{
             material.getKa().getX(), material.getKa().getY(),
             material.getKa().getZ(), 1}, 0);
@@ -59,7 +62,7 @@ public class Graphics {
             material.getShininess(), 0, 0, 0}, 0);
     }
 
-    public void glAlignDirection(GL gl, Vector direction, Vector base) {
+    public void glAlignObjectWithVector(GL gl, Vector direction, Vector base) {
         float cos = base.dot(new Vector(
                 direction.getX(), 0, direction.getZ()).normalize());
 
@@ -68,7 +71,7 @@ public class Graphics {
                 * MathHelper.radiansToDegree(Math.acos(cos)), 0, 1, 0);
     }
 
-    public void glRender(GL gl) {
+    public void glRenderObject(GL gl) {
         model.getGroups().stream().forEach((g) -> {
             g.getFaces().stream().forEach((f) -> {
                 gl.glBegin(GL.GL_TRIANGLES);
@@ -86,4 +89,14 @@ public class Graphics {
         });
     }
 
+    public void glDebugPlotVector(GL gl, Vector v) {
+        if (Environment.getEnvironment().isDebugging()) {
+            gl.glBegin(GL.GL_LINES);
+
+            gl.glVertex3d(0, 0, 0);
+            gl.glVertex3d(v.getX(), v.getY(), v.getZ());
+
+            gl.glEnd();
+        }
+    }
 }
