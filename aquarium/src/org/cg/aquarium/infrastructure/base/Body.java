@@ -1,6 +1,5 @@
-package org.cg.aquarium.infrastructure;
+package org.cg.aquarium.infrastructure.base;
 
-import org.cg.aquarium.infrastructure.base.Visible;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -13,13 +12,16 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public abstract class Body implements Visible {
 
     protected Vector position;
+    protected Vector size;
 
     public Body() {
         this(Vector.ZERO);
+        initialize();
     }
 
     public Body(Vector position) {
         this.position = position;
+        initialize();
     }
 
     public Vector getPosition() {
@@ -30,6 +32,15 @@ public abstract class Body implements Visible {
         this.position = position;
     }
 
+    public Vector getSize() {
+        return size;
+    }
+
+    public void setSize(Vector size) {
+        this.size = size;
+    }
+
     public abstract void update();
 
+    public abstract void initialize();
 }

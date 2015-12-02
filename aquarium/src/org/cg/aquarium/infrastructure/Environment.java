@@ -1,5 +1,6 @@
 package org.cg.aquarium.infrastructure;
 
+import org.cg.aquarium.infrastructure.base.Body;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;

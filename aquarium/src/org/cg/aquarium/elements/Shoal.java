@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import org.cg.aquarium.infrastructure.Body;
+import org.cg.aquarium.infrastructure.base.Body;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.colliders.Collider;
@@ -107,6 +107,10 @@ public class Shoal extends Mobile {
 
     protected void addFish(Fish fish) {
         shoal.add(fish);
+    }
+
+    @Override
+    public void initialize() {
     }
 
     @Override

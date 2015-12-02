@@ -6,7 +6,7 @@ import java.util.List;
 import javax.media.opengl.GLCapabilities;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
-import org.cg.aquarium.infrastructure.Body;
+import org.cg.aquarium.infrastructure.base.Body;
 import org.cg.aquarium.infrastructure.colliders.Collider;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;

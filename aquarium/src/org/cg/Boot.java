@@ -21,7 +21,7 @@ public class Boot {
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = true;
 
-    static final int FISH_COUNT = 200;
+    static final int FISH_COUNT = 10;
     static final int SHARK_COUNT = 1;
     static final int SEAHORSE_COUNT = 3;
 

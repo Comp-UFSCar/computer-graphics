@@ -3,8 +3,12 @@ package org.cg.aquarium.elements;
 import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import libs.modelparser.Material;
+import libs.modelparser.Vertex;
+import libs.modelparser.WavefrontObject;
 import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.base.Mobile;
+import org.cg.aquarium.infrastructure.base.ObjectModel;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -28,6 +32,7 @@ public class Fish extends Mobile {
 
     protected Color color;
     protected Shoal shoal;
+    protected ObjectModel modelObject;
 
     public Fish(Shoal shoal) {
         this(shoal, Color.random());
@@ -62,20 +67,24 @@ public class Fish extends Mobile {
         setColor(color);
     }
 
-    @Override
-    public void display(GL gl, GLU glu, GLUT glut) {
-        gl.glPushMatrix();
-        
-        gl.glColor3f(color.getRed(), color.getGreen(), color.getBlue());
-        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
-        glut.glutSolidSphere(1, 20, 20);
-        
-        debugDisplayDirectionVector(gl, glu, glut);
-        gl.glPopMatrix();
-    }
-
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public void initialize() {
+        size = new Vector(1, 1, 1);
+        
+        Material material = new Material("shark");
+        material.setKa(new Vertex(.6f, .6f, 1));
+        material.setKd(new Vertex(.6f, .6f, 1));
+        material.setKs(new Vertex(.2f, .2f, .2f));
+        material.setShininess(.3f);
+
+        modelObject = new ObjectModel(
+                new WavefrontObject("Shark.obj", size.getX(), size.getY(), size.getZ()),
+                material
+        );
     }
 
     @Override
@@ -138,4 +147,20 @@ public class Fish extends Mobile {
 
         return v;
     }
+
+    @Override
+    public void display(GL gl, GLU glu, GLUT glut) {
+        gl.glPushMatrix();
+
+        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+
+        modelObject.glDefineMaterial(gl);
+        modelObject.glAlignDirection(gl, direction, Vector.FORWARD);
+        modelObject.glRender(gl);
+
+        debugDisplayDirectionVector(gl, glu, glut);
+
+        gl.glPopMatrix();
+    }
+
 }
