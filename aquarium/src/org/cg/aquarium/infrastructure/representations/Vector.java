@@ -15,6 +15,8 @@ public class Vector {
     public final static Vector DOWN = new Vector(0, -1, 0);
     public final static Vector LEFT = new Vector(-1, 0, 0);
     public final static Vector RIGHT = new Vector(1, 0, 0);
+    public final static Vector FORWARD = new Vector(0, 0, -1);
+    public final static Vector BACKWARD = new Vector(0, 0, 1);
 
     private final float x;
 
@@ -170,7 +172,7 @@ public class Vector {
     public Vector normalize() {
         return scale(1 / norm());
     }
-    
+
     /**
      * Creates a new vector by changing the x and y-coordinates This is
      * effectively translating the octant

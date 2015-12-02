@@ -6,6 +6,7 @@ import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
+import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -31,7 +32,8 @@ public class Shark extends Fish {
         }
     }
 
-    public static float DISTANCE_FROM_CENTER = 100000;
+    public static float MAXIMUM_DISTANCE = 100000;
+    public static float MOMENTUM = .2f;
 
     public Shark(Shoal shoal) {
         super(shoal);
@@ -62,44 +64,49 @@ public class Shark extends Fish {
     }
 
     @Override
+    public void update() {
+        float d = position.squareDistance(shoal.getPosition());
+
+        Debug.info("Shark-shoal delta: " + d);
+
+        setDirection(direction.scale((MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
+                .add(shoal.getPosition().delta(position).normalize().scale(d / MAXIMUM_DISTANCE))
+                .add(Vector.random().normalize().scale(RANDOMNESS))
+        );
+        move();
+    }
+
+    @Override
     public void display(GL gl, GLU glu, GLUT glut) {
         gl.glPushMatrix();
         setMaterial(material, gl);
 
-        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
-        float cos = new Vector(0, 0, 1).dot(new Vector(
+        float cos = Vector.FORWARD.dot(new Vector(
                 direction.getX(), 0, direction.getZ()).normalize());
 
-        gl.glRotated(MathHelper.radiansToDegree(Math.acos(cos)), 0, 1, 0);
+        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+        gl.glRotated(
+                -Math.signum(direction.getX())
+                * MathHelper.radiansToDegree(Math.acos(cos)), 0, 1, 0);
 
         model.getGroups().stream().forEach((g) -> {
             g.getFaces().stream().forEach((f) -> {
                 gl.glBegin(GL.GL_TRIANGLES);
+
                 for (Vertex v : f.getVertices()) {
                     gl.glVertex3d(v.getX(), v.getY(), v.getZ());
                 }
+
                 for (Vertex v : f.getNormals()) {
                     gl.glVertex3d(v.getX(), v.getY(), v.getZ());
                 }
+
                 gl.glEnd();
             });
         });
 
         debugDisplayDirectionVector(gl, glu, glut);
         gl.glPopMatrix();
-    }
-
-    @Override
-    public void update() {
-        float distanceFromOrigin = position.norm();
-        setDirection(
-                direction.scale(
-                        (DISTANCE_FROM_CENTER - distanceFromOrigin) / DISTANCE_FROM_CENTER).add(
-                        position.scale(RANDOMNESS - 1)
-                        .add(Vector.random().normalize().scale(RANDOMNESS))
-                        .scale(distanceFromOrigin / DISTANCE_FROM_CENTER)));
-
-        move();
     }
 
     protected void setMaterial(Material mat, GL gl) {

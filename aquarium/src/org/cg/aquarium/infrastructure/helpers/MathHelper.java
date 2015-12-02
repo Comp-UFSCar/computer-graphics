@@ -99,6 +99,6 @@ public class MathHelper {
      * @return
      */
     public static double radiansToDegree(double angle) {
-        return 90 * angle / Math.PI;
+        return 180 * angle / Math.PI;
     }
 }

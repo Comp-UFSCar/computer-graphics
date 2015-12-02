@@ -22,7 +22,7 @@ public class Boot {
     static final boolean DEBUGGING = true;
 
     static final int FISH_COUNT = 200;
-    static final int SHARK_COUNT = 2;
+    static final int SHARK_COUNT = 1;
     static final int SEAHORSE_COUNT = 3;
 
     static Aquarium aquarium;
@@ -54,23 +54,23 @@ public class Boot {
         aquarium.addShoal(s);
 
         for (int i = 0; i < SHARK_COUNT; i++) {
-            Shark shark = new Shark(
-                    s, Vector.random().normalize(), .5f,
-                    Vector.random().normalize().scale(20)
-            );
-
-            aquarium.addPredator(shark);
+            aquarium.addPredator(new Shark(
+//                    s, Vector.RIGHT,
+//                    .5f, Vector.ZERO
+                    s, Vector.random().normalize(),
+                    .5f, Vector.random().normalize().scale(20)
+            ));
         }
 
         for (int i = 0; i < SEAHORSE_COUNT; i++) {
             aquarium.addToEcosystem(new Seahorse(
-                    Vector.random().normalize().scale(10),
+                    Vector.random().normalize(),
                     .1f,
-                    Vector.random().normalize()
+                    Vector.random().normalize().scale(10)
             ));
         }
 
-        Debug.info(String.format("There are %d bodies in ecosystem.",
+        Debug.info(String.format("There are %d elements in ecosystem.",
                 aquarium.getBodies().size()));
 
         aquarium.start();
