@@ -11,6 +11,8 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 /**
  * Bubbles.
  *
+ * Bubbles animation in aquarium.
+ *
  * @author ldavid
  */
 public class Bubbles extends Mobile {
@@ -20,6 +22,17 @@ public class Bubbles extends Mobile {
     public static int N_BUBBLES = 4;
     public static int N_BUBBLES_GROUPS = 2;
 
+    /**
+     * Update bubbles.
+     *
+     * Simulates bubbles default behavior, which tends to make them to go up,
+     * considering water/air density disparity.
+     *
+     * When it leaves the screen, it's automatically repositioned to the bottom
+     * and has its X and Z components randomized according to the
+     * {@code VARIANCE} factor.
+     *
+     */
     @Override
     public void update() {
         if (position.getY() > VARIANCE.getY()) {

@@ -8,6 +8,9 @@ import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
+ * Shark.
+ *
+ * Sharks are predator for the Aquarium.
  *
  * @author ldavid
  */
@@ -52,6 +55,12 @@ public class Shark extends Fish {
 
         Debug.info("Shark-shoal delta: " + d);
 
+        // Sharks always follow the shoal, but because of their high speed, 
+        // mobility is highly compromised once they missed the Shaol kernel.
+        // To simulate this, Sharks' directions are defined as a linear 
+        // combination of momentum and mobility, where momentum is
+        // highly important when close to the Shoal and gradually looses
+        // importance as the shark distances itself from it.
         setDirection(direction.scale((MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
                 .add(shoal.getPosition().delta(position).normalize().scale(d / MAXIMUM_DISTANCE))
                 .add(Vector.random().normalize().scale(RANDOMNESS))

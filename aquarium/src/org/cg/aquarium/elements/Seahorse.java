@@ -11,6 +11,9 @@ import org.cg.aquarium.infrastructure.base.Graphics;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
+ * Seahorse.
+ *
+ * Seahorse of the Aquarium.
  *
  * @author ldavid
  */
