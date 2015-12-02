@@ -110,7 +110,7 @@ public class Shoal extends Mobile {
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeProperties() {
     }
 
     @Override

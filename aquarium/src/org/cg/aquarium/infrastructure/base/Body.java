@@ -16,12 +16,12 @@ public abstract class Body implements Visible {
 
     public Body() {
         this(Vector.ZERO);
-        initializeAttributes();
+        initializeProperties();
     }
 
     public Body(Vector position) {
         this.position = position;
-        initializeAttributes();
+        initializeProperties();
     }
 
     public Vector getPosition() {
@@ -42,5 +42,5 @@ public abstract class Body implements Visible {
 
     public abstract void update();
 
-    public abstract void initializeAttributes();
+    public abstract void initializeProperties();
 }

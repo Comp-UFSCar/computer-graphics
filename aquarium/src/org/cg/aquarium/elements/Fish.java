@@ -8,8 +8,7 @@ import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
 import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.base.Mobile;
-import org.cg.aquarium.infrastructure.base.ObjectModel;
-import org.cg.aquarium.infrastructure.representations.Color;
+import org.cg.aquarium.infrastructure.base.Graphics;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -22,57 +21,35 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Fish extends Mobile {
 
     public static final float MAXIMUM_SAFE_DISTANCE = 2;
-    public static final float PREDATOR_DANGER_RADIUS = 1f;
-
     public static final float ALIGNMENT = .8f,
             COHERSION = .2f,
             SEPARATION = .4f,
             EVASION = .4f,
             RANDOMNESS = .01f;
 
-    protected Color color;
     protected Shoal shoal;
-    protected ObjectModel modelObject;
+    protected Graphics graphics;
 
     public Fish(Shoal shoal) {
-        this(shoal, Color.random());
-    }
-
-    public Fish(Shoal shoal, Color color) {
         super();
-
+        
         this.shoal = shoal;
-        setColor(color);
     }
 
     public Fish(Shoal shoal, Vector direction, float speed) {
-        this(shoal, Color.random(), direction, speed);
-    }
-
-    public Fish(Shoal shoal, Color color, Vector direction, float speed) {
         super(direction, speed);
-
+        
         this.shoal = shoal;
-        setColor(color);
     }
 
     public Fish(Shoal shoal, Vector direction, float speed, Vector position) {
-        this(shoal, Color.random(), direction, speed, position);
-    }
-
-    public Fish(Shoal shoal, Color color, Vector direction, float speed, Vector position) {
         super(direction, speed, position);
 
         this.shoal = shoal;
-        setColor(color);
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeProperties() {
         size = new Vector(1, 1, 1);
         
         Material material = new Material("shark");
@@ -81,7 +58,7 @@ public class Fish extends Mobile {
         material.setKs(new Vertex(.2f, .2f, .2f));
         material.setShininess(.3f);
 
-        modelObject = new ObjectModel(
+        graphics = new Graphics(
                 new WavefrontObject("Shark.obj", size.getX(), size.getY(), size.getZ()),
                 material
         );
@@ -154,9 +131,9 @@ public class Fish extends Mobile {
 
         gl.glTranslatef(position.getX(), position.getY(), position.getZ());
 
-        modelObject.glDefineMaterial(gl);
-        modelObject.glAlignDirection(gl, direction, Vector.FORWARD);
-        modelObject.glRender(gl);
+        graphics.glDefineMaterial(gl);
+        graphics.glAlignDirection(gl, direction, Vector.FORWARD);
+        graphics.glRender(gl);
 
         debugDisplayDirectionVector(gl, glu, glut);
 

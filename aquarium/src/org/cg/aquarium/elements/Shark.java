@@ -3,9 +3,8 @@ package org.cg.aquarium.elements;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
-import org.cg.aquarium.infrastructure.base.ObjectModel;
+import org.cg.aquarium.infrastructure.base.Graphics;
 import org.cg.aquarium.infrastructure.helpers.Debug;
-import org.cg.aquarium.infrastructure.representations.Color;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -21,37 +20,25 @@ public class Shark extends Fish {
         super(shoal);
     }
 
-    public Shark(Shoal shoal, Color color) {
-        super(shoal, color);
-    }
-
     public Shark(Shoal shoal, Vector direction, float speed) {
-        this(shoal, Color.random(), direction, speed);
-    }
-
-    public Shark(Shoal shoal, Color color, Vector direction, float speed) {
-        super(shoal, color, direction, speed);
+        super(shoal, direction, speed);
     }
 
     public Shark(Shoal shoal, Vector direction, float speed, Vector position) {
-        this(shoal, Color.random(), direction, speed, position);
-    }
-
-    public Shark(Shoal shoal, Color color, Vector direction, float speed, Vector position) {
-        super(shoal, color, direction, speed, position);
+        super(shoal, direction, speed, position);
     }
 
     @Override
-    public void initializeAttributes() {
+    public void initializeProperties() {
         size = new Vector(6, 6, 6);
-        
+
         Material material = new Material("shark");
         material.setKa(new Vertex(.6f, .6f, 1));
         material.setKd(new Vertex(.6f, .6f, 1));
         material.setKs(new Vertex(.2f, .2f, .2f));
         material.setShininess(.3f);
 
-        modelObject = new ObjectModel(
+        graphics = new Graphics(
                 new WavefrontObject("Shark.obj", size.getX(), size.getY(), size.getZ()),
                 material
         );

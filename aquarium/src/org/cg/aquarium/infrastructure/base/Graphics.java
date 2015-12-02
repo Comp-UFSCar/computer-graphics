@@ -14,17 +14,17 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  *
  * @author ldavid
  */
-public class ObjectModel {
+public class Graphics {
 
     protected WavefrontObject model;
     protected Material material;
 
-    public ObjectModel(String modelPath, String materialName) {
+    public Graphics(String modelPath, String materialName) {
         model = new WavefrontObject(modelPath);
         material = new Material(materialName);
     }
 
-    public ObjectModel(WavefrontObject model, Material material) {
+    public Graphics(WavefrontObject model, Material material) {
         this.model = model;
         this.material = material;
     }

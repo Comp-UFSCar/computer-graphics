@@ -19,7 +19,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Boot {
 
     static final String TITLE = "Aquarium";
-    static final boolean DEBUGGING = true;
+    static final boolean DEBUGGING = false;
 
     static final int FISH_COUNT = 10;
     static final int SHARK_COUNT = 1;
@@ -55,8 +55,6 @@ public class Boot {
 
         for (int i = 0; i < SHARK_COUNT; i++) {
             aquarium.addPredator(new Shark(
-//                    s, Vector.RIGHT,
-//                    .5f, Vector.ZERO
                     s, Vector.random().normalize(),
                     .5f, Vector.random().normalize().scale(20)
             ));
