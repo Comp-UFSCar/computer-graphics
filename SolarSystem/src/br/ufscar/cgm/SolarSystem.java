@@ -44,16 +44,16 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private Texture marsTexture;
     private Texture starsTexture;
     
-    private int galaxyAngle = 0;
-    private int sunAngle = 0;
-    private int mercuryAngle = 0;
-    private int venusAngle = 0;
-    private int earthAngle = 0;
-    private int marsAngle = 0;
-    private int mercuryPlanetAngle = 0;
-    private int venusPlanetAngle = 0;
-    private int earthPlanetAngle = 0;
-    private int marsPlanetAngle = 0;
+    private float galaxyAngle = 0;
+    private float sunAngle = 0;
+    private float mercuryAngle = 0;
+    private float venusAngle = 0;
+    private float earthAngle = 0;
+    private float marsAngle = 0;
+    private float mercuryPlanetAngle = 0;
+    private float venusPlanetAngle = 0;
+    private float earthPlanetAngle = 0;
+    private float marsPlanetAngle = 0;
     
     /** The angle of the satellite orbit (0..359). */
     private float satelliteAngle = 0;
@@ -253,7 +253,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glPopMatrix();
         gl.glPushMatrix();
         mercuryPlanetAngle += 7;
-        mercuryAngle += 3;
+        mercuryAngle += Math.E;
         gl.glRotated(mercuryPlanetAngle,0,1,0);
         gl.glTranslated(20, 0, 20);
         gl.glRotated(mercuryAngle,0,1,0);
@@ -272,7 +272,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        venusPlanetAngle += 4;
+        venusPlanetAngle += Math.PI;
         venusAngle += -1;
         gl.glRotated(venusPlanetAngle,0,1,0);
         gl.glTranslated(40, 0, 40);
@@ -293,7 +293,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        earthPlanetAngle++;
+        earthPlanetAngle += 3.3;
         earthAngle++;
         gl.glRotated(earthPlanetAngle,0,1,0);
         gl.glTranslated(60, 0, 60);
@@ -313,8 +313,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        marsPlanetAngle += 3;
-        marsAngle += 7;
+        marsPlanetAngle += Math.sqrt(2);
+        marsAngle += Math.sqrt(7);
         gl.glRotated(marsPlanetAngle,0,1,0);
         gl.glTranslated(80, 0, 80);
         gl.glRotated(marsAngle,0,1,0);
