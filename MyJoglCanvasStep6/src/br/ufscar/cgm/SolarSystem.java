@@ -1,4 +1,4 @@
-package org.yourorghere;
+package br.ufscar.cgm;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -25,25 +25,31 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author <a href="mailto:kain@land-of-kain.de">Kai Ruhl</a>
  * @since 26 Feb 2009
  */
-public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
-
-    /** Serial version UID. */
-    private static final long serialVersionUID = 1L;
+public class SolarSystem extends GLCanvas implements GLEventListener {
 
     /** The GL unit (helper class). */
     private GLU glu;
 
     /** The frames per second setting. */
     private int fps = 60;
-    
-    private int ang = 0;
 
     /** The OpenGL animator. */
     private FPSAnimator animator;
 
-    /** The earth texture. */
+    /** Textures. */
+    private Texture sunTexture;
+    private Texture mercuryTexture;
+    private Texture venusTexture;
     private Texture earthTexture;
-
+    private Texture marsTexture;
+    
+    private int galaxyAngle = 0;
+    private int sunAngle = 0;
+    private int mercuryAngle = 0;
+    private int venusAngle = 0;
+    private int earthAngle = 0;
+    private int marsAngle = 0;
+    
     /** The angle of the satellite orbit (0..359). */
     private float satelliteAngle = 0;
 
@@ -57,7 +63,7 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
      * @param width The window width.
      * @param height The window height.
      */
-    public MyJoglCanvasStep6(GLCapabilities capabilities, int width, int height) {
+    public SolarSystem(GLCapabilities capabilities, int width, int height) {
         addGLEventListener(this);
     }
 
@@ -98,20 +104,32 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
         // Create GLU.
         glu = new GLU();
 
-        // Load earth texture.
+        // Load textures.
         try {
-            InputStream stream = getClass().getResourceAsStream("earth.png");
+            InputStream stream = getClass().getResourceAsStream("textures/sun.png");
             TextureData data = TextureIO.newTextureData(stream, false, "png");
+            sunTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/mercury.png");
+            data = TextureIO.newTextureData(stream, false, "png");
+            mercuryTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/venus.png");
+            data = TextureIO.newTextureData(stream, false, "png");
+            venusTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/earth2.png");
+            data = TextureIO.newTextureData(stream, false, "png");
             earthTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/mars.png");
+            data = TextureIO.newTextureData(stream, false, "png");
+            marsTexture = TextureIO.newTexture(data);
         }
         catch (IOException exc) {
-            exc.printStackTrace();
+            System.out.print("Arquivos de Textura não foram encontrados.");
             System.exit(1);
         }
 
         // Load the solar panel texture.
         try {
-            InputStream stream = getClass().getResourceAsStream("earth.png");
+            InputStream stream = getClass().getResourceAsStream("textures/stars2.png");
             TextureData data = TextureIO.newTextureData(stream, false, "png");
             solarPanelTexture = TextureIO.newTexture(data);
         }
@@ -135,14 +153,25 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
             return;
         }
         final GL gl = drawable.getGL();
-        
-        ang = ang >= 360? 0 : ang+1;
 
         // Clear screen.
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
         // Set camera.
-        setCamera(gl, glu, 30);
+        // Change to projection matrix.
+        gl.glMatrixMode(GL.GL_PROJECTION);
+        gl.glLoadIdentity();
+
+        // Perspective.
+        float widthHeightRatio = (float) getWidth() / (float) getHeight();
+        glu.gluPerspective(45, widthHeightRatio, 1, 1000);
+        glu.gluLookAt(200, 200, 200, 
+                0, 0, 0, 
+                0, 1, 0);
+
+        // Change back to model view matrix.
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
 
         // Prepare light parameters.
         float SHINE_ALL_DIRECTIONS = 1;
@@ -164,28 +193,101 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
-
+        
+        
+        galaxyAngle++;
+        gl.glRotated(galaxyAngle,0,1,0);
+        gl.glPushMatrix();
+        float radius;
+        int slices;
+        int stacks;
+        //Sun
+        sunTexture.bind();
+        GLUquadric sun = glu.gluNewQuadric();
+        glu.gluQuadricTexture(sun, true);
+        glu.gluQuadricDrawStyle(sun, GLU.GLU_FILL);
+        glu.gluQuadricNormals(sun, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(sun, GLU.GLU_OUTSIDE);
+        radius = 20f;
+        slices = 16;
+        stacks = 16;
+        sunAngle += 10;
+        gl.glRotated(sunAngle,0,1,0);
+        glu.gluSphere(sun, radius, slices, stacks);
+        glu.gluDeleteQuadric(sun);
+        
+        //Mercury
+        mercuryTexture.bind();
+        GLUquadric mercury = glu.gluNewQuadric();
+        glu.gluQuadricTexture(mercury, true);
+        glu.gluQuadricDrawStyle(mercury, GLU.GLU_FILL);
+        glu.gluQuadricNormals(mercury, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(mercury, GLU.GLU_OUTSIDE);
+        radius = 3.4f;
+        slices = 16;
+        stacks = 16;
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glTranslated(20, 0, 20);
+        mercuryAngle += 3;
+        gl.glRotated(mercuryAngle,0,1,0);
+        glu.gluSphere(mercury, radius, slices, stacks);
+        glu.gluDeleteQuadric(mercury);
+        
+        //Venus
+        venusTexture.bind();
+        GLUquadric venus = glu.gluNewQuadric();
+        glu.gluQuadricTexture(venus, true);
+        glu.gluQuadricDrawStyle(venus, GLU.GLU_FILL);
+        glu.gluQuadricNormals(venus, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(venus, GLU.GLU_OUTSIDE);
+        radius = 8.6f;
+        slices = 16;
+        stacks = 16;
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glTranslated(40, 0, 40);
+        venusAngle += 3;
+        gl.glRotated(venusAngle,0,1,0);
+        glu.gluSphere(venus, radius, slices, stacks);
+        glu.gluDeleteQuadric(venus);
+        
         // Apply texture.
-        earthTexture.enable();
+        //earthTexture.enable();
         earthTexture.bind();
-
-        // Draw sphere (possible styles: FILL, LINE, POINT).
         GLUquadric earth = glu.gluNewQuadric();
         glu.gluQuadricTexture(earth, true);
         glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
         glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
         glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
-        final float radius = 6.378f;
-        final int slices = 16;
-        final int stacks = 16;
-        gl.glRotated(ang++,0,1,0);
-        gl.glTranslated(10, 0, 10);
-        gl.glRotated(0.5*ang,0,1,0);
+        radius = 9.1f;
+        slices = 16;
+        stacks = 16;
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glTranslated(60, 0, 60);
+        earthAngle++;
+        gl.glRotated(earthAngle,0,1,0);
         glu.gluSphere(earth, radius, slices, stacks);
         glu.gluDeleteQuadric(earth);
 
-        // Save old state.
+        //Mars
+        marsTexture.bind();
+        GLUquadric mars = glu.gluNewQuadric();
+        glu.gluQuadricTexture(mars, true);
+        glu.gluQuadricDrawStyle(mars, GLU.GLU_FILL);
+        glu.gluQuadricNormals(mars, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(mars, GLU.GLU_OUTSIDE);
+        radius = 4.8f;
+        slices = 16;
+        stacks = 16;
+        gl.glPopMatrix();
         gl.glPushMatrix();
+        gl.glTranslated(80, 0, 80);
+        marsAngle += 6;
+        gl.glRotated(marsAngle,0,1,0);
+        glu.gluSphere(mars, radius, slices, stacks);
+        glu.gluDeleteQuadric(mars);
 
         // Compute satellite position.
         satelliteAngle = (satelliteAngle + 1f) % 360f;
@@ -231,6 +333,7 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
 
         // Draw solar panels.
         gl.glScalef(6f, 0.7f, 0.1f);
+        
         solarPanelTexture.bind();
         gl.glBegin(GL.GL_QUADS);
         final float[] frontUL = {-1.0f, -1.0f, 1.0f};
@@ -289,33 +392,13 @@ public class MyJoglCanvasStep6 extends GLCanvas implements GLEventListener {
     }
 
     /**
-     * @param gl The GL context.
-     * @param glu The GL unit.
-     * @param distance The distance from the screen.
-     */
-    private void setCamera(GL gl, GLU glu, float distance) {
-        // Change to projection matrix.
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
-
-        // Perspective.
-        float widthHeightRatio = (float) getWidth() / (float) getHeight();
-        glu.gluPerspective(45, widthHeightRatio, 1, 1000);
-        glu.gluLookAt(0, 0, distance, 0, 0, 0, 0, 1, 0);
-
-        // Change back to model view matrix.
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
-    }
-
-    /**
      * Starts the JOGL mini demo.
      * 
      * @param args Command line args.
      */
     public final static void main(String[] args) {
         GLCapabilities capabilities = createGLCapabilities();
-        MyJoglCanvasStep6 canvas = new MyJoglCanvasStep6(capabilities, 800, 500);
+        SolarSystem canvas = new SolarSystem(capabilities, 800, 500);
         JFrame frame = new JFrame("Mini JOGL Demo (breed)");
         frame.getContentPane().add(canvas, BorderLayout.CENTER);
         frame.setSize(800, 500);
