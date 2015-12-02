@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import org.cg.aquarium.Aquarium;
+import org.cg.aquarium.elements.Bubbles;
 import org.cg.aquarium.elements.Seahorse;
 import org.cg.aquarium.elements.Shark;
 import org.cg.aquarium.elements.Shoal;
@@ -24,6 +25,8 @@ public class Boot {
     static final int FISH_COUNT = 100;
     static final int SHARK_COUNT = 3;
     static final int SEAHORSE_COUNT = 3;
+
+    static final int BUBBLES_COUNT = 3;
 
     static Aquarium aquarium;
 
@@ -66,6 +69,10 @@ public class Boot {
                     .1f,
                     Vector.random().normalize().scale(10)
             ));
+        }
+
+        for (int i = 0; i < BUBBLES_COUNT; i++) {
+            aquarium.addToEcosystem(new Bubbles());
         }
 
         Debug.info(String.format("There are %d elements in ecosystem.",

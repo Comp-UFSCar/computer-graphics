@@ -142,7 +142,8 @@ public class Lighting implements Visible {
         gl.glEnable(GL.GL_COLOR_MATERIAL);
         gl.glShadeModel(GL.GL_SMOOTH);
         gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-        gl.glClearColor(.7f, .7f, 1, 1);
+        gl.glClearColor(10f / 255, 105f / 255, 148f / 255, 1);
+
     }
 
     public Lighting setup(GL gl) {

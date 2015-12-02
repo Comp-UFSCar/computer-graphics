@@ -10,7 +10,6 @@ import org.cg.aquarium.infrastructure.base.Body;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.helpers.Debug;
-import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
  * Aquarium singleton for scene coordination.

@@ -17,9 +17,6 @@ public abstract class Mobile extends Body {
 
     public Mobile() {
         super();
-
-        setDirection(Vector.RIGHT);
-        setSpeed(.1f);
     }
 
     public Mobile(Vector direction, double speed) {
