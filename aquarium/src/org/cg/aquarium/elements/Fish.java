@@ -21,11 +21,12 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Fish extends Mobile {
 
+    public static final double EVASION_SPEED_INCREASE = 2;
     public static final double MAXIMUM_DISTANCE = 100000;
-    public static final double ALIGNMENT = .01f,
-            EVASION = .4f,
-            RANDOMNESS = .01f,
-            MOMENTUM = .1f;
+    public static final double ALIGNMENT = .01,
+            EVASION = .8,
+            RANDOMNESS = .01,
+            MOMENTUM = .1;
 
     protected Shoal shoal;
     protected Graphics graphics;
@@ -116,19 +117,30 @@ public class Fish extends Mobile {
     protected Vector computeEvasion() {
         Vector v = Vector.ZERO;
 
+        setSpeed(baseSpeed);
+
         Mobile predator = (Mobile) Aquarium.getAquarium().getPredator(0);
 
         if (predator != null) {
             double distance = predator.getPosition().squareDistance(position);
 
-            Debug.info("Predator-fish distance:" + distance);
-
             if (distance < 600) {
-                // Find a scape route and scale inversibly proportional to
-                // distance between this and predator.
-                v = predator.getDirection().cross(
-                        predator.getDirection().mirrorOnVerticalAxis()
-                ).scale(EVASION);
+                Debug.info("Danger! Predator-fish distance: " + distance);
+
+                // Find a scape route from the predator.
+                // alpha is the vector predator.position-this.position
+                // projected onto the vector predator.direction.
+                // predator.direction scaled by alpha will return the estimated
+                // point p where the shark will pierce the shoal. p-position
+                // is the best bet for a fish to flee.
+                double alpha = position
+                        .delta(predator.getPosition())
+                        .dot(predator.getDirection());
+
+                v = predator.getDirection().scale(alpha);
+                v = position.delta(v).normalize().scale(EVASION);
+
+                setSpeed(baseSpeed * EVASION_SPEED_INCREASE);
             }
         }
 

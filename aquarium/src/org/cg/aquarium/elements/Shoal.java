@@ -19,10 +19,9 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Shoal extends Mobile {
 
-    public double maximumDistanceFromOrigin = 50;
-    public double radius = 20;
+    public final static double MAXIMUM_ORIGIN_OFFSET = 1200;
+    public final static double RADIUS = 20;
 
-    protected Vector rotation = new Vector(-1, 1, 0);
     protected List<Fish> shoal;
 
     public Shoal() {
@@ -43,49 +42,31 @@ public class Shoal extends Mobile {
             Vector fishPosition = position.add(Vector
                     .random(r)
                     .normalize()
-                    .scale(r.nextFloat() * radius));
+                    .scale(r.nextFloat() * RADIUS));
 
             addFish(position.add(fishPosition));
         }
     }
 
     @Override
-    public void display(GL gl, GLU glu, GLUT glut) {
-        if (Environment.getEnvironment().isDebugging()) {
-            gl.glPushMatrix();
-            gl.glColor3f(.2f, .2f, .2f);
-            gl.glTranslated(position.getX(), position.getY(), position.getZ());
-            glut.glutWireSphere(radius, 10, 10);
-            gl.glPopMatrix();
-        }
-    }
+    public void initializeProperties() {
+        position = Vector.random().normalize().scale(20);
+        direction = Vector.random().normalize();
 
-    public Vector getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(Vector rotation) {
-        this.rotation = rotation;
+        setSpeed(.05);
     }
 
     public void addFish(Vector position) {
         Fish f = new Fish(
                 this,
                 direction.add(Vector.random()).normalize(),
-                2 * speed, position);
+                4 * speed, position);
 
         addFish(f);
     }
 
     protected void addFish(Fish fish) {
         shoal.add(fish);
-    }
-
-    @Override
-    public void initializeProperties() {
-        position = Vector.random().normalize().scale(20);
-        direction = Vector.random().normalize();
-        speed = .05f;
     }
 
     @Override
@@ -103,16 +84,23 @@ public class Shoal extends Mobile {
         shoal.stream().forEach(f -> f.update());
     }
 
-    public double distanceFromAquariumCenter() {
-        return position.norm();
-    }
-
     public boolean isInsideAquarium() {
-        return distanceFromAquariumCenter() < maximumDistanceFromOrigin;
+        return position.squareDistance(Vector.ZERO) < MAXIMUM_ORIGIN_OFFSET;
     }
 
     public List<Body> getInnerShoal() {
         return (List<Body>) (List<?>) shoal;
+    }
+
+    @Override
+    public void display(GL gl, GLU glu, GLUT glut) {
+        if (Environment.getEnvironment().isDebugging()) {
+            gl.glPushMatrix();
+            gl.glColor3f(.2f, .2f, .2f);
+            gl.glTranslated(position.getX(), position.getY(), position.getZ());
+            glut.glutWireSphere(RADIUS, 10, 10);
+            gl.glPopMatrix();
+        }
     }
 
 }

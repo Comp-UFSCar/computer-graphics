@@ -20,10 +20,10 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Boot {
 
     static final String TITLE = "Aquarium";
-    static final boolean DEBUGGING = false;
+    static final boolean DEBUGGING = true;
 
     static final int FISH_COUNT = 100;
-    static final int SHARK_COUNT = 3;
+    static final int SHARK_COUNT = 1;
     static final int SEAHORSE_COUNT = 3;
 
     static final int BUBBLES_COUNT = 3;

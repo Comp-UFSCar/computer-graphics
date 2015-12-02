@@ -13,6 +13,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public abstract class Mobile extends Body {
 
     protected Vector direction;
+    protected double baseSpeed;
     protected double speed;
 
     public Mobile() {
@@ -24,6 +25,8 @@ public abstract class Mobile extends Body {
 
         setDirection(direction);
         setSpeed(speed);
+
+        baseSpeed = this.speed;
     }
 
     public Mobile(Vector direction, double speed, Vector position) {
@@ -31,6 +34,8 @@ public abstract class Mobile extends Body {
 
         setDirection(direction);
         setSpeed(speed);
+
+        baseSpeed = this.speed;
     }
 
     public void move() {
