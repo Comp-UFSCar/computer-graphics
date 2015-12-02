@@ -15,13 +15,13 @@ public class Lighting implements Visible {
 
     private Vector direction;
 
-    private float intensity;
+    private double intensity;
 
-    private float ambientIntensity;
+    private double ambientIntensity;
 
-    private float ambientReflection;
+    private double ambientReflection;
 
-    private float diffuseReflection;
+    private double diffuseReflection;
 
     /**
      * Creates a new flat lighting model.
@@ -40,7 +40,8 @@ public class Lighting implements Visible {
      * @param ambientReflection ambient reflection of the material.
      * @param diffuseReflection diffuse reflection of the material.
      */
-    public Lighting(Vector direction, float intensity, float ambientIntensity, float ambientReflection, float diffuseReflection) {
+    public Lighting(Vector direction, double intensity, double ambientIntensity,
+            double ambientReflection, double diffuseReflection) {
         this.direction = direction.normalize();
         this.intensity = intensity;
         this.ambientIntensity = ambientIntensity;
@@ -56,51 +57,52 @@ public class Lighting implements Visible {
         direction = direction.normalize();
 
         if (!direction.equals(this.direction)) {
-            System.out.println(String.format("%s -> %s", this.direction, direction));
+            System.out.println(String.format("%s -> %s", this.direction,
+                    direction));
 
             this.direction = direction;
             Environment.getEnvironment().notifyChanged(this);
         }
     }
 
-    public float getIntensity() {
+    public double getIntensity() {
         return intensity;
     }
 
-    public void setIntensity(float intensity) {
+    public void setIntensity(double intensity) {
         if (this.intensity != intensity) {
             this.intensity = intensity;
             Environment.getEnvironment().notifyChanged(this);
         }
     }
 
-    public float getAmbientIntensity() {
+    public double getAmbientIntensity() {
         return ambientIntensity;
     }
 
-    public void setAmbientIntensity(float ambientIntensity) {
+    public void setAmbientIntensity(double ambientIntensity) {
         if (this.ambientIntensity != ambientIntensity) {
             this.ambientIntensity = ambientIntensity;
             Environment.getEnvironment().notifyChanged(this);
         }
     }
 
-    public float getAmbientReflection() {
+    public double getAmbientReflection() {
         return ambientReflection;
     }
 
-    public void setAmbientReflection(float ambientReflection) {
+    public void setAmbientReflection(double ambientReflection) {
         if (this.ambientReflection != ambientReflection) {
             this.ambientReflection = ambientReflection;
             Environment.getEnvironment().notifyChanged(this);
         }
     }
 
-    public float getDiffuseReflection() {
+    public double getDiffuseReflection() {
         return diffuseReflection;
     }
 
-    public void setDiffuseReflection(float diffuseReflection) {
+    public void setDiffuseReflection(double diffuseReflection) {
         if (this.diffuseReflection != diffuseReflection) {
             this.diffuseReflection = diffuseReflection;
             Environment.getEnvironment().notifyChanged(this);
@@ -113,8 +115,8 @@ public class Lighting implements Visible {
      * @param normal normal vector of the face.
      * @return the tone that should be used to fine the new color.
      */
-    public float calculateLightingIntensity(Vector normal) {
-        float cos = normal.normalize().dot(direction);
+    public double calculateLightingIntensity(Vector normal) {
+        double cos = normal.normalize().dot(direction);
 
         return ambientIntensity * ambientReflection + intensity * diffuseReflection * cos;
     }
@@ -127,7 +129,7 @@ public class Lighting implements Visible {
         float position[] = {5.0f, 10.0f, 2.0f, 0.0f};
         float lmodel_ambient[] = {0.4f, 0.4f, 0.4f, 1.0f};
         float local_view[] = {0.0f};
-        
+
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambient, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuse, 0);
         gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, position, 0);

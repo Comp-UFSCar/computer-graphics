@@ -1,8 +1,6 @@
 package org.cg.aquarium.infrastructure.base;
 
-import com.sun.opengl.util.GLUT;
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
@@ -63,7 +61,7 @@ public class Graphics {
     }
 
     public void glAlignObjectWithVector(GL gl, Vector direction, Vector base) {
-        float cos = base.dot(new Vector(
+        double cos = base.dot(new Vector(
                 direction.getX(), 0, direction.getZ()).normalize());
 
         gl.glRotated(

@@ -52,7 +52,7 @@ public class Seahorse extends Mobile {
 
     @Override
     public void update() {
-        float d = position.squareDistance(lairLocation);
+        double d = position.squareDistance(lairLocation);
 
         setDirection(direction.scale((MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
                 .add(lairLocation.delta(position).normalize().scale(d / MAXIMUM_DISTANCE))
@@ -66,7 +66,7 @@ public class Seahorse extends Mobile {
     public void display(GL gl, GLU glu, GLUT glut) {
         gl.glPushMatrix();
 
-        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+        gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         graphics.glDefineObjectMaterial(gl);
         graphics.glAlignObjectWithVector(gl, direction, Vector.LEFT);

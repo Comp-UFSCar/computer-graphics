@@ -1,9 +1,5 @@
 package org.cg.aquarium.infrastructure.base;
 
-import com.sun.opengl.util.GLUT;
-import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
-import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -17,7 +13,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public abstract class Mobile extends Body {
 
     protected Vector direction;
-    protected float speed;
+    protected double speed;
 
     public Mobile() {
         super();
@@ -26,14 +22,14 @@ public abstract class Mobile extends Body {
         setSpeed(.1f);
     }
 
-    public Mobile(Vector direction, float speed) {
+    public Mobile(Vector direction, double speed) {
         super();
 
         setDirection(direction);
         setSpeed(speed);
     }
 
-    public Mobile(Vector direction, float speed, Vector position) {
+    public Mobile(Vector direction, double speed, Vector position) {
         super(position);
 
         setDirection(direction);
@@ -57,11 +53,11 @@ public abstract class Mobile extends Body {
         return direction;
     }
 
-    public void setSpeed(float speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 }

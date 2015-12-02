@@ -9,6 +9,7 @@ import libs.modelparser.WavefrontObject;
 import org.cg.aquarium.Aquarium;
 import org.cg.aquarium.infrastructure.base.Mobile;
 import org.cg.aquarium.infrastructure.base.Graphics;
+import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
@@ -20,12 +21,12 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Fish extends Mobile {
 
-    public static final float MAXIMUM_SAFE_DISTANCE = 2;
-    public static final float ALIGNMENT = .8f,
-            COHERSION = .2f,
-            SEPARATION = .4f,
-            EVASION = .4f,
-            RANDOMNESS = .01f;
+    public static final double ALIGNMENT = .3f,
+            COHESION = .3f,
+            SEPARATION = .3f,
+            EVASION = 0,
+            RANDOMNESS = .01f,
+            MOMENTUM = .1f;
 
     protected Shoal shoal;
     protected Graphics graphics;
@@ -36,13 +37,13 @@ public class Fish extends Mobile {
         this.shoal = shoal;
     }
 
-    public Fish(Shoal shoal, Vector direction, float speed) {
+    public Fish(Shoal shoal, Vector direction, double speed) {
         super(direction, speed);
 
         this.shoal = shoal;
     }
 
-    public Fish(Shoal shoal, Vector direction, float speed, Vector position) {
+    public Fish(Shoal shoal, Vector direction, double speed, Vector position) {
         super(direction, speed, position);
 
         this.shoal = shoal;
@@ -59,45 +60,58 @@ public class Fish extends Mobile {
         material.setShininess(.3f);
 
         graphics = new Graphics(
-                new WavefrontObject("Shark.obj", size.getX(), size.getY(), size.getZ()),
+                new WavefrontObject("Shark.obj",
+                        (float) size.getX(), (float) size.getY(),
+                        (float) size.getZ()),
                 material
         );
     }
 
     @Override
     public void update() {
-        Vector v = computeAlignment()
-                .add(computeCohersion())
+        setDirection(computeMomentum()
+                .add(computeAlignment())
+                .add(computeCohesion())
                 .add(computeSeparation())
                 .add(computeEvasion())
-                .add(computeRandomness());
-
-        setDirection(direction.add(v).normalize());
+                .add(computeRandomness()));
 
         move();
     }
 
-    public boolean isPossiblyInDanger() {
-        return distanceFromShoalCenter() > shoal.radius + MAXIMUM_SAFE_DISTANCE;
+    public double distanceFromShoalCenter() {
+        return position.squareDistance(shoal.getPosition());
     }
 
-    public float distanceFromShoalCenter() {
-        return position.l2Distance(shoal.getPosition());
+    protected Vector computeMomentum() {
+        return direction.scale(MOMENTUM);
     }
 
     protected Vector computeAlignment() {
         return shoal.getDirection().scale(ALIGNMENT);
     }
 
-    protected Vector computeCohersion() {
+    /**
+     * Compute cohesion factor for shoal movement.
+     *
+     * Cohesion is the factor that brings the shoal tight together, being
+     * fundamentally high when the shoal is sparse and progressively loosing
+     * importance as it becomes denser.
+     *
+     * @return the vector aligned to the direction that will increase the
+     * cohesion of the shoal, scaled by a {@code COHESION} factor.
+     */
+    protected Vector computeCohesion() {
+        double dist = distanceFromShoalCenter() / (shoal.radius * shoal.radius);
         return shoal.getPosition()
                 .delta(position)
                 .normalize()
-                .scale(COHERSION * distanceFromShoalCenter() / shoal.radius);
+                //                .scale(COHESION);
+                .scale(COHESION * dist);
     }
 
     protected Vector computeSeparation() {
-        return shoal.getPosition().delta(position).reflected()
+        return position.delta(shoal.getPosition())
                 .normalize().scale(SEPARATION);
     }
 
@@ -111,9 +125,11 @@ public class Fish extends Mobile {
         Mobile predator = (Mobile) Aquarium.getAquarium().getPredator(0);
 
         if (predator != null) {
-            float distance = predator.getPosition().squareDistance(position);
+            double distance = predator.getPosition().squareDistance(position);
 
-            if (distance < 200) {
+            Debug.info("Predator-fish distance:" + distance);
+
+            if (distance < 600) {
                 // Find a scape route and scale inversibly proportional to
                 // distance between this and predator.
                 v = predator.getDirection().cross(
@@ -129,7 +145,7 @@ public class Fish extends Mobile {
     public void display(GL gl, GLU glu, GLUT glut) {
         gl.glPushMatrix();
 
-        gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+        gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         graphics.glDefineObjectMaterial(gl);
         graphics.glAlignObjectWithVector(gl, direction, Vector.FORWARD);

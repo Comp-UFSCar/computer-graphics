@@ -39,14 +39,16 @@ public class Shark extends Fish {
         material.setShininess(.3f);
 
         graphics = new Graphics(
-                new WavefrontObject("Shark.obj", size.getX(), size.getY(), size.getZ()),
+                new WavefrontObject("Shark.obj",
+                        (float) size.getX(), (float) size.getY(),
+                        (float) size.getZ()),
                 material
         );
     }
 
     @Override
     public void update() {
-        float d = position.squareDistance(shoal.getPosition());
+        double d = position.squareDistance(shoal.getPosition());
 
         Debug.info("Shark-shoal delta: " + d);
 

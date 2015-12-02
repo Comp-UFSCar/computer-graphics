@@ -7,10 +7,8 @@ import javax.media.opengl.GLCapabilities;
 import org.cg.aquarium.elements.Shoal;
 import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.base.Body;
-import org.cg.aquarium.infrastructure.colliders.Collider;
 import org.cg.aquarium.infrastructure.Environment;
 import org.cg.aquarium.infrastructure.base.Mobile;
-import org.cg.aquarium.infrastructure.colliders.BoxCollider;
 import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
@@ -23,17 +21,12 @@ public class Aquarium extends Environment {
 
     protected final AquariumCanvas canvas;
     protected final Animator animator;
-    protected final Collider collider;
 
     protected List<Shoal> shoals;
     protected List<Body> predators;
 
     protected Aquarium() {
         super();
-
-        collider = new BoxCollider(
-                Vector.ZERO, new Vector(100, 100, 100)
-        );
 
         GLCapabilities capabilities = new GLCapabilities();
         capabilities.setRedBits(8);
@@ -93,10 +86,6 @@ public class Aquarium extends Environment {
         bodies.clear();
         predators.clear();
         shoals.clear();
-    }
-
-    public Collider getCollider() {
-        return collider;
     }
 
     public boolean addPredator(Mobile predator) {

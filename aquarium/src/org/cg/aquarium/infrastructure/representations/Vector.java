@@ -18,11 +18,11 @@ public class Vector {
     public final static Vector FORWARD = new Vector(0, 0, -1);
     public final static Vector BACKWARD = new Vector(0, 0, 1);
 
-    private final float x;
+    private final double x;
 
-    private final float y;
+    private final double y;
 
-    private final float z;
+    private final double z;
 
     /**
      * Instantiates a new vector in the given coordinates
@@ -30,11 +30,11 @@ public class Vector {
      * @param x x-coordinate of the vector
      * @param y y-coordinate of the vector
      */
-    public Vector(float x, float y) {
+    public Vector(double x, double y) {
         this(x, y, 0);
     }
 
-    public Vector(float x, float y, float z) {
+    public Vector(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -45,7 +45,7 @@ public class Vector {
      *
      * @return the x-coordinate
      */
-    public float getX() {
+    public double getX() {
         return x;
     }
 
@@ -54,7 +54,7 @@ public class Vector {
      *
      * @return the y-coordinate
      */
-    public float getY() {
+    public double getY() {
         return y;
     }
 
@@ -63,7 +63,7 @@ public class Vector {
      *
      * @return the z-coordinate
      */
-    public float getZ() {
+    public double getZ() {
         return z;
     }
 
@@ -75,7 +75,7 @@ public class Vector {
      * @param dy The movement performed on y-coordinate
      * @return A new vector achieved by translating this vector by given values
      */
-    public Vector add(float dx, float dy) {
+    public Vector add(double dx, double dy) {
         return Vector.this.add(dx, dy, 0);
     }
 
@@ -88,7 +88,7 @@ public class Vector {
      * @param dz The movement performed on z-coordinate
      * @return A new vector achieved by translating this vector by given values
      */
-    public Vector add(float dx, float dy, float dz) {
+    public Vector add(double dx, double dy, double dz) {
         return new Vector(x + dx, y + dy, z + dz);
     }
 
@@ -127,9 +127,9 @@ public class Vector {
      * Dot-product between two vectors.
      *
      * @param v the other vector.
-     * @return float the dot-product between two vectors.
+     * @return double the dot-product between two vectors.
      */
-    public float dot(Vector v) {
+    public double dot(Vector v) {
         return x * v.x + y * v.y + z * v.z;
     }
 
@@ -147,8 +147,8 @@ public class Vector {
      * @param scalar scalar element.
      * @return component-wise multiplication by the scalar.
      */
-    public Vector scale(float scalar) {
-        return new Vector((float) (scalar * x), (float) (scalar * y), (float) (scalar * z));
+    public Vector scale(double scalar) {
+        return new Vector((double) (scalar * x), (double) (scalar * y), (double) (scalar * z));
     }
 
     /**
@@ -156,10 +156,10 @@ public class Vector {
      *
      * Calculated by the square root of X² + Y² + Z².
      *
-     * @return float the norm of this vector.
+     * @return double the norm of this vector.
      */
-    public float norm() {
-        return (float) Math.sqrt(dot(this));
+    public double norm() {
+        return (double) Math.sqrt(dot(this));
     }
 
     /**
@@ -231,7 +231,7 @@ public class Vector {
      * @param v vector to calculate distance.
      * @return the distance between this and the vector {@code v}.
      */
-    public float l2Distance(Vector v) {
+    public double l2Distance(Vector v) {
         return delta(v).norm();
     }
 
@@ -244,7 +244,7 @@ public class Vector {
      * @param v the other vector.
      * @return the square distance between this and the vector {@code v}.
      */
-    public float squareDistance(Vector v) {
+    public double squareDistance(Vector v) {
         v = delta(v);
         return v.dot(v);
     }
@@ -263,7 +263,7 @@ public class Vector {
      */
     @Override
     public int hashCode() {
-        float hash = 7;
+        double hash = 7;
         hash = 59 * hash + this.x;
         hash = 59 * hash + this.y;
         hash = 59 * hash + this.z;
