@@ -42,8 +42,9 @@ public class Shark extends Fish {
     }
 
     @Override
-    public void initialize() {
+    public void initializeAttributes() {
         size = new Vector(6, 6, 6);
+        
         Material material = new Material("shark");
         material.setKa(new Vertex(.6f, .6f, 1));
         material.setKd(new Vertex(.6f, .6f, 1));

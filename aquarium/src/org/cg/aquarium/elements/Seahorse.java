@@ -42,7 +42,7 @@ public class Seahorse extends Mobile {
     }
 
     @Override
-    public void initialize() {
+    public void initializeAttributes() {
         size = new Vector(2, 2, 2);
 
         Material material = new Material("base");

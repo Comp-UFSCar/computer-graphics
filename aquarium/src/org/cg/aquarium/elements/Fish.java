@@ -72,7 +72,7 @@ public class Fish extends Mobile {
     }
 
     @Override
-    public void initialize() {
+    public void initializeAttributes() {
         size = new Vector(1, 1, 1);
         
         Material material = new Material("shark");
