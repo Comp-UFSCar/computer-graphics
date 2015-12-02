@@ -42,6 +42,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private Texture venusTexture;
     private Texture earthTexture;
     private Texture marsTexture;
+    private Texture starsTexture;
     
     private int galaxyAngle = 0;
     private int sunAngle = 0;
@@ -49,12 +50,32 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private int venusAngle = 0;
     private int earthAngle = 0;
     private int marsAngle = 0;
+    private int mercuryPlanetAngle = 0;
+    private int venusPlanetAngle = 0;
+    private int earthPlanetAngle = 0;
+    private int marsPlanetAngle = 0;
     
     /** The angle of the satellite orbit (0..359). */
     private float satelliteAngle = 0;
 
     /** The texture for a solar panel. */
     private Texture solarPanelTexture;
+    
+        /**
+     * Starts the JOGL mini demo.
+     * 
+     * @param args Command line args.
+     */
+    public final static void main(String[] args) {
+        GLCapabilities capabilities = createGLCapabilities();
+        SolarSystem canvas = new SolarSystem(capabilities, 800, 500);
+        JFrame frame = new JFrame("Trabalho 4 CGM");
+        frame.getContentPane().add(canvas, BorderLayout.CENTER);
+        frame.setSize(800, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        canvas.requestFocus();
+    }
 
     /**
      * A new mini starter.
@@ -112,7 +133,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
             stream = getClass().getResourceAsStream("textures/mercury.png");
             data = TextureIO.newTextureData(stream, false, "png");
             mercuryTexture = TextureIO.newTexture(data);
-            stream = getClass().getResourceAsStream("textures/venus.png");
+            stream = getClass().getResourceAsStream("textures/neptune.png");
             data = TextureIO.newTextureData(stream, false, "png");
             venusTexture = TextureIO.newTexture(data);
             stream = getClass().getResourceAsStream("textures/earth2.png");
@@ -121,6 +142,9 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
             stream = getClass().getResourceAsStream("textures/mars.png");
             data = TextureIO.newTextureData(stream, false, "png");
             marsTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/stars2.png");
+            data = TextureIO.newTextureData(stream, false, "png");
+            starsTexture = TextureIO.newTexture(data);
         }
         catch (IOException exc) {
             System.out.print("Arquivos de Textura não foram encontrados.");
@@ -228,8 +252,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        gl.glTranslated(20, 0, 20);
+        mercuryPlanetAngle += 7;
         mercuryAngle += 3;
+        gl.glRotated(mercuryPlanetAngle,0,1,0);
+        gl.glTranslated(20, 0, 20);
         gl.glRotated(mercuryAngle,0,1,0);
         glu.gluSphere(mercury, radius, slices, stacks);
         glu.gluDeleteQuadric(mercury);
@@ -246,8 +272,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
+        venusPlanetAngle += 4;
+        venusAngle += -1;
+        gl.glRotated(venusPlanetAngle,0,1,0);
         gl.glTranslated(40, 0, 40);
-        venusAngle += 3;
         gl.glRotated(venusAngle,0,1,0);
         glu.gluSphere(venus, radius, slices, stacks);
         glu.gluDeleteQuadric(venus);
@@ -265,8 +293,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        gl.glTranslated(60, 0, 60);
+        earthPlanetAngle++;
         earthAngle++;
+        gl.glRotated(earthPlanetAngle,0,1,0);
+        gl.glTranslated(60, 0, 60);
         gl.glRotated(earthAngle,0,1,0);
         glu.gluSphere(earth, radius, slices, stacks);
         glu.gluDeleteQuadric(earth);
@@ -283,11 +313,30 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
+        marsPlanetAngle += 3;
+        marsAngle += 7;
+        gl.glRotated(marsPlanetAngle,0,1,0);
         gl.glTranslated(80, 0, 80);
-        marsAngle += 6;
         gl.glRotated(marsAngle,0,1,0);
         glu.gluSphere(mars, radius, slices, stacks);
         glu.gluDeleteQuadric(mars);
+        
+        //Stars
+        starsTexture.bind();
+        GLUquadric stars = glu.gluNewQuadric();
+        glu.gluQuadricTexture(stars, true);
+        glu.gluQuadricDrawStyle(stars, GLU.GLU_FILL);
+        glu.gluQuadricNormals(stars, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(stars, GLU.GLU_OUTSIDE);
+        radius = 500f;
+        slices = 16;
+        stacks = 16;
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glRotated(-galaxyAngle,0,1,0);
+        gl.glRotated(0.03*galaxyAngle,0,1,0);
+        glu.gluSphere(stars, radius, slices, stacks);
+        glu.gluDeleteQuadric(stars);
 
         // Compute satellite position.
         satelliteAngle = (satelliteAngle + 1f) % 360f;
@@ -389,22 +438,6 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
      */
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
         throw new UnsupportedOperationException("Changing display is not supported.");
-    }
-
-    /**
-     * Starts the JOGL mini demo.
-     * 
-     * @param args Command line args.
-     */
-    public final static void main(String[] args) {
-        GLCapabilities capabilities = createGLCapabilities();
-        SolarSystem canvas = new SolarSystem(capabilities, 800, 500);
-        JFrame frame = new JFrame("Mini JOGL Demo (breed)");
-        frame.getContentPane().add(canvas, BorderLayout.CENTER);
-        frame.setSize(800, 500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        canvas.requestFocus();
     }
 
 }
