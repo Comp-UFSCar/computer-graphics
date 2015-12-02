@@ -37,7 +37,7 @@ public class Seahorse extends Mobile {
 
     @Override
     public void initializeProperties() {
-        size = new Vector(2, 2, 2);
+        size = new Vector(1, 1, 1);
         lairLocation = Vector.random().normalize().scale(40);
 
         Material material = new Material("base");
@@ -46,7 +46,9 @@ public class Seahorse extends Mobile {
         material.setKs(new Vertex(.2f, .2f, .2f));
         material.setShininess(30);
 
-        graphics = new Graphics(new WavefrontObject("seahorse.obj", 2, 2, 2),
+        graphics = new Graphics(new WavefrontObject("seahorse.obj",
+                (float) size.getX(), (float) size.getY(),
+                (float) size.getZ()),
                 material);
     }
 
