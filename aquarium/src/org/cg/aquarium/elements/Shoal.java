@@ -34,19 +34,6 @@ public class Shoal extends Mobile {
         this.shoal = shoal;
     }
 
-    public Shoal(List<Fish> shoal, Vector direction, double speed) {
-        super(direction, speed);
-        this.shoal = shoal;
-    }
-
-    public Shoal(
-            List<Fish> shoal, Vector direction,
-            double speed, Vector position) {
-        super(direction, speed, position);
-
-        this.shoal = shoal;
-    }
-
     public Shoal(int size) {
         this();
 
@@ -96,6 +83,9 @@ public class Shoal extends Mobile {
 
     @Override
     public void initializeProperties() {
+        position = Vector.random().normalize().scale(20);
+        direction = Vector.random().normalize();
+        speed = .05f;
     }
 
     @Override

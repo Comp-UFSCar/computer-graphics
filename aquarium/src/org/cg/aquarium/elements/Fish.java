@@ -21,10 +21,9 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Fish extends Mobile {
 
-    public static final double ALIGNMENT = .3f,
-            COHESION = .3f,
-            SEPARATION = .3f,
-            EVASION = 0,
+    public static final double MAXIMUM_DISTANCE = 100000;
+    public static final double ALIGNMENT = .0f,
+            EVASION = .4f,
             RANDOMNESS = .01f,
             MOMENTUM = .1f;
 
@@ -70,21 +69,23 @@ public class Fish extends Mobile {
     @Override
     public void update() {
         setDirection(computeMomentum()
-                .add(computeAlignment())
                 .add(computeCohesion())
-                .add(computeSeparation())
+                .add(computeAlignment())
                 .add(computeEvasion())
-                .add(computeRandomness()));
+                .add(computeRandomness())
+        );
 
         move();
     }
 
-    public double distanceFromShoalCenter() {
+    public double squareDistanceFromShoalCenter() {
         return position.squareDistance(shoal.getPosition());
     }
 
     protected Vector computeMomentum() {
-        return direction.scale(MOMENTUM);
+        return direction
+                .scale((MAXIMUM_DISTANCE - squareDistanceFromShoalCenter())
+                        / MAXIMUM_DISTANCE);
     }
 
     protected Vector computeAlignment() {
@@ -102,17 +103,10 @@ public class Fish extends Mobile {
      * cohesion of the shoal, scaled by a {@code COHESION} factor.
      */
     protected Vector computeCohesion() {
-        double dist = distanceFromShoalCenter() / (shoal.radius * shoal.radius);
         return shoal.getPosition()
                 .delta(position)
                 .normalize()
-                //                .scale(COHESION);
-                .scale(COHESION * dist);
-    }
-
-    protected Vector computeSeparation() {
-        return position.delta(shoal.getPosition())
-                .normalize().scale(SEPARATION);
+                .scale(squareDistanceFromShoalCenter() / MAXIMUM_DISTANCE);
     }
 
     protected Vector computeRandomness() {
