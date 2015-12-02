@@ -15,13 +15,20 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Bubbles extends Mobile {
 
-    public final double CEIL = 100;
-    public int bubblesCount = 4;
+    public final static Vector VARIANCE = new Vector(40, 20, 4);
+
+    public static int N_BUBBLES = 4;
+    public static int N_BUBBLES_GROUPS = 2;
 
     @Override
     public void update() {
-        if (position.getY() > CEIL) {
-            setPosition(position.mirrorOnHorizontalAxis());
+        if (position.getY() > VARIANCE.getY()) {
+            setPosition(new Vector(
+                    (Environment.getEnvironment().getRandom().nextDouble() - .5)
+                    * 2 * VARIANCE.getX(),
+                    -position.getY(),
+                    position.getZ()
+            ));
         }
 
         move();
@@ -29,9 +36,13 @@ public class Bubbles extends Mobile {
 
     @Override
     public void initializeProperties() {
-        setPosition(Vector.DOWN.scale(20).add(
-                Vector.random().normalize().scale(10)));
-        
+        Random r = Environment.getEnvironment().getRandom();
+
+        setPosition(new Vector(
+                (r.nextDouble() - .5) * 2 * VARIANCE.getX(),
+                -r.nextDouble() * VARIANCE.getY(),
+                (r.nextDouble() - .5) * 2 * VARIANCE.getZ()));
+
         setDirection(Vector.UP);
         setSpeed(.8f);
         setSize(Vector.RIGHT);
@@ -45,23 +56,22 @@ public class Bubbles extends Mobile {
         gl.glTranslated(position.getX(), position.getY(), position.getZ());
         gl.glColor3f(1, 1, 1);
 
-        for (int i = 0; i < bubblesCount; i++) {
-            gl.glTranslated(position.getX() + r.nextDouble(),
+        for (int i = 0; i < N_BUBBLES_GROUPS; i++) {
+            gl.glTranslated(position.getX() + 4 * r.nextDouble(),
                     position.getY() - 3,
                     position.getZ());
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < N_BUBBLES; j++) {
                 gl.glTranslated(
-                        r.nextDouble() - .5,
-                        r.nextDouble() - .5,
-                        r.nextDouble() - .5
+                        r.nextDouble() - .05,
+                        r.nextDouble() - .05,
+                        r.nextDouble() - .05
                 );
-                
-                glut.glutSolidSphere(size.getX(), 10, 10);
+
+                glut.glutSolidSphere(r.nextDouble() * size.getX(), 10, 10);
             }
         }
 
         gl.glPopMatrix();
     }
-
 }
