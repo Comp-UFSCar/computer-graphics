@@ -1,8 +1,12 @@
 package org.cg.aquarium.elements;
 
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
+import java.io.InputStream;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
+import org.cg.aquarium.infrastructure.AquariumCanvas;
 import org.cg.aquarium.infrastructure.base.Graphics;
 import org.cg.aquarium.infrastructure.helpers.Debug;
 import org.cg.aquarium.infrastructure.representations.Vector;
@@ -36,10 +40,10 @@ public class Shark extends Fish {
         size = new Vector(6, 6, 6);
 
         Material material = new Material("shark");
-        material.setKa(new Vertex(.6f, .6f, 1));
-        material.setKd(new Vertex(.6f, .6f, 1));
-        material.setKs(new Vertex(.2f, .2f, .2f));
-        material.setShininess(.3f);
+        material.setKa(new Vertex(1f, 1f, 1));
+        material.setKd(new Vertex(1f, 1f, 1));
+        material.setKs(new Vertex(1f, 1f, 1f));
+        material.setShininess(100f);
 
         graphics = new Graphics(
                 new WavefrontObject("Shark.obj",
@@ -66,6 +70,10 @@ public class Shark extends Fish {
                 .add(Vector.random().normalize().scale(RANDOMNESS))
         );
         move();
+
+        if (texture == null) {
+            texture = AquariumCanvas.texture;
+        }
     }
 
 }
