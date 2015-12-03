@@ -348,7 +348,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0f);
 
-        // Restore old state.
+        
         gl.glPopMatrix();
     }
 
