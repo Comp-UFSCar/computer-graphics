@@ -42,6 +42,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private Texture venusTexture;
     private Texture earthTexture;
     private Texture marsTexture;
+    private Texture moonTexture;
     private Texture starsTexture;
     
     private float galaxyAngle = 0;
@@ -54,6 +55,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private float venusPlanetAngle = 0;
     private float earthPlanetAngle = 0;
     private float marsPlanetAngle = 0;
+    private float moonAngle = 0;
     
     /** The angle of the satellite orbit (0..359). */
     private float satelliteAngle = 0;
@@ -145,6 +147,9 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
             stream = getClass().getResourceAsStream("textures/stars2.png");
             data = TextureIO.newTextureData(stream, false, "png");
             starsTexture = TextureIO.newTexture(data);
+            stream = getClass().getResourceAsStream("textures/moon.png");
+            data = TextureIO.newTextureData(stream, false, "png");
+            moonTexture = TextureIO.newTexture(data);
         }
         catch (IOException exc) {
             System.out.print("Arquivos de Textura não foram encontrados.");
@@ -225,6 +230,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         float radius;
         int slices;
         int stacks;
+        
         //Sun
         sunTexture.bind();
         GLUquadric sun = glu.gluNewQuadric();
@@ -233,9 +239,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         glu.gluQuadricNormals(sun, GLU.GLU_FLAT);
         glu.gluQuadricOrientation(sun, GLU.GLU_OUTSIDE);
         radius = 20f;
-        slices = 16;
-        stacks = 16;
-        sunAngle += 10;
+        slices = 10;
+        stacks = 10;
+        sunAngle += 0.1;
+        gl.glRotated(-galaxyAngle,0,1,0);
         gl.glRotated(sunAngle,0,1,0);
         glu.gluSphere(sun, radius, slices, stacks);
         glu.gluDeleteQuadric(sun);
@@ -252,8 +259,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        mercuryPlanetAngle += 7;
-        mercuryAngle += Math.E;
+        mercuryPlanetAngle += 0.74;
+        mercuryAngle += Math.E/10;
         gl.glRotated(mercuryPlanetAngle,0,1,0);
         gl.glTranslated(20, 0, 20);
         gl.glRotated(mercuryAngle,0,1,0);
@@ -272,8 +279,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        venusPlanetAngle += Math.PI;
-        venusAngle += -1;
+        venusPlanetAngle += 0.54;
+        venusAngle += -1.0/10;
         gl.glRotated(venusPlanetAngle,0,1,0);
         gl.glTranslated(40, 0, 40);
         gl.glRotated(venusAngle,0,1,0);
@@ -293,13 +300,29 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        earthPlanetAngle += 3.3;
+        earthPlanetAngle += 0.33;
         earthAngle++;
         gl.glRotated(earthPlanetAngle,0,1,0);
         gl.glTranslated(60, 0, 60);
         gl.glRotated(earthAngle,0,1,0);
         glu.gluSphere(earth, radius, slices, stacks);
         glu.gluDeleteQuadric(earth);
+        
+        moonTexture.bind();
+        GLUquadric moon = glu.gluNewQuadric();
+        glu.gluQuadricTexture(moon, true);
+        glu.gluQuadricDrawStyle(moon, GLU.GLU_FILL);
+        glu.gluQuadricNormals(moon, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(moon, GLU.GLU_OUTSIDE);
+        radius = 2.0f;
+        slices = 16;
+        stacks = 16;
+        moonAngle += 4;
+        gl.glRotated(moonAngle,0.1,1,0.1);
+        gl.glTranslated(10, 0, 10);
+        
+        glu.gluSphere(moon, radius, slices, stacks);
+        glu.gluDeleteQuadric(moon);
 
         //Mars
         marsTexture.bind();
@@ -313,8 +336,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         stacks = 16;
         gl.glPopMatrix();
         gl.glPushMatrix();
-        marsPlanetAngle += Math.sqrt(2);
-        marsAngle += Math.sqrt(7);
+        marsPlanetAngle += Math.sqrt(2)/10;
+        marsAngle += Math.sqrt(7)/10;
         gl.glRotated(marsPlanetAngle,0,1,0);
         gl.glTranslated(80, 0, 80);
         gl.glRotated(marsAngle,0,1,0);
@@ -327,93 +350,22 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         glu.gluQuadricTexture(stars, true);
         glu.gluQuadricDrawStyle(stars, GLU.GLU_FILL);
         glu.gluQuadricNormals(stars, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(stars, GLU.GLU_OUTSIDE);
+        glu.gluQuadricOrientation(stars, GLU.GLU_INSIDE);
         radius = 500f;
-        slices = 16;
-        stacks = 16;
+        slices = 10;
+        stacks = 10;
         gl.glPopMatrix();
         gl.glPushMatrix();
         gl.glRotated(-galaxyAngle,0,1,0);
-        gl.glRotated(0.03*galaxyAngle,0,1,0);
+        gl.glRotated(-0.01*galaxyAngle,0,1,0);
         glu.gluSphere(stars, radius, slices, stacks);
         glu.gluDeleteQuadric(stars);
-
-        // Compute satellite position.
-        satelliteAngle = (satelliteAngle + 1f) % 360f;
-        final float distance = 10.000f;
-        final float x = (float) Math.sin(Math.toRadians(satelliteAngle)) * distance;
-        final float y = (float) Math.cos(Math.toRadians(satelliteAngle)) * distance;
-        final float z = 0;
-        gl.glTranslatef(x, y, z);
-        gl.glRotatef(satelliteAngle, 0, 0, -1);
-        gl.glRotatef(45f, 0, 1, 0);
-
-        // Set silver color, and disable texturing.
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        float[] ambiColor = {0.3f, 0.3f, 0.3f, 1f};
-        float[] specColor = {0.8f, 0.8f, 0.8f, 1f};
-        gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, ambiColor, 0);
-        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, specColor, 0);
-        gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 90f);
-
-        // Draw satellite body.
-        final float cylinderRadius = 1f;
-        final float cylinderHeight = 2f;
-        final int cylinderSlices = 16;
-        final int cylinderStacks = 16;
-        GLUquadric body = glu.gluNewQuadric();
-        glu.gluQuadricTexture(body, false);
-        glu.gluQuadricDrawStyle(body, GLU.GLU_FILL);
-        glu.gluQuadricNormals(body, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(body, GLU.GLU_OUTSIDE);
-        gl.glTranslatef(0, 0, -cylinderHeight / 2);
-        glu.gluDisk(body, 0, cylinderRadius, cylinderSlices, 2);
-        glu.gluCylinder(body, cylinderRadius, cylinderRadius, cylinderHeight, cylinderSlices, cylinderStacks);
-        gl.glTranslatef(0, 0, cylinderHeight);
-        glu.gluDisk(body, 0, cylinderRadius, cylinderSlices, 2);
-        glu.gluDeleteQuadric(body);
-        gl.glTranslatef(0, 0, -cylinderHeight / 2);
 
         // Set white color, and enable texturing.
         gl.glEnable(GL.GL_TEXTURE_2D);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0f);
-
-        // Draw solar panels.
-        gl.glScalef(6f, 0.7f, 0.1f);
-        
-        solarPanelTexture.bind();
-        gl.glBegin(GL.GL_QUADS);
-        final float[] frontUL = {-1.0f, -1.0f, 1.0f};
-        final float[] frontUR = {1.0f, -1.0f, 1.0f};
-        final float[] frontLR = {1.0f, 1.0f, 1.0f};
-        final float[] frontLL = {-1.0f, 1.0f, 1.0f};
-        final float[] backUL = {-1.0f, -1.0f, -1.0f};
-        final float[] backLL = {-1.0f, 1.0f, -1.0f};
-        final float[] backLR = {1.0f, 1.0f, -1.0f};
-        final float[] backUR = {1.0f, -1.0f, -1.0f};
-        // Front Face.
-        gl.glNormal3f(0.0f, 0.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3fv(frontUR, 0);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3fv(frontUL, 0);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3fv(frontLL, 0);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3fv(frontLR, 0);
-        // Back Face.
-        gl.glNormal3f(0.0f, 0.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3fv(backUL, 0);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3fv(backUR, 0);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3fv(backLR, 0);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3fv(backLL, 0);
-        gl.glEnd();
 
         // Restore old state.
         gl.glPopMatrix();
