@@ -1,6 +1,7 @@
 package org.cg.aquarium.elements;
 
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
@@ -30,6 +31,7 @@ public class Fish extends Mobile {
 
     protected Shoal shoal;
     protected Graphics graphics;
+    protected Texture texture;
 
     public Fish(Shoal shoal) {
         super();
@@ -187,9 +189,16 @@ public class Fish extends Mobile {
         gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         graphics.glDefineObjectMaterial(gl);
+        if(texture != null) {
+            texture.enable();
+            texture.bind();
+        }
         graphics.glAlignObjectWithVector(gl, direction, Vector.FORWARD);
         graphics.glRenderObject(gl);
         graphics.glDebugPlotVector(gl, direction.scale(20 * speed));
+        if(texture != null) {
+            texture.disable();
+        }
 
         gl.glPopMatrix();
     }
