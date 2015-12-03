@@ -233,27 +233,21 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         
         //Sun
         sunTexture.bind();
-        GLUquadric sun = glu.gluNewQuadric();
-        glu.gluQuadricTexture(sun, true);
-        glu.gluQuadricDrawStyle(sun, GLU.GLU_FILL);
-        glu.gluQuadricNormals(sun, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(sun, GLU.GLU_OUTSIDE);
+        GLUquadric quadric = glu.gluNewQuadric();
+        glu.gluQuadricTexture(quadric, true);
+        glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
+        glu.gluQuadricNormals(quadric, GLU.GLU_FLAT);
+        glu.gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
         radius = 20f;
         slices = 10;
         stacks = 10;
         sunAngle += 0.1;
         gl.glRotated(-galaxyAngle,0,1,0);
         gl.glRotated(sunAngle,0,1,0);
-        glu.gluSphere(sun, radius, slices, stacks);
-        glu.gluDeleteQuadric(sun);
+        glu.gluSphere(quadric, radius, slices, stacks);
         
         //Mercury
         mercuryTexture.bind();
-        GLUquadric mercury = glu.gluNewQuadric();
-        glu.gluQuadricTexture(mercury, true);
-        glu.gluQuadricDrawStyle(mercury, GLU.GLU_FILL);
-        glu.gluQuadricNormals(mercury, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(mercury, GLU.GLU_OUTSIDE);
         radius = 3.4f;
         slices = 16;
         stacks = 16;
@@ -264,16 +258,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glRotated(mercuryPlanetAngle,0,1,0);
         gl.glTranslated(20, 0, 20);
         gl.glRotated(mercuryAngle,0,1,0);
-        glu.gluSphere(mercury, radius, slices, stacks);
-        glu.gluDeleteQuadric(mercury);
+        glu.gluSphere(quadric, radius, slices, stacks);
         
         //Venus
         venusTexture.bind();
-        GLUquadric venus = glu.gluNewQuadric();
-        glu.gluQuadricTexture(venus, true);
-        glu.gluQuadricDrawStyle(venus, GLU.GLU_FILL);
-        glu.gluQuadricNormals(venus, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(venus, GLU.GLU_OUTSIDE);
         radius = 8.6f;
         slices = 16;
         stacks = 16;
@@ -282,19 +270,12 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         venusPlanetAngle += 0.54;
         venusAngle += -1.0/10;
         gl.glRotated(venusPlanetAngle,0,1,0);
-        gl.glTranslated(40, 0, 40);
+        gl.glTranslated(35, 0, 40);
         gl.glRotated(venusAngle,0,1,0);
-        glu.gluSphere(venus, radius, slices, stacks);
-        glu.gluDeleteQuadric(venus);
+        glu.gluSphere(quadric, radius, slices, stacks);
         
-        // Apply texture.
-        //earthTexture.enable();
+        // Earth
         earthTexture.bind();
-        GLUquadric earth = glu.gluNewQuadric();
-        glu.gluQuadricTexture(earth, true);
-        glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
-        glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
         radius = 9.1f;
         slices = 16;
         stacks = 16;
@@ -305,32 +286,19 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glRotated(earthPlanetAngle,0,1,0);
         gl.glTranslated(60, 0, 60);
         gl.glRotated(earthAngle,0,1,0);
-        glu.gluSphere(earth, radius, slices, stacks);
-        glu.gluDeleteQuadric(earth);
+        glu.gluSphere(quadric, radius, slices, stacks);
         
         moonTexture.bind();
-        GLUquadric moon = glu.gluNewQuadric();
-        glu.gluQuadricTexture(moon, true);
-        glu.gluQuadricDrawStyle(moon, GLU.GLU_FILL);
-        glu.gluQuadricNormals(moon, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(moon, GLU.GLU_OUTSIDE);
         radius = 2.0f;
         slices = 16;
         stacks = 16;
-        moonAngle += 4;
-        gl.glRotated(moonAngle,0.1,1,0.1);
+        moonAngle += 1;
+        gl.glRotated(moonAngle,0.1,0.5,-0.5);
         gl.glTranslated(10, 0, 10);
-        
-        glu.gluSphere(moon, radius, slices, stacks);
-        glu.gluDeleteQuadric(moon);
+        glu.gluSphere(quadric, radius, slices, stacks);
 
         //Mars
         marsTexture.bind();
-        GLUquadric mars = glu.gluNewQuadric();
-        glu.gluQuadricTexture(mars, true);
-        glu.gluQuadricDrawStyle(mars, GLU.GLU_FILL);
-        glu.gluQuadricNormals(mars, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(mars, GLU.GLU_OUTSIDE);
         radius = 4.8f;
         slices = 16;
         stacks = 16;
@@ -341,16 +309,28 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glRotated(marsPlanetAngle,0,1,0);
         gl.glTranslated(80, 0, 80);
         gl.glRotated(marsAngle,0,1,0);
-        glu.gluSphere(mars, radius, slices, stacks);
-        glu.gluDeleteQuadric(mars);
+        glu.gluSphere(quadric, radius, slices, stacks);
+        
+        moonTexture.bind();
+        radius = 1.4f;
+        slices = 9;
+        stacks = 9;
+        gl.glPushMatrix();
+        gl.glRotated(2*moonAngle,1,0,-0.1);
+        gl.glTranslated(5, -2, 5);
+        glu.gluSphere(quadric, radius, slices, stacks);
+        
+        radius = 0.9f;
+        slices = 7;
+        stacks = 7;
+        gl.glPopMatrix();
+        gl.glRotated(3*moonAngle,1,-1,-1);
+        gl.glTranslated(7, 0, 7);
+        glu.gluSphere(quadric, radius, slices, stacks);
         
         //Stars
         starsTexture.bind();
-        GLUquadric stars = glu.gluNewQuadric();
-        glu.gluQuadricTexture(stars, true);
-        glu.gluQuadricDrawStyle(stars, GLU.GLU_FILL);
-        glu.gluQuadricNormals(stars, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(stars, GLU.GLU_INSIDE);
+        glu.gluQuadricOrientation(quadric, GLU.GLU_INSIDE);
         radius = 500f;
         slices = 10;
         stacks = 10;
@@ -358,8 +338,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glPushMatrix();
         gl.glRotated(-galaxyAngle,0,1,0);
         gl.glRotated(-0.01*galaxyAngle,0,1,0);
-        glu.gluSphere(stars, radius, slices, stacks);
-        glu.gluDeleteQuadric(stars);
+        glu.gluSphere(quadric, radius, slices, stacks);
+        glu.gluDeleteQuadric(quadric);
 
         // Set white color, and enable texturing.
         gl.glEnable(GL.GL_TEXTURE_2D);
