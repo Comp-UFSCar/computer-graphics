@@ -20,23 +20,31 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
- * A minimal JOGL demo.
+ * Nesse trabalho, foi implementada uma animação que representa o sistema solar (considerando o sol e os quatro
+ * primeiros planetas) simulando os movimentos de rotação e translação. Além disso, as luas da Terra e de Marte
+ * foram modeladas. Os planetas, o sol e a lua foram modelados a partir de uma esfera do jogl, aplicando textura
+ * ao seu contorno por meio de imagens png. Foi adicionado também luz para a cena. A animação foi realizada
+ * a partir de transformações de rotação e translação. Para esse trabalho, foi usado como referência o tutorial que
+ * pode ser encontrado em:
+ * {@link} http://www.land-of-kain.de/docs/jogl/
  * 
- * @author <a href="mailto:kain@land-of-kain.de">Kai Ruhl</a>
- * @since 26 Feb 2009
+ * @author João Paulo RA:408034
+ * @author Breno Silveira RA:551481
+ * @author Camilo Moreira RA:359645
+ * 
  */
 public class SolarSystem extends GLCanvas implements GLEventListener {
 
-    /** The GL unit (helper class). */
+    
     private GLU glu;
 
-    /** The frames per second setting. */
+    /** Quantidade de frames por segundo para animar. */
     private int fps = 60;
 
-    /** The OpenGL animator. */
+    /** Animador da OpenGL */
     private FPSAnimator animator;
 
-    /** Textures. */
+    /** Texturas. */
     private Texture sunTexture;
     private Texture mercuryTexture;
     private Texture venusTexture;
@@ -44,7 +52,9 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private Texture marsTexture;
     private Texture moonTexture;
     private Texture starsTexture;
+    private Texture solarPanelTexture;
     
+    /** Ângulos de cada objeto da animação, que irão variar em diferentes escalas */
     private float galaxyAngle = 0;
     private float sunAngle = 0;
     private float mercuryAngle = 0;
@@ -56,15 +66,11 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     private float earthPlanetAngle = 0;
     private float marsPlanetAngle = 0;
     private float moonAngle = 0;
+   
     
-    /** The angle of the satellite orbit (0..359). */
-    private float satelliteAngle = 0;
-
-    /** The texture for a solar panel. */
-    private Texture solarPanelTexture;
     
-        /**
-     * Starts the JOGL mini demo.
+     /**
+     * 
      * 
      * @param args Command line args.
      */
@@ -80,18 +86,19 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     }
 
     /**
-     * A new mini starter.
+     * Capabilities definem o que será usado da implementação OpenGL mais baixo nível. Se a máquina não puder
+     * suportar, uma excessão será lançada, e será possível saber o que funcionará e o que não.
      * 
-     * @param capabilities The GL capabilities.
-     * @param width The window width.
-     * @param height The window height.
+     * @param capabilities capabilities da GL.
+     * @param width largura da janela.
+     * @param height altura da janela.
      */
     public SolarSystem(GLCapabilities capabilities, int width, int height) {
         addGLEventListener(this);
     }
 
     /**
-     * @return Some standard GL capabilities (with alpha).
+     * @return algumas capabilities padrão.
      */
     private static GLCapabilities createGLCapabilities() {
         GLCapabilities capabilities = new GLCapabilities();
@@ -103,31 +110,24 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     }
 
     /**
-     * Sets up the screen.
-     * 
-     * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
+     *
      */
     public void init(GLAutoDrawable drawable) {
         drawable.setGL(new DebugGL(drawable.getGL()));
         final GL gl = drawable.getGL();
-
-        // Enable z- (depth) buffer for hidden surface removal. 
+ 
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
 
-        // Enable smooth shading.
         gl.glShadeModel(GL.GL_SMOOTH);
 
-        // Define "clear" color.
         gl.glClearColor(0f, 0f, 0f, 0f);
 
-        // We want a nice perspective.
         gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
-        // Create GLU.
         glu = new GLU();
 
-        // Load textures.
+        //Carregando as texturas
         try {
             InputStream stream = getClass().getResourceAsStream("textures/sun.png");
             TextureData data = TextureIO.newTextureData(stream, false, "png");
@@ -152,11 +152,10 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
             moonTexture = TextureIO.newTexture(data);
         }
         catch (IOException exc) {
-            System.out.print("Arquivos de Textura não foram encontrados.");
+            System.out.print("Arquivos de Textura nÃ£o foram encontrados.");
             System.exit(1);
         }
 
-        // Load the solar panel texture.
         try {
             InputStream stream = getClass().getResourceAsStream("textures/stars2.png");
             TextureData data = TextureIO.newTextureData(stream, false, "png");
@@ -166,16 +165,19 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
             exc.printStackTrace();
             System.exit(2);
         }
-
-        // Start animator.
         animator = new FPSAnimator(this, fps);
         animator.start();
     }
 
     /**
-     * The only method that you should implement by yourself.
-     * 
-     * @see javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable)
+     * Nesse método, os objetos são modelados a partir do objeto quadric que é adicionado em esferas e a 
+     * textura é adicionada a partir das texturas que foram carregadas anteriormente. Para animação da cena, 
+     * uma rotação e uma translação são definidas para simular o movimento de translação dos planetas em torno do
+     * sol. Como o tempo que cada planeta leva para realizar isso é diferente, os ângulos para cada planeta variam em 
+     * valores diferentes, dando a impressão de que eles possuem velocidades distintas. Através de uma rotação, 
+     * o movimento de rotação também é definido para cada planeta.
+     * As luas não possuem movimento de rotação associado, apenas movimento de translação, que é relativo ao sol e ao
+     * planeta que elas circundam (Terra e Marte).
      */
     public void display(GLAutoDrawable drawable) {
         if (!animator.isAnimating()) {
@@ -183,47 +185,43 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         }
         final GL gl = drawable.getGL();
 
-        // Clear screen.
+        // limpando a tela
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-        // Set camera.
-        // Change to projection matrix.
+        // Mudando para matrix de projeção
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
 
-        // Perspective.
+        // Setando a perspectiva
         float widthHeightRatio = (float) getWidth() / (float) getHeight();
         glu.gluPerspective(45, widthHeightRatio, 1, 1000);
         glu.gluLookAt(200, 200, 200, 
                 0, 0, 0, 
                 0, 1, 0);
-
-        // Change back to model view matrix.
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
 
-        // Prepare light parameters.
+        // Definindo os parâmetros da luz, a posição da luz da luz que será especular
         float SHINE_ALL_DIRECTIONS = 1;
         float[] lightPos = {-30, 0, 0, SHINE_ALL_DIRECTIONS};
         float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
         float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
 
-        // Set light parameters.
+        // setando os parâmetros de luz definidos anteriormente
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, lightPos, 0);
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, lightColorAmbient, 0);
         gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, lightColorSpecular, 0);
 
-        // Enable lighting in GL.
         gl.glEnable(GL.GL_LIGHT1);
         gl.glEnable(GL.GL_LIGHTING);
 
-        // Set material properties.
         float[] rgba = {1f, 1f, 1f};
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
         
         
+        //rotacionando a galáxia um pouco
         galaxyAngle++;
         gl.glRotated(galaxyAngle,0,1,0);
         gl.glPushMatrix();
@@ -231,24 +229,25 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         int slices;
         int stacks;
         
-        //Sun
+        
+        // Criando o sol, a partir da classe GLUquadric
         sunTexture.bind();
         GLUquadric quadric = glu.gluNewQuadric();
-        glu.gluQuadricTexture(quadric, true);
-        glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
-        glu.gluQuadricNormals(quadric, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(quadric, GLU.GLU_INSIDE);
+        glu.gluQuadricTexture(quadric, true); //setando o tipo de textura
+        glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL); //setando o estilo de renderização dessa quadric
+        glu.gluQuadricNormals(quadric, GLU.GLU_FLAT);   //setando a forma de cálculo das normais
+        glu.gluQuadricOrientation(quadric, GLU.GLU_INSIDE);  //setando a orientação da normal para dentro
         radius = 20f;
         slices = 10;
         stacks = 10;
         sunAngle += 0.1;
         gl.glRotated(-galaxyAngle,0,1,0);
-        gl.glRotated(sunAngle,0,1,0);
-        glu.gluSphere(quadric, radius, slices, stacks);
+        gl.glRotated(sunAngle,0,1,0); //rotacionando o sol em torno de si mesmo
+        glu.gluSphere(quadric, radius, slices, stacks); //desenhando a esfera a partir do quadric criado
         
-        //Mercury
+        //Modelando o planera mercúrio
         mercuryTexture.bind();
-        glu.gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
+        glu.gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);   //setando a orientação da normal para fora (ao contráio do sol)
         radius = 3.4f;
         slices = 16;
         stacks = 16;
@@ -256,12 +255,12 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glPushMatrix();
         mercuryPlanetAngle += 0.74;
         mercuryAngle += Math.E/10;
-        gl.glRotated(mercuryPlanetAngle,0,1,0);
-        gl.glTranslated(20, 0, 20);
-        gl.glRotated(mercuryAngle,0,1,0);
+        gl.glRotated(mercuryPlanetAngle,0,1,0);  //a partir de uma rotação e uma translação, definindo o ângulo de rotação em volta do ol
+        gl.glTranslated(20, 0, 20);  //transladando mercúrio em torno do ponto que se localiza o sol
+        gl.glRotated(mercuryAngle,0,1,0); //rotacionando mercúrio em torno de si mesmo
         glu.gluSphere(quadric, radius, slices, stacks);
         
-        //Venus
+        //Modelando o planeta Venus, e aplicando a animação à ele
         venusTexture.bind();
         radius = 8.6f;
         slices = 16;
@@ -275,7 +274,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glRotated(venusAngle,0,1,0);
         glu.gluSphere(quadric, radius, slices, stacks);
         
-        // Earth
+        // Modelando o planeta Terra e a lua ao redor dele
         earthTexture.bind();
         radius = 9.1f;
         slices = 16;
@@ -294,11 +293,11 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         slices = 16;
         stacks = 16;
         moonAngle += 1;
-        gl.glRotated(moonAngle,0.1,0.5,-0.5);
+        gl.glRotated(moonAngle,0.1,0.5,-0.5);  //lua tem apenas movimento de translação
         gl.glTranslated(10, 0, 10);
         glu.gluSphere(quadric, radius, slices, stacks);
 
-        //Mars
+        //Modelando Marte
         marsTexture.bind();
         radius = 4.8f;
         slices = 16;
@@ -311,6 +310,8 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glTranslated(80, 0, 80);
         gl.glRotated(marsAngle,0,1,0);
         glu.gluSphere(quadric, radius, slices, stacks);
+        
+        //Modelando as luas de Marte
         
         moonTexture.bind();
         radius = 1.4f;
@@ -329,7 +330,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         gl.glTranslated(7, 0, 7);
         glu.gluSphere(quadric, radius, slices, stacks);
         
-        //Stars
+        //Modelando o fundo do universo. com algumas estrelas e com uma velocidade de rotação bem pequena
         starsTexture.bind();
         glu.gluQuadricOrientation(quadric, GLU.GLU_INSIDE);
         radius = 500f;
@@ -342,7 +343,6 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         glu.gluSphere(quadric, radius, slices, stacks);
         glu.gluDeleteQuadric(quadric);
 
-        // Set white color, and enable texturing.
         gl.glEnable(GL.GL_TEXTURE_2D);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
@@ -353,10 +353,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     }
 
     /**
-     * Resizes the screen.
-     * 
-     * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable,
-     *      int, int, int, int)
+     *
      */
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         final GL gl = drawable.getGL();
@@ -364,10 +361,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
     }
 
     /**
-     * Changing devices is not supported.
      * 
-     * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable,
-     *      boolean, boolean)
      */
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
         throw new UnsupportedOperationException("Changing display is not supported.");
