@@ -16,18 +16,18 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Shark extends Fish {
 
-    public static float MAXIMUM_DISTANCE = 100000;
-    public static float MOMENTUM = .2f;
+    public static double MAXIMUM_DISTANCE = 100000;
+    public static double MOMENTUM = 2;
 
     public Shark(Shoal shoal) {
         super(shoal);
     }
 
-    public Shark(Shoal shoal, Vector direction, float speed) {
+    public Shark(Shoal shoal, Vector direction, double speed) {
         super(shoal, direction, speed);
     }
 
-    public Shark(Shoal shoal, Vector direction, float speed, Vector position) {
+    public Shark(Shoal shoal, Vector direction, double speed, Vector position) {
         super(shoal, direction, speed, position);
     }
 
@@ -43,7 +43,8 @@ public class Shark extends Fish {
 
         graphics = new Graphics(
                 new WavefrontObject("Shark.obj",
-                        (float) size.getX(), (float) size.getY(),
+                        (float) size.getX(),
+                        (float) size.getY(),
                         (float) size.getZ()),
                 material
         );
@@ -61,7 +62,7 @@ public class Shark extends Fish {
         // combination of momentum and mobility, where momentum is
         // highly important when close to the Shoal and gradually looses
         // importance as the shark distances itself from it.
-        setDirection(direction.scale((MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
+        setDirection(direction.scale(MOMENTUM * (MAXIMUM_DISTANCE - d) / MAXIMUM_DISTANCE)
                 .add(shoal.getPosition().delta(position).normalize().scale(d / MAXIMUM_DISTANCE))
                 .add(Vector.random().normalize().scale(RANDOMNESS))
         );
