@@ -53,14 +53,14 @@ public class Fish extends Mobile {
     public void initializeProperties() {
         size = new Vector(1, 1, 1);
 
-        Material material = new Material("shark");
+        Material material = new Material("fish");
         material.setKa(new Vertex(.6f, .6f, 1));
         material.setKd(new Vertex(.6f, .6f, 1));
         material.setKs(new Vertex(.2f, .2f, .2f));
         material.setShininess(.3f);
 
         graphics = new Graphics(
-                new WavefrontObject("Shark.obj",
+                new WavefrontObject("fish.obj",
                         (float) size.getX(), (float) size.getY(),
                         (float) size.getZ()),
                 material
