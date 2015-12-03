@@ -237,7 +237,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         glu.gluQuadricTexture(quadric, true);
         glu.gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
         glu.gluQuadricNormals(quadric, GLU.GLU_FLAT);
-        glu.gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
+        glu.gluQuadricOrientation(quadric, GLU.GLU_INSIDE);
         radius = 20f;
         slices = 10;
         stacks = 10;
@@ -248,6 +248,7 @@ public class SolarSystem extends GLCanvas implements GLEventListener {
         
         //Mercury
         mercuryTexture.bind();
+        glu.gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
         radius = 3.4f;
         slices = 16;
         stacks = 16;
