@@ -1,5 +1,8 @@
 package org.cg.aquarium.elements;
 
+import com.sun.opengl.util.GLUT;
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
@@ -17,7 +20,7 @@ import org.cg.aquarium.infrastructure.representations.Vector;
 public class Shark extends Fish {
 
     public static double MAXIMUM_DISTANCE = 100000;
-    public static double MOMENTUM = 2;
+    public static double MOMENTUM = 1;
 
     private static Graphics graphics;
 
@@ -71,6 +74,22 @@ public class Shark extends Fish {
                 .add(Vector.random().normalize().scale(RANDOMNESS))
         );
         move();
+    }
+    
+    @Override
+    public void display(GL gl, GLU glu, GLUT glut) {
+        gl.glPushMatrix();
+
+        gl.glTranslated(position.getX(), position.getY(), position.getZ());
+
+        graphics.glDefineObjectMaterial(gl);
+        graphics.glBindTexture();
+        graphics.glAlignObjectWithVector(gl, direction, Vector.FORWARD);
+        graphics.glRenderObject(gl);
+        graphics.glDebugPlotVector(gl, direction.scale(20 * speed));
+        graphics.glUnbindTexture();
+
+        gl.glPopMatrix();
     }
 
 }

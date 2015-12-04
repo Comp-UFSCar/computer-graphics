@@ -1,7 +1,6 @@
 package org.cg.aquarium.elements;
 
 import com.sun.opengl.util.GLUT;
-import com.sun.opengl.util.texture.Texture;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import libs.modelparser.Material;

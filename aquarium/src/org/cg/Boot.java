@@ -22,7 +22,7 @@ public class Boot {
     static final String TITLE = "Aquarium";
     static final boolean DEBUGGING = false;
 
-    static final int FISH_COUNT = 10;
+    static final int FISH_COUNT = 100;
     static final int SHARK_COUNT = 1;
     static final int SEAHORSE_COUNT = 3;
 
@@ -35,6 +35,8 @@ public class Boot {
 
         aquarium = Aquarium.getAquarium();
         aquarium.setDebugging(DEBUGGING);
+        
+        aquarium.getCamera().setPosition(Vector.FORWARD.scale(150));
 
         frame.add(aquarium.getCanvas());
         frame.setSize(aquarium.getCanvas().getWidth(),
