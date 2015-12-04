@@ -2,10 +2,6 @@ package org.cg.aquarium.infrastructure;
 
 import com.sun.opengl.util.FPSAnimator;
 import com.sun.opengl.util.GLUT;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
-import java.io.InputStream;
 import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -25,8 +21,6 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
     protected GLU glu;
     protected GLUT glut;
     protected FPSAnimator animator;
-    
-    public static Texture texture;
 
     public AquariumCanvas(GLCapabilities capabilities) {
         this(1366, 768, capabilities);
@@ -43,15 +37,6 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
         glu = new GLU();
         glut = new GLUT();
         drawable.setGL(new DebugGL(gl));
-        
-        
-        try {
-            InputStream stream = getClass().getResourceAsStream("VertexColor.png");
-            TextureData data = TextureIO.newTextureData(stream, false, "png");
-            texture = TextureIO.newTexture(data);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
         Aquarium.getAquarium().getLight()
                 .setup(gl)

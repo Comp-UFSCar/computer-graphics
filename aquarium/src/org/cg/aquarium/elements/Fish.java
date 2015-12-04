@@ -30,8 +30,8 @@ public class Fish extends Mobile {
             MOMENTUM = .1;
 
     protected Shoal shoal;
-    protected Graphics graphics;
-    protected Texture texture;
+
+    private static Graphics graphics;
 
     public Fish(Shoal shoal) {
         super();
@@ -55,18 +55,21 @@ public class Fish extends Mobile {
     public void initializeProperties() {
         size = new Vector(1, 1, 1);
 
-        Material material = new Material("fish");
-        material.setKa(new Vertex(.6f, .6f, 1));
-        material.setKd(new Vertex(.6f, .6f, 1));
-        material.setKs(new Vertex(.2f, .2f, .2f));
-        material.setShininess(.3f);
+        if (graphics == null) {
+            Material material = new Material("fish");
+            material.setKa(new Vertex(.6f, .6f, 1));
+            material.setKd(new Vertex(.6f, .6f, 1));
+            material.setKs(new Vertex(.2f, .2f, .2f));
+            material.setShininess(.3f);
 
-        graphics = new Graphics(
-                new WavefrontObject("fish.obj",
-                        (float) size.getX(), (float) size.getY(),
-                        (float) size.getZ()),
-                material
-        );
+            graphics = new Graphics(
+                    new WavefrontObject("/resources/fish/model.obj",
+                            (float) size.getX(), (float) size.getY(),
+                            (float) size.getZ()),
+                    material,
+                    "/resources/fish/texture.png"
+            );
+        }
     }
 
     /**
@@ -184,21 +187,20 @@ public class Fish extends Mobile {
 
     @Override
     public void display(GL gl, GLU glu, GLUT glut) {
+        if (graphics == null) {
+            return;
+        }
+
         gl.glPushMatrix();
 
         gl.glTranslated(position.getX(), position.getY(), position.getZ());
 
         graphics.glDefineObjectMaterial(gl);
-        if(texture != null) {
-            texture.enable();
-            texture.bind();
-        }
+        graphics.glBindTexture();
         graphics.glAlignObjectWithVector(gl, direction, Vector.FORWARD);
         graphics.glRenderObject(gl);
         graphics.glDebugPlotVector(gl, direction.scale(20 * speed));
-        if(texture != null) {
-            texture.disable();
-        }
+        graphics.glUnbindTexture();
 
         gl.glPopMatrix();
     }

@@ -22,7 +22,7 @@ public class Seahorse extends Mobile {
     public static float MAXIMUM_DISTANCE = 100000;
     public static float RANDOMNESS = .01f;
 
-    protected Graphics graphics;
+    protected static Graphics graphics;
 
     protected Vector lairLocation;
 
@@ -43,16 +43,21 @@ public class Seahorse extends Mobile {
         size = new Vector(1, 1, 1);
         lairLocation = Vector.random().normalize().scale(40);
 
-        Material material = new Material("base");
-        material.setKa(new Vertex(.6f, .6f, 1));
-        material.setKd(new Vertex(.6f, .6f, 1));
-        material.setKs(new Vertex(.2f, .2f, .2f));
-        material.setShininess(30);
+        if (graphics == null) {
+            Material material = new Material("base");
+            material.setKa(new Vertex(.6f, .6f, 1));
+            material.setKd(new Vertex(.6f, .6f, 1));
+            material.setKs(new Vertex(.2f, .2f, .2f));
+            material.setShininess(30);
 
-        graphics = new Graphics(new WavefrontObject("seahorse.obj",
-                (float) size.getX(), (float) size.getY(),
-                (float) size.getZ()),
-                material);
+            graphics = new Graphics(
+                    new WavefrontObject("/resources/seahorse/model.obj",
+                            (float) size.getX(), (float) size.getY(),
+                            (float) size.getZ()),
+                    material,
+                    "/resources/seahorse/texture.png"
+            );
+        }
     }
 
     @Override

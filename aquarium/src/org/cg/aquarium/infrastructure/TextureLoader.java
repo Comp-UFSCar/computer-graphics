@@ -18,9 +18,11 @@ import javax.media.opengl.GLException;
  */
 public class TextureLoader {
 
+    protected static TextureLoader instance;
+
     HashMap<String, Texture> textures;
 
-    public TextureLoader() {
+    protected TextureLoader() {
         textures = new HashMap<>();
     }
 
@@ -43,11 +45,16 @@ public class TextureLoader {
                 textures.put(name, t);
 
             } catch (IOException | GLException | IllegalArgumentException ex) {
-                System.out.println(String.format("Could not load texture {%s}.",
+                System.err.println(String.format("Could not load texture {%s}.",
                         path));
             }
         }
 
         return t;
     }
+
+    public static TextureLoader getTextureLoader() {
+        return instance = instance != null ? instance : new TextureLoader();
+    }
+
 }

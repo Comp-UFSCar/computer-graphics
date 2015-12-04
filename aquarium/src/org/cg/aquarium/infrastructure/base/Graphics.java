@@ -1,17 +1,20 @@
 package org.cg.aquarium.infrastructure.base;
 
+import com.sun.opengl.util.texture.Texture;
 import javax.media.opengl.GL;
 import libs.modelparser.Material;
 import libs.modelparser.Vertex;
 import libs.modelparser.WavefrontObject;
 import org.cg.aquarium.infrastructure.Environment;
+import org.cg.aquarium.infrastructure.TextureLoader;
 import org.cg.aquarium.infrastructure.helpers.MathHelper;
 import org.cg.aquarium.infrastructure.representations.Vector;
 
 /**
- * Object model.
+ * Graphics.
  *
- * Object models can load {@code .obj} files and draw them onto the canvas.
+ * Instances of this class can load {@code .obj} files and draw them onto the
+ * canvas.
  *
  * @author ldavid
  */
@@ -19,15 +22,23 @@ public class Graphics {
 
     protected WavefrontObject model;
     protected Material material;
+    protected Texture texture;
 
-    public Graphics(String modelPath, String materialName) {
-        model = new WavefrontObject(modelPath);
-        material = new Material(materialName);
+    public Graphics(String modelPath, String materialName, String texturePath) {
+        this(new WavefrontObject(modelPath), new Material(materialName),
+                texturePath);
     }
 
-    public Graphics(WavefrontObject model, Material material) {
+    public Graphics(WavefrontObject model, Material material,
+            String texturePath) {
+        this(model, material,
+                TextureLoader.getTextureLoader().load(texturePath));
+    }
+
+    public Graphics(WavefrontObject model, Material material, Texture texture) {
         this.model = model;
         this.material = material;
+        this.texture = texture;
     }
 
     public WavefrontObject getModel() {
@@ -58,6 +69,19 @@ public class Graphics {
             material.getKs().getZ(), 1}, 0);
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, new float[]{
             material.getShininess(), 0, 0, 0}, 0);
+    }
+
+    public void glBindTexture() {
+        if (texture != null) {
+            texture.enable();
+            texture.bind();
+        }
+    }
+
+    public void glUnbindTexture() {
+        if (texture != null) {
+            texture.disable();
+        }
     }
 
     public void glAlignObjectWithVector(GL gl, Vector direction, Vector base) {
