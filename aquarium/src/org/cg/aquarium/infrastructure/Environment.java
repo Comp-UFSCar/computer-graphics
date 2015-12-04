@@ -124,7 +124,7 @@ public abstract class Environment {
      * Components passed as argument to this method will be updated ONCE and
      * removed from the updating queue.
      *
-     * @param c
+     * @param c component that was updated.
      */
     public void notifyChanged(Visible c) {
         changeL.lock();

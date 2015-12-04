@@ -82,9 +82,9 @@ public class MathHelper {
     /**
      * Calculates the least common multiple between two integers.
      *
-     * @param a an integer greater than zero
-     * @param b an integer greater than zero
-     * @return the least common multiple between a and b
+     * @param a an integer greater than zero.
+     * @param b an integer greater than zero.
+     * @return the least common multiple between a and b.
      */
     public static int leastCommonMultiple(int a, int b) {
         int dem = greatestCommonDivisor(a, b);
@@ -95,8 +95,8 @@ public class MathHelper {
     /**
      * Convert an angle in radians to degrees.
      *
-     * @param angle
-     * @return
+     * @param angle value in radians to be converted to degrees.
+     * @return degree value correspondent to radian value {@code angle}.
      */
     public static double radiansToDegree(double angle) {
         return 180 * angle / Math.PI;
