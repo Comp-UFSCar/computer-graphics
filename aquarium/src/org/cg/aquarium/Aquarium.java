@@ -18,8 +18,8 @@ import org.cg.aquarium.infrastructure.helpers.Debug;
  */
 public class Aquarium extends Environment {
 
-    protected final AquariumCanvas canvas;
-    protected final Animator animator;
+    protected AquariumCanvas canvas;
+    protected Animator animator;
 
     protected List<Shoal> shoals;
     protected List<Body> predators;
@@ -41,6 +41,11 @@ public class Aquarium extends Environment {
 
         shoals = new LinkedList<>();
         predators = new LinkedList<>();
+    }
+
+    @Override
+    public void start() {
+        super.start();
     }
 
     public AquariumCanvas getCanvas() {
