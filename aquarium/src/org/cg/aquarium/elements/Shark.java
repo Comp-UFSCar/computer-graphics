@@ -35,9 +35,9 @@ public class Shark extends Fish {
 
     @Override
     public void initializeProperties() {
-        size = new Vector(6, 6, 6);
-
         if (graphics == null) {
+            size = new Vector(6, 6, 6);
+
             Material material = new Material("shark");
             material.setKa(new Vertex(1f, 1f, 1));
             material.setKd(new Vertex(1f, 1f, 1));
@@ -45,13 +45,12 @@ public class Shark extends Fish {
             material.setShininess(100f);
 
             graphics = new Graphics(
-                    new WavefrontObject("/resources/shark/model.obj",
+                    new WavefrontObject(
+                            "/resources/shark/model.obj",
                             (float) size.getX(),
                             (float) size.getY(),
                             (float) size.getZ()),
-                    material,
-                    "/resources/shark/texture.png"
-            );
+                    material, "/resources/shark/texture.png");
         }
     }
 

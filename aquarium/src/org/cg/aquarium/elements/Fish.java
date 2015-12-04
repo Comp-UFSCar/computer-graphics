@@ -187,10 +187,6 @@ public class Fish extends Mobile {
 
     @Override
     public void display(GL gl, GLU glu, GLUT glut) {
-        if (graphics == null) {
-            return;
-        }
-
         gl.glPushMatrix();
 
         gl.glTranslated(position.getX(), position.getY(), position.getZ());
