@@ -13,6 +13,6 @@ Animated Aquarium: the final project for Computer Graphics classo of 2015/2 at U
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/Comp-UFSCar/computer-graphics/tree/master/aquarium/screenshots/1.png)
-![Screenshot 2](https://github.com/Comp-UFSCar/computer-graphics/tree/master/aquarium/screenshots/2.png)
+![Screenshot 1](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/aquarium/screenshots/1.png)
+![Screenshot 2](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/aquarium/screenshots/2.png)
 
