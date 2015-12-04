@@ -42,6 +42,10 @@ public class AquariumCanvas extends GLCanvas implements GLEventListener {
                 .setup(gl)
                 .display(gl, glu, glut);
 
+        TextureLoader.getTextureLoader().load("/resources/fish/texture.png");
+        TextureLoader.getTextureLoader().load("/resources/seafish/texture.png");
+        TextureLoader.getTextureLoader().load("/resources/shark/texture.png");
+
         animator = new FPSAnimator(this, 60);
         animator.start();
     }

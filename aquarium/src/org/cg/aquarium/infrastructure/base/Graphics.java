@@ -20,6 +20,8 @@ import org.cg.aquarium.infrastructure.representations.Vector;
  */
 public class Graphics {
 
+    private String textureName;
+
     protected WavefrontObject model;
     protected Material material;
     protected Texture texture;
@@ -33,6 +35,8 @@ public class Graphics {
             String texturePath) {
         this(model, material,
                 TextureLoader.getTextureLoader().load(texturePath));
+
+        this.textureName = texturePath;
     }
 
     public Graphics(WavefrontObject model, Material material, Texture texture) {
@@ -72,6 +76,10 @@ public class Graphics {
     }
 
     public void glBindTexture() {
+        texture = texture != null
+                ? texture
+                : TextureLoader.getTextureLoader().getTexture(textureName);
+
         if (texture != null) {
             texture.enable();
             texture.bind();
