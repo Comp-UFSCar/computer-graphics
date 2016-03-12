@@ -1,0 +1,5 @@
+1. Renomeie a pasta Segmento para Segmento2 (ou qualquer outra coisa)
+2. Crie uma aplicação JOGL com o nome Segmento na pasta cgm-2015 do git 
+3. Remova do projeto o pacote padrão que foi criado junto com o projeto
+4. Copie o conteúdo da pasta Segmento2 para a pasta Segmento
+5. Execute o projeto. Ele deverá estar funcionando.

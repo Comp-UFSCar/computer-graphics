@@ -1,0 +1,11 @@
+#JAVA
+*.class
+
+#NETBEANS
+*/build/*
+
+/Segmento/build.xml
+/Segmento/manifest.mf
+/Segmento/nbproject/*
+
+/Segmento/dist/
