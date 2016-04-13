@@ -9,10 +9,10 @@
 
 ## Introduction
 
-Animated Aquarium: the final project for Computer Graphics classo of 2015/2 at UFSCar.
+Animated Aquarium: the final project for Computer Graphics class of 2015/2 at UFSCar.
 
 ## Screenshots
 
-![Screenshot 1](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/aquarium/screenshots/1.png)
-![Screenshot 2](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/aquarium/screenshots/2.png)
+![Screenshot 1](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/projects/aquarium/screenshots/1.png)
+![Screenshot 2](https://raw.githubusercontent.com/Comp-UFSCar/computer-graphics/master/projects/aquarium/screenshots/2.png)
 
